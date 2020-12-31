@@ -1,4 +1,4 @@
-#Powers in Shop
+# Powers in Shop
 
 This mod adds many of the Monkey Money Powers to the in-game shop for purchase with normal currency.
 
