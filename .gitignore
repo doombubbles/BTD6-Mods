@@ -1,5 +1,4 @@
 # Prerequisites
-*.d
 
 # Compiled Object files
 *.slo
@@ -14,7 +13,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -30,3 +28,7 @@
 *.exe
 *.out
 *.app
+
+
+.idea/
+obj/
