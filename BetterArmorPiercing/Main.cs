@@ -18,8 +18,6 @@ using Assets.Scripts.Utils;
 using Harmony;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
-using NKHook6.Api.Events;
-using NKHook6.Api.Events._Towers;
 using UnhollowerBaseLib;
 
 [assembly: MelonInfo(typeof(BetterArmorPiercing.Main), "Better Armor Piercing", "1.1.1", "doombubbles")]
@@ -64,8 +62,8 @@ namespace BetterArmorPiercing
                 MelonLogger.Log("Creating config file");
                 using (StreamWriter sw = File.CreateText(Config))
                 {
-                    sw.WriteLine("ArmorPiercingDartsCost=3000");
-                    sw.WriteLine("HeatTippedDartsBonus=1");
+                    sw.WriteLine("ArmorPiercingDartsCost=" + ArmorPiercingDartsCost);
+                    sw.WriteLine("HeatTippedDartsBonus=" + HeatTippedDartsBonus);
                 }
                 MelonLogger.Log("Done Creating");
             }
