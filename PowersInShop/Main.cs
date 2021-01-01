@@ -1,43 +1,30 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Assets.Main.Scenes;
-using Assets.Scripts.Models;
-using Assets.Scripts.Models.Audio;
-using Assets.Scripts.Models.GenericBehaviors;
 using Assets.Scripts.Models.Map;
 using Assets.Scripts.Models.Powers;
-using Assets.Scripts.Models.Powers.Effects;
 using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers;
-using Assets.Scripts.Models.Towers.Behaviors;
-using Assets.Scripts.Models.Towers.Projectiles;
-using Assets.Scripts.Models.TowerSelectionMenuTheme;
 using Assets.Scripts.Models.TowerSets;
 using Assets.Scripts.Simulation.Input;
-using Assets.Scripts.Simulation.Objects;
 using Assets.Scripts.Simulation.Towers;
-using Assets.Scripts.Simulation.Towers.Behaviors;
-using Assets.Scripts.Simulation.Towers.Projectiles;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Bridge;
-using Assets.Scripts.Unity.Player;
 using Assets.Scripts.Unity.UI_New;
 using Assets.Scripts.Unity.UI_New.InGame;
+using Assets.Scripts.Unity.UI_New.InGame.RightMenu.Powers;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Upgrade;
 using Harmony;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
-using NinjaKiwi.Players;
 using NKHook6.Api.Extensions;
-using UnhollowerBaseLib;
 using UnityEngine;
 using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.0", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -61,13 +48,15 @@ namespace PowersInShop
             Powers.Add("PortableLake", 1000);
             Powers.Add("EnergisingTotem", 1500);
             Powers.Add("RoadSpikes", 50);
-            TrackPowers.Add("RoadSpikes", 20);
             Powers.Add("GlueTrap", 100);
-            TrackPowers.Add("GlueTrap", 300);
             Powers.Add("CamoTrap", 100);
-            TrackPowers.Add("CamoTrap", 500);
             Powers.Add("MoabMine", 500);
+            
+            TrackPowers.Add("RoadSpikes", 20);
+            TrackPowers.Add("GlueTrap", 300);
             TrackPowers.Add("MoabMine", 1);
+            TrackPowers.Add("CamoTrap", 500);
+            
 
 
             MelonLogger.Log("Powers In Shop mod loaded");
@@ -154,18 +143,28 @@ namespace PowersInShop
             }
         }
         
-        /*[HarmonyPatch(typeof(InputManager), nameof(InputManager.EnterPlacementMode))]
+        [HarmonyPatch(typeof(InputManager), nameof(InputManager.EnterPlacementMode))]
         internal class InputManager_EnterPlacementMode
         {
             [HarmonyPostfix]
             internal static void Patch(TowerModel forTowerModel)
             {
-                if (TrackPowers.Contains(forTowerModel.name))
+                if (TrackPowers.ContainsKey(forTowerModel.name))
                 {
-                    Texture2D texture = Texture2D.blackTexture;
-                    texture.Resize(20, 20);
-                    InGameObjects.instance.PowerIconStart(Sprite.Create(texture, new Rect(0, 0, 20, 20), new UnityEngine.Vector2()));
-                    InGameObjects.instance.powerIconImg = gameObject.AddComponent<Image>();
+                    int i = 7;
+                    foreach (var power in TrackPowers.Keys)
+                    {
+                        if (power == forTowerModel.name)
+                        {
+                            break;
+                        }
+                        i++;
+                    }
+                    var image = PowersMenu.instance.gameObject.transform.GetChild(0).GetChild(2).GetChild(0)
+                        .GetChild(i).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
+
+                    //Utils.RecursivelyLogGameObject(PowersMenu.instance.gameObject.transform);
+                    InGameObjects.instance.PowerIconStart(image.sprite);
                 }
             }
         }
@@ -178,11 +177,10 @@ namespace PowersInShop
             {
                 var inputManager = InGame.instance.inputManager;
                 var towerModel = inputManager.towerModel;
-                if (towerModel != null && inputManager.inPlacementMode && TrackPowers.Contains(towerModel.name))
+                if (towerModel != null && inputManager.inPlacementMode && TrackPowers.ContainsKey(towerModel.name))
                 { 
                     var map = InGame.instance.UnityToSimulation.simulation.Map;
-                    var pos = inputManager.cursorPositionWorld; 
-                    InGameObjects.instance.PowerIconUpdate(pos, map.CanPlace(new Vector2(pos), towerModel));
+                    InGameObjects.instance.PowerIconUpdate(inputManager.GetCursorPosition(), map.CanPlace(new Vector2(inputManager.cursorPositionWorld), towerModel));
                 }
             }
         }
@@ -199,19 +197,7 @@ namespace PowersInShop
                 }
             }
         }
-        
-        [HarmonyPatch(typeof(InGameObjects), nameof(InGameObjects.PowerIconStart))]
-        internal class InGameObjects_PowerIconStart
-        {
-            [HarmonyPostfix]
-            internal static void Patch(InGameObjects __instance, Sprite icon)
-            {
-                //MelonLogger.Log(icon.rect.);
-            }
-        }
-        */
-        
-            
+
         [HarmonyPatch(typeof(TSMThemeEnergisingTotem), nameof(TSMThemeEnergisingTotem.OnButtonPress))]
         public class TSMThemeEnergisingTotem_OnButtonPress
         {

@@ -9,7 +9,9 @@ using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.Towers.Projectiles;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.UI_New.InGame;
+using MelonLoader;
 using UnhollowerBaseLib;
+using UnityEngine;
 
 
 namespace PowersInShop
@@ -75,24 +77,14 @@ namespace PowersInShop
             towerModel.behaviors.First(b => b.name.Contains("Sound")).Cast<CreateSoundOnTowerPlaceModel>()
                 .heroSound2 = new BlankSoundModel();
 
+            var displayModel = towerModel.behaviors.First(b => b.name.Contains("Display"))
+                .Cast<DisplayModel>();    
+            displayModel.display = "8ab0e3fbb093a554d84a85e18fe2acac"; //tiny little caltrops
                     
             var powerBehaviorModel = powerModel.behaviors.First(b => !b.name.Contains("Create"));
             var projectleModel = GetProjectileModel(powerBehaviorModel);
-                    
             if (projectleModel != null)
             {
-                var displayModel = towerModel.behaviors.First(b => b.name.Contains("Display"))
-                    .Cast<DisplayModel>();
-                if (CanBeCast<RoadSpikesModel>(powerBehaviorModel))
-                {
-                    displayModel.display = "8ab0e3fbb093a554d84a85e18fe2acac";
-                    displayModel.scale = 2.0f;
-                }
-                else
-                {
-                    displayModel.display = projectleModel.display;
-                }
-
                 projectleModel.pierce = Main.TrackPowers[power];
                 if (projectleModel.maxPierce != 0)
                 {
@@ -127,6 +119,20 @@ namespace PowersInShop
             price /= 5f;
             price = (int)Math.Round(price);
             return (int) (price * 5);
+        }
+        
+        public static void RecursivelyLogGameObject(Transform gameObject, int depth = 0)
+        {
+            var str = gameObject.name;
+            for (int i = 0; i < depth; i++)
+            {
+                str = "|  " + str;
+            }
+            MelonLogger.Log(str);
+            for (int i = 0; i < gameObject.childCount; i++)
+            {
+                RecursivelyLogGameObject(gameObject.transform.GetChild(i), depth + 1);
+            }
         }
     }
 }

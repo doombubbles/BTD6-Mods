@@ -8,10 +8,6 @@ The costs of all these towers are configurable, with the defaults shown above, a
 
 Also configurable are allowing the Power Towers in CHIMPS mode (defaults to false) and restricting them as Support towers (defaults to true).
 
-
-**It it currently a known issue that Road Spikes look like Caltrops while being placed. This is an intentional band-aid fix to the issue that the Road Spikes model currently can't be used in that context. I'm looking into better fixes.**
-
-
 Very special thanks to kenx00x for the idea and starter code.
 
 
@@ -19,6 +15,7 @@ As far as the future of this mod, I'm probably not going to add any of the other
 
 **Changelog**
 
+v1.1.1 Fixed Track Powers placement icon
 v1.1.0 Added Energising Totem
 
 v1.0.0 Release
