@@ -1,24 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Net.Mime;
-using Assets.Scripts.Models;
-using Assets.Scripts.Models.Towers;
-using Assets.Scripts.Models.Towers.Behaviors.Abilities;
 using Assets.Scripts.Models.Towers.Behaviors.Attack;
-using Assets.Scripts.Models.Towers.Projectiles;
 using Assets.Scripts.Models.Towers.Projectiles.Behaviors;
-using Assets.Scripts.Models.Towers.Upgrades;
-using Assets.Scripts.Models.Towers.Weapons;
-using Assets.Scripts.Models.TowerSets;
-using Assets.Scripts.Simulation.Objects;
-using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Unity;
-using Assets.Scripts.Unity.Localization;
-using Assets.Scripts.Utils;
 using Harmony;
-using Il2CppSystem.Collections.Generic;
 using MelonLoader;
-using UnhollowerBaseLib;
 
 [assembly: MelonInfo(typeof(BetterArmorPiercing.Main), "Better Armor Piercing", "1.1.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -55,7 +41,6 @@ namespace BetterArmorPiercing
                         }
                     }
                 }
-                MelonLogger.Log("Done reading");
             }
             else
             {
@@ -65,7 +50,6 @@ namespace BetterArmorPiercing
                     sw.WriteLine("ArmorPiercingDartsCost=" + ArmorPiercingDartsCost);
                     sw.WriteLine("HeatTippedDartsBonus=" + HeatTippedDartsBonus);
                 }
-                MelonLogger.Log("Done Creating");
             }
         }
 

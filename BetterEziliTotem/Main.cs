@@ -36,8 +36,6 @@ namespace BetterEziliTotem
                         }
                     }
                 }
-
-                MelonLogger.Log("Done reading");
             }
             else
             {
@@ -46,8 +44,6 @@ namespace BetterEziliTotem
                 {
                     sw.WriteLine("AbilityCooldown=" + AbilityCooldown);
                 }
-
-                MelonLogger.Log("Done Creating");
             }
         }
         

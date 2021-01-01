@@ -115,7 +115,6 @@ namespace PowersInShop
                         }
                     }
                 }
-                MelonLogger.Log("Done reading");
             }
             else
             {
