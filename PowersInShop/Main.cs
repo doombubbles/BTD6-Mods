@@ -5,6 +5,7 @@ using Assets.Scripts.Models.Map;
 using Assets.Scripts.Models.Powers;
 using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers;
+using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.TowerSets;
 using Assets.Scripts.Simulation.Input;
 using Assets.Scripts.Simulation.Towers;
@@ -24,7 +25,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.1", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -39,14 +40,15 @@ namespace PowersInShop
         public static bool AllowInChimps = false;
         public static bool RestrictAsSupport = true;
         public static int RechargePrice = 500;
+        public static float AttackSpeedBoost = .15f;
 
         public override void OnApplicationStart()
         {
             Powers.Add("BananaFarmer", 500); 
             Powers.Add("TechBot", 500);
-            Powers.Add("Pontoon", 1000);
-            Powers.Add("PortableLake", 1000);
-            Powers.Add("EnergisingTotem", 1500);
+            Powers.Add("Pontoon", 750);
+            Powers.Add("PortableLake", 750);
+            Powers.Add("EnergisingTotem", 1000);
             Powers.Add("RoadSpikes", 50);
             Powers.Add("GlueTrap", 100);
             Powers.Add("CamoTrap", 100);
@@ -101,6 +103,9 @@ namespace PowersInShop
                         } else if (s.Contains("Recharge"))
                         {
                             RechargePrice = int.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
+                        } else if (s.Contains("AttackSpeed"))
+                        {
+                            AttackSpeedBoost = int.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
                         }
                     }
                 }
@@ -122,6 +127,7 @@ namespace PowersInShop
                         sw.WriteLine(power + "Pierce=" + TrackPowers[power]);
                     }
                     sw.WriteLine("RechargePrice=" + RechargePrice);
+                    sw.WriteLine("AttackSpeedBoost=" + AttackSpeedBoost);
                 }
                 MelonLogger.Log("Done Creating");
             }
@@ -332,6 +338,13 @@ namespace PowersInShop
                     
                         powerModel.tower.cost = Powers[power];
                         powerModel.tower.towerSet = "Support";
+
+                        if (power == "EnergisingTotem")
+                        {
+                            var behavior = powerModel.tower.behaviors
+                                .First(b => b.name == "RateSupportModel_EnergisingTotem_").Cast<RateSupportModel>();
+                            behavior.multiplier = 1 - AttackSpeedBoost;
+                        }
                     }
                 }
             }

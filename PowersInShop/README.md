@@ -2,9 +2,10 @@
 
 This mod adds many of the Monkey Money Powers to the in-game shop for purchase with normal currency.
 
-This includes all Tower-based Powers: Monkey Farmer ($500), Tech Bot ($500), Portable Lake ($1000) and Pontoon ($1000); as well as the Track-based Powers: Road Spikes ($50), Glue Trap ($100), Camo Trap ($100), and Moab Mine ($500).
+This includes all Tower-based Powers: Monkey Farmer ($500), Tech Bot ($500), Portable Lake ($750), Pontoon ($750) and Energising Totem ($1000); as well as the Track-based Powers: Road Spikes ($50), Glue Trap ($100), Camo Trap ($100), and Moab Mine ($500).
 
-The costs of all these towers are configurable, with the defaults shown above, as are the pierces for the Track-based powers (all normal by default except for Moab Mine--changed to 1). Prices can be set to a negative number to remove them from the shop.
+The costs of all these towers are configurable, with the defaults shown above. Prices can be set to a negative number to remove them from the shop.
+The pierces for the Track-based powers (all normal by default except for Moab Mine--changed to 1), as is the Recharge Cost and Attack Speed of the Energising Totem ($500 and 15% down from 25%, by default).
 
 Also configurable are allowing the Power Towers in CHIMPS mode (defaults to false) and restricting them as Support towers (defaults to true).
 
@@ -15,7 +16,10 @@ As far as the future of this mod, I'm probably not going to add any of the other
 
 **Changelog**
 
+v1.1.2 Default Balance Changes
+
 v1.1.1 Fixed Track Powers placement icon
+
 v1.1.0 Added Energising Totem
 
 v1.0.0 Release
