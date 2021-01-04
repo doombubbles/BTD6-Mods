@@ -1,7 +1,13 @@
 # Better Ultravision
 
-This mod makes the x/x/2 Ultravision upgrade for the Super Monkey not give such a pitiful range bonus.
+This mod makes the x/x/2 Ultravision upgrade for the Super Monkey not give such a pitiful range bonus, and/or make the Supe be able to attack through walls.
 
-By default, Super Range Upgrade give +10 range, while Ultavision only gives +3 range. This mod improves that to +6 range.
+By default, Super Range Upgrade give +10 range, while Ultavision only gives +3 range. This mod improves that to +6 range by default.
 
-This range bonus is changeable in a config, as is the price of Ultravision if you want to change the upgrade cost more due to this increased power (maybe $1500 instead of $1200?).
+All this is changeable in a config (you'll need to change the config for seeing through walls), as is the price of Ultravision if you want to change the upgrade cost due to this increased power.
+
+**Changelog**
+
+v1.1.0 Added See Through Walls option
+
+v1.0.0 Release
