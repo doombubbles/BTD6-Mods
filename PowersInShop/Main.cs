@@ -13,7 +13,9 @@ using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Bridge;
 using Assets.Scripts.Unity.UI_New;
 using Assets.Scripts.Unity.UI_New.InGame;
+using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu.Powers;
+using Assets.Scripts.Unity.UI_New.InGame.StoreMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Upgrade;
 using Harmony;
@@ -157,19 +159,7 @@ namespace PowersInShop
             {
                 if (TrackPowers.ContainsKey(forTowerModel.name))
                 {
-                    int i = 7;
-                    foreach (var power in TrackPowers.Keys)
-                    {
-                        if (power == forTowerModel.name)
-                        {
-                            break;
-                        }
-                        i++;
-                    }
-                    var image = PowersMenu.instance.gameObject.transform.GetChild(0).GetChild(2).GetChild(0)
-                        .GetChild(i).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
-
-                    //Utils.RecursivelyLogGameObject(PowersMenu.instance.gameObject.transform);
+                    var image = ShopMenu.instance.GetTowerButtonFromBaseId(forTowerModel.baseId).gameObject.transform.Find("Icon").GetComponent<Image>();
                     InGameObjects.instance.PowerIconStart(image.sprite);
                 }
             }
@@ -184,7 +174,7 @@ namespace PowersInShop
                 var inputManager = InGame.instance.inputManager;
                 var towerModel = inputManager.towerModel;
                 if (towerModel != null && inputManager.inPlacementMode && TrackPowers.ContainsKey(towerModel.name))
-                { 
+                {
                     var map = InGame.instance.UnityToSimulation.simulation.Map;
                     InGameObjects.instance.PowerIconUpdate(inputManager.GetCursorPosition(), map.CanPlace(new Vector2(inputManager.cursorPositionWorld), towerModel));
                 }
@@ -349,7 +339,7 @@ namespace PowersInShop
                 }
             }
         }
-        
+
         [HarmonyPatch(typeof(Tower), "Initialise")]
         public class Tower_Initialise
         {
@@ -364,10 +354,25 @@ namespace PowersInShop
                     InGame.instance.UnityToSimulation.simulation.powerManager.GetInstance(powerBehaviorModel).Activate(__instance.Position.ToVector2(), powerBehaviorModel, 0);
                     
                     
+                    ShopMenu.instance.GetTowerButtonFromBaseId(__instance.towerModel.baseId).ButtonActivated();
                 }
-                
             }
         }
+        
+        [HarmonyPatch(typeof(Tower), nameof(Tower.OnDestroy))]
+        public class Tower_OnDestroy
+        {
+            [HarmonyPostfix]
+            public static void Postfix(Tower __instance)
+            {
+                if (TrackPowers.ContainsKey(__instance.towerModel.name))
+                {
+                    ShopMenu.instance.GetTowerButtonFromBaseId(__instance.towerModel.baseId).ButtonActivated();
+                }
+            }
+        }
+        
+        
 
         [HarmonyPatch(typeof(TowerInventory), "Init")]
         public class TowerInventoryPatch
