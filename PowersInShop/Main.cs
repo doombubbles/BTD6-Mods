@@ -9,13 +9,12 @@ using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.TowerSets;
 using Assets.Scripts.Simulation.Input;
 using Assets.Scripts.Simulation.Towers;
+using Assets.Scripts.Simulation.Track;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Bridge;
 using Assets.Scripts.Unity.UI_New;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
-using Assets.Scripts.Unity.UI_New.InGame.RightMenu.Powers;
-using Assets.Scripts.Unity.UI_New.InGame.StoreMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Upgrade;
 using Harmony;
@@ -27,7 +26,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.2", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.4", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -266,17 +265,18 @@ namespace PowersInShop
             }
         }
         
-        
-
-        [HarmonyPatch(typeof(TowerModel), nameof(TowerModel.IsTowerPlaceableInAreaType))]
-        internal class TowerModel_IsTowerPlaceableInAreaType
+        [HarmonyPatch(typeof(Map), nameof(Map.CanPlace))]
+        internal class Map_CanPlace
         {
+            
             [HarmonyPostfix]
-            internal static void Patch(TowerModel __instance, AreaType areaType, ref bool __result)
+            internal static void Patch(ref bool __result, Vector2 at, TowerModel tm)
             {
-                if (TrackPowers.ContainsKey(__instance.name))
+                if (TrackPowers.ContainsKey(tm.name))
                 {
-                    __result = areaType == AreaType.track;
+                    var map = InGame.instance.UnityToSimulation.simulation.Map;
+                    __result = map.GetAllAreasOfTypeThatTouchPoint(at).ToArray()
+                        .Any(area => area.areaModel.type == AreaType.track);
                 }
             }
         }
