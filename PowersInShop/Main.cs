@@ -26,7 +26,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.4", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.5", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -445,8 +445,33 @@ namespace PowersInShop
                         }
                     }
                 }
-                
+                towerInventory.SetTowerMaxes(allTowers);
+            }
+        }
+        
+        [HarmonyPatch(typeof(InGame), nameof(InGame.Restart))]
+        internal class InGame_Restart
+        {
+            [HarmonyPostfix]
+            internal static void Postfix()
+            {
+                var towerInventory = TowerInventoryPatch.towerInventory;
+                var allTowers = TowerInventoryPatch.allTowers;
 
+                if (RestrictAsSupport && InGame.instance.SelectedMode.Contains("Only") ||
+                    !AllowInChimps && InGame.instance.SelectedMode.Contains("Clicks"))
+                {
+                    foreach (var tower in allTowers)
+                    {
+                        foreach (var power in Powers.Keys)
+                        {
+                            if (tower.towerId == power)
+                            {
+                                tower.towerCount = 0;
+                            }
+                        }
+                    }
+                }
                 towerInventory.SetTowerMaxes(allTowers);
             }
         }

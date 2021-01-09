@@ -61,7 +61,8 @@ namespace PowersInShop
             towerModel.radius = 3;
             towerModel.range = 0;
             towerModel.footprint = new CircleFootprintModel(power, 0, true, false, true);
-                    
+            towerModel.showPowerTowerBuffs = false;        
+            
             towerModel.behaviors.First(b => b.name.Contains("OnExpire"))
                 .Cast<CreateEffectOnExpireModel>().effectModel = powerModel.behaviors
                 .First(b => b.name.Contains("Effect")).Cast<CreateEffectOnPowerModel>().effectModel;

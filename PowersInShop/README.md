@@ -16,6 +16,8 @@ As far as the future of this mod, I'm probably not going to add any of the other
 
 **Changelog**
 
+v1.1.5 Minor Bug Fixes
+
 v1.1.4 Track Powers are now more easily placeable in tight locations
 
 v1.1.3 Track Powers are now easily placeable multiple times quickly
