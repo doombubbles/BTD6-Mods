@@ -1,18 +1,21 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.UI_New.InGame;
+using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.Popups;
 using Harmony;
 using MelonLoader;
 using NKHook6.Api.Events;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(CoordinatesDisplay.Main), "Coordinates Display", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(CoordinatesDisplay.Main), "Coordinates Display", "1.1.0", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace CoordinatesDisplay
 {
@@ -38,19 +41,20 @@ namespace CoordinatesDisplay
                 var inputManager = InGame.instance.inputManager;
                 if (inputManager.inPlacementMode)
                 {
-                    PopupScreen.instance.ShowSetValuePopup("Set X Coordinate", 
-                        "Ninja Kiwi doesn't like dots, so type in the coordinate you want multiplied by 10. For example, \"207\" for 20.7",
-                        new System.Action<int>(x =>
+                    PopupScreen.instance.ShowSetNamePopup("Place Tower at Coordinates", 
+                        "Use the form X.x, Y.y like \"42.0, 6.9\" (note the comma)",
+                        new Action<string>(s =>
                         {
-                            PopupScreen.instance.ShowSetValuePopup("Set Y Coordinate", 
-                                "Ninja Kiwi doesn't like dots, so type in the coordinate you want multiplied by 10. For example, \"207\" for 20.7",
-                                new System.Action<int>(y =>
-                                {
-                                    Place(x/ 10f, y / 10f);
-                                }), (int)inputManager.towerPositionWorld.y * 10) ;
-                        }), (int)inputManager.towerPositionWorld.x * 10);
-                    
-                    
+                            var split = s.Split(',');
+                            float x = float.Parse(split[0].Trim());
+                            float y = float.Parse(split[1].Trim());
+                            
+                            Place(x, y);
+                        }), Math.Round(inputManager.towerPositionWorld.x, 1) + ", " + Math.Round(inputManager.towerPositionWorld.y, 1));
+
+                    PopupScreen.instance.GetFirstActivePopup().GetComponentInChildren<TMP_InputField>()
+                        .characterValidation = TMP_InputField.CharacterValidation.None;
+
                 }
             }
         }
@@ -82,7 +86,8 @@ namespace CoordinatesDisplay
 
         public override void OnUpdate()
         {
-            if (Game.instance == null || InGame.instance == null || InGame.Bridge == null)
+            if (Game.instance == null || InGame.instance == null || InGame.Bridge == null
+            || (TowerSelectionMenu.instance != null && TowerSelectionMenu.instance.GetSelectedTower() != null))
             {
                 HideMMDisplay();
                 return;
