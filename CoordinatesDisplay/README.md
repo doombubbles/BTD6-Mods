@@ -18,4 +18,4 @@ v1.0.0 Release
 
 
 
-Special Thanks to gurrenm3 for his In Game MM Display mod that helped create this.
+Special Thanks to gurrenm4 for his In Game MM Display mod that helped create this.
