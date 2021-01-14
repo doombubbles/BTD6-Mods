@@ -16,6 +16,8 @@ As far as the future of this mod, I'm probably not going to add any of the other
 
 **Changelog**
 
+v1.1.6 Made config file checking more robust
+
 v1.1.5 Minor Bug Fixes
 
 v1.1.4 Track Powers are now more easily placeable in tight locations

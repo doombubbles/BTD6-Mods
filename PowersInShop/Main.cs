@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Assets.Main.Scenes;
 using Assets.Scripts.Models.Map;
@@ -26,7 +27,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.5", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.6", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -72,42 +73,51 @@ namespace PowersInShop
                     string s = "";
                     while ((s = sr.ReadLine()) != null)
                     {
-                        if (s.StartsWith("#"))
+                        try
                         {
-                            continue;
+                            if (s.StartsWith("#"))
+                            {
+                                continue;
+                            }
+                        
+                            if (s.Contains("Cost"))
+                            {
+                                var index = s.IndexOf('=');
+                                var name = s.Substring(0, index).Replace("Cost", "");
+                                var cost = int.Parse(s.Substring(index + 1));
+                                if (Powers.ContainsKey(name))
+                                {
+                                    Powers[name] = cost;
+                                }
+                            } else if (s.Contains("AllowInCHIMPS"))
+                            {
+                                AllowInChimps = bool.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
+                            } else if (s.Contains("RestrictAsSupport"))
+                            {
+                                RestrictAsSupport = bool.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
+                            } else if (s.Contains("Pierce"))
+                            {
+                                var index = s.IndexOf('=');
+                                var name = s.Substring(0, index).Replace("Pierce", "");
+                                var pierce = int.Parse(s.Substring(index + 1));
+                                if (TrackPowers.ContainsKey(name))
+                                {
+                                    TrackPowers[name] = pierce;
+                                }
+                            } else if (s.Contains("Recharge"))
+                            {
+                                RechargePrice = int.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
+                            } else if (s.Contains("AttackSpeed"))
+                            {
+                                AttackSpeedBoost = float.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            MelonLogger.LogError("Malformed line " + s);
+                            e.GetType(); //just to get rid of the warning lol
                         }
                         
-                        if (s.Contains("Cost"))
-                        {
-                            var index = s.IndexOf('=');
-                            var name = s.Substring(0, index).Replace("Cost", "");
-                            var cost = int.Parse(s.Substring(index + 1));
-                            if (Powers.ContainsKey(name))
-                            {
-                                Powers[name] = cost;
-                            }
-                        } else if (s.Contains("AllowInCHIMPS"))
-                        {
-                            AllowInChimps = bool.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                        } else if (s.Contains("RestrictAsSupport"))
-                        {
-                            RestrictAsSupport = bool.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                        } else if (s.Contains("Pierce"))
-                        {
-                            var index = s.IndexOf('=');
-                            var name = s.Substring(0, index).Replace("Pierce", "");
-                            var pierce = int.Parse(s.Substring(index + 1));
-                            if (TrackPowers.ContainsKey(name))
-                            {
-                                TrackPowers[name] = pierce;
-                            }
-                        } else if (s.Contains("Recharge"))
-                        {
-                            RechargePrice = int.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                        } else if (s.Contains("AttackSpeed"))
-                        {
-                            AttackSpeedBoost = int.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                        }
                     }
                 }
             }
