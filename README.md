@@ -2,7 +2,7 @@
 
 The Source Code for my BTD6 Melon Loader Mods.
 
-Most of the mods don't technically require NKHook6, but you should probably just use it with them anyway.
+NKHook6 is **NOT** required for any mods.
 
 If you don't know how to install and use these mods, go [here](https://hemisemidemipresent.github.io/btd6-modding-tutorial/).
 

@@ -1,12 +1,9 @@
-﻿using System.IO;
-using Assets.Scripts.Simulation.Bloons;
+﻿using Assets.Scripts.Simulation.Bloons;
 using Assets.Scripts.Unity.UI_New.InGame;
-using Assets.Scripts.Utils;
 using Harmony;
 using MelonLoader;
-using NKHook6.Api.Extensions;
 
-[assembly: MelonInfo(typeof(AutoEscape.Main), "AutoEscape", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(AutoEscape.Main), "AutoEscape", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace AutoEscape
 {
@@ -18,7 +15,8 @@ namespace AutoEscape
             [HarmonyPrefix]
             internal static bool Prefix(Bloon __instance)
             {
-                if (__instance.GetModifiedTotalLeakDamage() >= InGame.instance.getHealth() + InGame.Bridge.simulation.Shield)
+                if (__instance.GetModifiedTotalLeakDamage() >= InGame.instance.bridge.GetHealth() + InGame.Bridge.simulation.Shield
+                && !InGame.instance.IsSandbox)
                 {
                     if (!InGame.instance.quitting)
                     {

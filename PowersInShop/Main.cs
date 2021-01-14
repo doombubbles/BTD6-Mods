@@ -21,13 +21,12 @@ using Assets.Scripts.Unity.UI_New.Upgrade;
 using Harmony;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
-using NKHook6.Api.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.6", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.7", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -211,12 +210,12 @@ namespace PowersInShop
             {
                 if (tower.worth > 0)
                 {
-                    var cash = InGame.instance.getCash();
+                    var cash = InGame.instance.bridge.GetCash();
                     if (cash < Utils.RealRechargePrice())
                     {
                         return false;
                     }
-                    InGame.instance.setCash(cash - Utils.RealRechargePrice());
+                    InGame.instance.bridge.SetCash(cash - Utils.RealRechargePrice());
                     var mm = Game.instance.playerService.Player.Data.monkeyMoney.Value;
                     Game.instance.playerService.Player.Data.monkeyMoney.Value = mm + 20;
                 }

@@ -8,7 +8,6 @@ using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.Popups;
 using Harmony;
 using MelonLoader;
-using NKHook6.Api.Events;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,38 +23,47 @@ namespace CoordinatesDisplay
         public static GameObject display;
         public static AssetBundle assetBundle;
 
+        public static bool showDisplay = true;
+
         public static bool definitelyTryPlaceNext;
 
-        public override void OnApplicationStart()
+        [HarmonyPatch(typeof(Input), nameof(Input.GetKeyDown), typeof(KeyCode))]
+        internal class Input_GetKeyDown
         {
-            base.OnApplicationStart();
-            EventRegistry.instance.listen(typeof(Main));
-        }
-        
-        [EventAttribute("KeyPressEvent")]
-        public static void onEvent(KeyEvent e)
-        {
-            KeyCode key = e.key;
-            if (key == KeyCode.Insert && InGame.instance != null)
+            private static bool last = false;
+            
+            [HarmonyPostfix]
+            public static void Postfix(bool __result, KeyCode key)
             {
-                var inputManager = InGame.instance.inputManager;
-                if (inputManager.inPlacementMode)
+                if (__result && !last)
                 {
-                    PopupScreen.instance.ShowSetNamePopup("Place Tower at Coordinates", 
-                        "Use the form X.x, Y.y like \"42.0, 6.9\" (note the comma)",
-                        new Action<string>(s =>
+                    if (key == KeyCode.Insert && InGame.instance != null)
+                    {
+                        var inputManager = InGame.instance.inputManager;
+                        if (inputManager.inPlacementMode)
                         {
-                            var split = s.Split(',');
-                            float x = float.Parse(split[0].Trim());
-                            float y = float.Parse(split[1].Trim());
+                            PopupScreen.instance.ShowSetNamePopup("Place Tower at Coordinates", 
+                                "Use the form X.x, Y.y like \"42.0, 6.9\" (note the comma)",
+                                new Action<string>(s =>
+                                {
+                                    var split = s.Split(',');
+                                    float x = float.Parse(split[0].Trim());
+                                    float y = float.Parse(split[1].Trim());
                             
-                            Place(x, y);
-                        }), Math.Round(inputManager.towerPositionWorld.x, 1) + ", " + Math.Round(inputManager.towerPositionWorld.y, 1));
+                                    Place(x, y);
+                                }), Math.Round(inputManager.towerPositionWorld.x, 1) + ", " + Math.Round(inputManager.towerPositionWorld.y, 1));
 
-                    PopupScreen.instance.GetFirstActivePopup().GetComponentInChildren<TMP_InputField>()
-                        .characterValidation = TMP_InputField.CharacterValidation.None;
-
+                            PopupScreen.instance.GetFirstActivePopup().GetComponentInChildren<TMP_InputField>()
+                                .characterValidation = TMP_InputField.CharacterValidation.None;
+                        }
+                        else
+                        {
+                            showDisplay = !showDisplay;
+                        }
+                    }
                 }
+
+                last = __result;
             }
         }
 
@@ -86,7 +94,7 @@ namespace CoordinatesDisplay
 
         public override void OnUpdate()
         {
-            if (Game.instance == null || InGame.instance == null || InGame.Bridge == null
+            if (Game.instance == null || InGame.instance == null || InGame.Bridge == null || !showDisplay
             || (TowerSelectionMenu.instance != null && TowerSelectionMenu.instance.GetSelectedTower() != null))
             {
                 HideMMDisplay();

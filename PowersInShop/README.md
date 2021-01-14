@@ -16,6 +16,8 @@ As far as the future of this mod, I'm probably not going to add any of the other
 
 **Changelog**
 
+v1.1.7 Remove NKHook6 Reliance
+
 v1.1.6 Made config file checking more robust
 
 v1.1.5 Minor Bug Fixes

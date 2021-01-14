@@ -8,7 +8,11 @@ The hope is that this mod can be used as a more exact way of communicating exact
 Also, while placing a tower, you can press the **Insert** key and it will pop-up an input so you can type in coordinates.
 If the tower could be validly placed in that spot, it will be for you.
 
+If you press the **Insert** key while not trying to place a tower, the display will toggle on/off.
+
 **Changelog**
+
+v1.2.0 Toggleable display and removed NKHook6 reliance
 
 v1.1.0 Inputting coordinates is nicer (Thanks Timotheeee1!)
 

@@ -7,4 +7,6 @@ This will work at any point in a match, so long as your hero isn't already place
 
 **Changelog**
 
+v1.1.1 Remove NKHook6 Reliance
+
 v1.0.0 Release

@@ -1,44 +1,28 @@
-﻿using System.Linq;
+﻿using System;
+using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.TowerSets;
 using Assets.Scripts.Simulation.Input;
-using Assets.Scripts.Unity;
-using Assets.Scripts.Unity.Menu;
-using Assets.Scripts.Unity.UI_New.HeroInGame;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
 using Assets.Scripts.Unity.UI_New.InGame.StoreMenu;
-using Assets.Scripts.Unity.UI_New.Main.HeroSelect;
-using Assets.Scripts.Unity.UI_New.Main.MonkeySelect;
-using Assets.Scripts.Unity.UI_New.Transitions;
 using Harmony;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
-using NKHook6.Api.Extensions;
-using NKHook6.Api.Events;
 using UnityEngine;
-using Random = System.Random;
 
-[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace InGameHeroSwitch
 {
     public class Main : MelonMod
     {
-
+        public static ProfileModel profile;
         public static List<TowerDetailsModel> allTowers = new List<TowerDetailsModel>();
         public static TowerInventory towerInventory;
         public static string realSelectedHero;
 
-        public override void OnApplicationStart()
-        {
-            base.OnApplicationStart();
-            EventRegistry.instance.listen(typeof(Main));
-        }
-
         public static void ChangeHero(int delta)
         {
-            var profile = Game.instance.getProfileModel();
-
             var hero = realSelectedHero;
 
             var index = profile.unlockedHeroes.IndexOf(hero);
@@ -72,27 +56,27 @@ namespace InGameHeroSwitch
             ShopMenu.instance.Initialise();
             ShopMenu.instance.PostInitialised();
         }
-        
-        [HarmonyPatch(typeof(HeroInGameScreen), nameof(HeroInGameScreen.Awake))]
-        internal class HeroInGameScreen_Awake
-        {
-            [HarmonyPostfix]
-            internal static void Postfix(HeroInGameScreen __instance)
-            {
-                
-            }
-        }
 
-        [EventAttribute("KeyPressEvent")]
-        public static void onEvent(KeyEvent e)
+        [HarmonyPatch(typeof(Input), nameof(Input.GetKeyDown), typeof(KeyCode))]
+        internal class Input_GetKeyDown
         {
-            KeyCode key = e.key;
-            if (key == KeyCode.PageUp)
+            private static bool last = false;
+            
+            [HarmonyPostfix]
+            public static void Postfix(bool __result, KeyCode key)
             {
-                ChangeHero(-1);
-            } else if (key == KeyCode.PageDown)
-            {
-                ChangeHero(1);
+                if (__result && !last)
+                {
+                    if (key == KeyCode.PageUp)
+                    {
+                        ChangeHero(-1);
+                    } else if (key == KeyCode.PageDown)
+                    {
+                        ChangeHero(1);
+                    }
+                }
+
+                last = __result;
             }
         }
         
@@ -107,6 +91,16 @@ namespace InGameHeroSwitch
                 allTowers = allTowersInTheGame;
                 realSelectedHero = InGame.instance.SelectedHero;
                 return true;
+            }
+        }
+        
+        [HarmonyPatch(typeof(ProfileModel), nameof(ProfileModel.Validate))]
+        internal class ProfileModel_Validate
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ProfileModel __instance)
+            {
+                profile = __instance;
             }
         }
     }
