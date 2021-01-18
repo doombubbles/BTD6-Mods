@@ -7,6 +7,6 @@ You won't be Black Bordering any maps with this, but you should at least save th
 
 **Changelog**
 
-v1.0.1 Now disabled in Sandbox mode
+v1.0.1 Now disabled in Sandbox mode, and no longer NKHook6 reliant
 
 v1.0.0 Release
