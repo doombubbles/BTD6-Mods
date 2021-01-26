@@ -39,7 +39,12 @@ namespace AbilityChoice
             }
             
             to.RemoveMutatorsById("Overclock");
-            to.AddMutator(GetMutator(from.towerModel, to.towerModel.tier), -1, false);
+            int tier = to.towerModel.tier;
+            if (to.towerModel.IsHero())
+            {
+                tier = (tier - 1) / 4;
+            }
+            to.AddMutator(GetMutator(from.towerModel, tier), -1, false);
 
             Main.CurrentBoostIDs[from.Id] = to.Id;
         }

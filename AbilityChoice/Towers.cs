@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Models;
 using Assets.Scripts.Models.Effects;
 using Assets.Scripts.Models.GenericBehaviors;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Behaviors;
+using Assets.Scripts.Models.Towers.Behaviors.Abilities;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Attack.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Emissions;
@@ -15,6 +17,7 @@ using Assets.Scripts.Models.Towers.Weapons;
 using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
 using BloonsTD6_Mod_Helper.Extensions;
+using MelonLoader;
 using UnhollowerBaseLib;
 using CreateEffectOnExpireModel = Assets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel;
 using static Assets.Scripts.Models.Towers.TowerType;
@@ -275,22 +278,29 @@ namespace AbilityChoice
 
         public static void RocketStorm(TowerModel model)
         {
-            var realWeapon = model.GetWeapons()[0];
             var abilityAttack = model.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].Duplicate();
+
             var abilityWeapon = abilityAttack.weapons[0];
+            var realWeapon = model.GetWeapons()[0];
             abilityWeapon.emission = realWeapon.emission;
             abilityWeapon.GetBehavior<EjectEffectModel>().effectModel.lifespan = .05f;
             abilityWeapon.rate /= 4;
 
+
+            if (abilityWeapon.projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.HasBehavior<SlowModel>())
+            {
+                abilityWeapon.projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<SlowModel>().lifespan /= 3;
+                abilityWeapon.projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<SlowModel>()
+                    .dontRefreshDuration = true;
+                abilityWeapon.projectile.GetBehavior<CreateProjectileOnBlockerCollideModel>().projectile.GetBehavior<SlowModel>().lifespan /= 3;
+                abilityWeapon.projectile.GetBehavior<CreateProjectileOnBlockerCollideModel>().projectile.GetBehavior<SlowModel>()
+                    .dontRefreshDuration = true;
+            }
+
+            var rotateModel = model.GetAttackModels()[0].GetBehavior<RotateToPointerModel>();
             
-            abilityWeapon.projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<SlowModel>().lifespan /= 3;
-            abilityWeapon.projectile.GetBehavior<CreateProjectileOnContactModel>().projectile.GetBehavior<SlowModel>()
-                .dontRefreshDuration = true;
-            abilityWeapon.projectile.GetBehavior<CreateProjectileOnBlockerCollideModel>().projectile.GetBehavior<SlowModel>().lifespan /= 3;
-            abilityWeapon.projectile.GetBehavior<CreateProjectileOnBlockerCollideModel>().projectile.GetBehavior<SlowModel>()
-                .dontRefreshDuration = true;
-                
-            
+            abilityAttack.RemoveBehavior<RotateToPointerModel>();
+            abilityAttack.AddBehavior(rotateModel);
             
             model.AddBehavior(abilityAttack);
         }
