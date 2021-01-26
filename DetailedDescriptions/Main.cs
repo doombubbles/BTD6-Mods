@@ -5,7 +5,7 @@ using Harmony;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace DetailedDescriptions
 {
@@ -15,15 +15,24 @@ namespace DetailedDescriptions
         public static UpgradePopup popup;
         public static string baseTooltip;
         public static string baseDescription;
+        public static string currentTower = "DartMonkey";
         
         public static string GetTooltip(string upgradeName)
         {
+            if (!UPGRADE_TOOLTIPS.ContainsKey(upgradeName))
+            {
+                return "Error: couldn't find description for " + upgradeName;
+            }
             return UPGRADE_TOOLTIPS[upgradeName];
         }
         
         public static string GetDescription(string towerName)
         {
-            return TOWER_DESCRIPTIONS[towerName.ToUpper()];
+            if (!TOWER_DESCRIPTIONS.ContainsKey(towerName))
+            {
+                return "Error: couldn't find description for " + towerName;
+            }
+            return TOWER_DESCRIPTIONS[towerName];
         }
 
         [HarmonyPatch(typeof(UpgradeDetails), nameof(UpgradeDetails.OnPointerEnter))]
@@ -88,11 +97,14 @@ namespace DetailedDescriptions
                         popup.Show(tooltip);
                     }
 
-                    var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
-                    if (upgradeScreen != null)
+                    if (MenuManager.instance.GetCurrentMenu() != null)
                     {
-                        baseDescription = upgradeScreen.towerDescription.text;
-                        upgradeScreen.towerDescription.SetText(GetDescription(upgradeScreen.towerTitle.text));
+                        var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
+                        if (upgradeScreen != null && upgradeScreen.towerDescription != null)
+                        {
+                            baseDescription = upgradeScreen.towerDescription.text;
+                            upgradeScreen.towerDescription.SetText(GetDescription(currentTower));
+                        }
                     }
                 }
             }
@@ -110,40 +122,54 @@ namespace DetailedDescriptions
                     {
                         popup.Show(baseTooltip);
                     }
-                    
-                    var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
-                    if (upgradeScreen != null)
+
+                    if (MenuManager.instance.GetCurrentMenu() != null)
                     {
-                        upgradeScreen.towerDescription.SetText(baseDescription);
+                        var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
+                        if (upgradeScreen != null && upgradeScreen.towerDescription != null)
+                        {
+                            upgradeScreen.towerDescription.SetText(baseDescription);
+                        }
                     }
+                    
                 }
+            }
+        }
+        
+        [HarmonyPatch(typeof(UpgradeScreen), nameof(UpgradeScreen.UpdateUi))]
+        internal class UpgradeScreen_PopulatePath
+        {
+            [HarmonyPostfix]
+            public static void PostFix(string towerId)
+            {
+                currentTower = towerId;
             }
         }
 
         private static readonly Dictionary<string, string> TOWER_DESCRIPTIONS = new Dictionary<string, string>
         {
-            {"DART MONKEY", "<u>Dart</u> attack (1d, 2p, 0.95s, 32r, <i>Sharp</i>)  "},
-            {"BOOMERANG MONKEY", "<u>Boomerang</u> attack (1d, 4p, 43r, 1.42s, <i>Sharp</i>)"},
-            {"BOMB SHOOTER", "<u>Bomb</u> attack (1.5s, 40r), creates on-hit <u>Explosion</u> (1d, 14p, <i>Explosion</i>)"},
-            {"TACK SHOOTER", "<u>Tacks</u> attack (1d, 1p, 1.4s, 23r, 8j, <i>Sharp</i>)"},
-            {"ICE MONKEY", "<u>Freeze</u> attack (1d, 40p, 2.4s, 20r, <i>Cold</i>) that applies <u>Frozen</u> status for 1.5s"},
-            {"GLUE GUNNER", "<u>Glue</u> attack (0d, 1p, 1.0s, 46r, <i>Acid</i>) that applies <u>Glued</u> (11s duration, 50% slow, 3 layers)"},
-            {"SNIPER MONKEY", "<u>Bullet</u> attack (2d, 1p, 1.59s, ∞r, <i>Sharp</i>, impact)"},
-            {"MONKEY SUB", "<u>Dart</u> attack (1d, 2p, 0.75s, 42r, <i>Sharp</i>)"},
-            {"MONKEY BUCCANEER", "<u>Dart</u> attack (1d, 4p, 1.0s, 60r, <i>Sharp</i>) (Also shoots behind Boat if there are targets there)."},
-            {"MONKEY ACE", "<u>Radial Darts</u> attack (1d, 5p, 8j, 2.1s, <i>Sharp</i>, passive). Flies on a circular path with radius 80, or a figure 8 or figure infinite with radii 40."},
-            {"HELI PILOT", "<u>Darts</u> attack (1d, 3p, 40r, 0.56s, 2j, <i>Sharp</i>)."},
-            {"MORTAR MONKEY", "<u>Shell</u> attack (2.0s, ∞r) creates <u>Explosion</u> effect (1d, 40p, <i>Explosion</i> type, ~34 blast radius)."},
-            {"DARTLING GUNNER", "<u>Dart</u> attack (1d, 1p, .2s, ∞r, <i>Sharp</i>, 23° spread)"},
-            {"WIZARD MONKEY", "<u>Bolt</u> attack (1d, 3p, 40r, 1.1s, <i>Energy</i>)"},
-            {"SUPER MONKEY", "<u>Dart</u> attack (1d, 1p, 0.06s, 50r, <i>Sharp</i>)."},
-            {"NINJA MONKEY", "<u>Shuriken</u> attack (1d, 2p, 40r, 0.7s, <i>Sharp</i>, Camo)."},
-            {"ALCHEMIST", "<u>Potion</u> attack (1d, 15p, 2.0s, 45r, <i>Acid</i>) that applies <u>Acid</u> status (1d/2.0s, 4s duration, <i>Acid</i>)."},
-            {"DRUID", "<u>Thorn</u> attack (1d, 1p, 1.1s, 35r, 5j, <i>Sharp</i>)."},
-            {"BANANA FARM", "<u>Banana</u> effect (40r, $80 income, split over 4 projectiles throughout the round, 15s lifetime)."},
-            {"SPIKE FACTORY", "<u>Spikes</u> attack (1d, 5p, 2.2s, 34r, targets track, 50s or end of round lifespan)."},
-            {"MONKEY VILLAGE", "<u>Buff</u> effect (40r; grants: +10%r)."},
-            {"ENGINEER MONKEY", "<u>Nail</u> attack (1d, 3p, 0.7s, 40r, <i>Sharp</i>)."}
+            {"DartMonkey", "<u>Dart</u> attack (1d, 2p, 0.95s, 32r, <i>Sharp</i>)  "},
+            {"BoomerangMonkey", "<u>Boomerang</u> attack (1d, 4p, 43r, 1.42s, <i>Sharp</i>)"},
+            {"BombShooter", "<u>Bomb</u> attack (1.5s, 40r), creates on-hit <u>Explosion</u> (1d, 14p, <i>Explosion</i>)"},
+            {"TackShooter", "<u>Tacks</u> attack (1d, 1p, 1.4s, 23r, 8j, <i>Sharp</i>)"},
+            {"IceMonkey", "<u>Freeze</u> attack (1d, 40p, 2.4s, 20r, <i>Cold</i>) that applies <u>Frozen</u> status for 1.5s"},
+            {"GlueGunner", "<u>Glue</u> attack (0d, 1p, 1.0s, 46r, <i>Acid</i>) that applies <u>Glued</u> (11s duration, 50% slow, 3 layers)"},
+            {"SniperMonkey", "<u>Bullet</u> attack (2d, 1p, 1.59s, ∞r, <i>Sharp</i>, impact)"},
+            {"MonkeySub", "<u>Dart</u> attack (1d, 2p, 0.75s, 42r, <i>Sharp</i>)"},
+            {"MonkeyBuccaneer", "<u>Dart</u> attack (1d, 4p, 1.0s, 60r, <i>Sharp</i>) (Also shoots behind Boat if there are targets there)."},
+            {"MonkeyAce", "<u>Radial Darts</u> attack (1d, 5p, 8j, 2.1s, <i>Sharp</i>, passive). Flies on a circular path with radius 80, or a figure 8 or figure infinite with radii 40."},
+            {"HeliPilot", "<u>Darts</u> attack (1d, 3p, 40r, 0.56s, 2j, <i>Sharp</i>)."},
+            {"MortarMonkey", "<u>Shell</u> attack (2.0s, ∞r) creates <u>Explosion</u> effect (1d, 40p, <i>Explosion</i> type, ~34 blast radius)."},
+            {"DartlingGunner", "<u>Dart</u> attack (1d, 1p, .2s, ∞r, <i>Sharp</i>, 23° spread)"},
+            {"WizardMonkey", "<u>Bolt</u> attack (1d, 3p, 40r, 1.1s, <i>Energy</i>)"},
+            {"SuperMonkey", "<u>Dart</u> attack (1d, 1p, 0.06s, 50r, <i>Sharp</i>)."},
+            {"NinjaMonkey", "<u>Shuriken</u> attack (1d, 2p, 40r, 0.7s, <i>Sharp</i>, Camo)."},
+            {"Alchemist", "<u>Potion</u> attack (1d, 15p, 2.0s, 45r, <i>Acid</i>) that applies <u>Acid</u> status (1d/2.0s, 4s duration, <i>Acid</i>)."},
+            {"Druid", "<u>Thorn</u> attack (1d, 1p, 1.1s, 35r, 5j, <i>Sharp</i>)."},
+            {"BananaFarm", "<u>Banana</u> effect (40r, $80 income, split over 4 projectiles throughout the round, 15s lifetime)."},
+            {"SpikeFactory", "<u>Spikes</u> attack (1d, 5p, 2.2s, 34r, targets track, 50s or end of round lifespan)."},
+            {"MonkeyVillage", "<u>Buff</u> effect (40r; grants: +10%r)."},
+            {"EngineerMonkey", "<u>Nail</u> attack (1d, 3p, 0.7s, 40r, <i>Sharp</i>)."}
         };
 
         private static readonly Dictionary<string, string> UPGRADE_TOOLTIPS = new Dictionary<string, string>

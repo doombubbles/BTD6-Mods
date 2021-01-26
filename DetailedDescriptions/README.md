@@ -8,4 +8,6 @@ with other info from the Bloons Wiki and my own investigation of the source code
 
 **Changelog**
 
+v1.0.1 All features remain functional even when language is not English
+
 v1.0.0 Release, up to date with Bloons TD 6 v22.2
