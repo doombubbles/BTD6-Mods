@@ -458,7 +458,7 @@ namespace AbilityChoice
         public static void WizardLordPhoenix(TowerModel model)
         {
             var permaBehavior = model.GetBehavior<TowerCreateTowerModel>().Duplicate();
-            var lordPhoenix = model.GetAbilites()[0].GetBehavior<AbilityCreateTowerModel>().towerModel;
+            var lordPhoenix = model.GetAbilites()[0].GetBehavior<AbilityCreateTowerModel>().towerModel.Duplicate();
 
             lordPhoenix.behaviors = lordPhoenix.behaviors.RemoveItemOfType<Model, TowerExpireModel>();
             foreach (var weaponModel in lordPhoenix.GetWeapons())

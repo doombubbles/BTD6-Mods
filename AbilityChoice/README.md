@@ -25,6 +25,8 @@ Last tested with Pre-Release 1
 
 **Changelog**
 
+v1.0.2 Fixed an issue with Wizard Phoenixes
+
 v1.0.1 Fixed issues with Dartling Gunner and Overclock
 
 v1.0.0 Release

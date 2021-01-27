@@ -15,7 +15,7 @@ using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Assets.Scripts.Unity;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
@@ -159,10 +159,18 @@ namespace AbilityChoice
                     {
                         foreach (var t2s in InGame.instance.UnityToSimulation.GetAllTowers())
                         {
-                            if (t2s.tower.parentTowerId == tower.Id && t2s.tower.towerModel.baseId == "LordPhoenix")
+                            if (t2s.tower.parentTowerId == tower.Id)
                             {
-                                t2s.tower.Destroy();
-                                break;
+                                if (t2s.tower.towerModel.baseId == "LordPhoenix")
+                                {
+                                    t2s.tower.Destroy();
+                                }
+                                else
+                                {
+                                    var lord = Game.instance.model.GetTower(TowerType.WizardMonkey, tower.towerModel.tiers[0], 5, tower.towerModel.tiers[2]);
+                                    var phoenix = lord.GetBehavior<TowerCreateTowerModel>().towerModel;
+                                    t2s.tower.SetTowerModel(phoenix);
+                                }
                             }
                         }
                     }
