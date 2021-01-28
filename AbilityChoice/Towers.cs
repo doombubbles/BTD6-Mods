@@ -15,7 +15,9 @@ using Assets.Scripts.Models.Towers.Projectiles;
 using Assets.Scripts.Models.Towers.TowerFilters;
 using Assets.Scripts.Models.Towers.Weapons;
 using Assets.Scripts.Models.Towers.Weapons.Behaviors;
+using Assets.Scripts.Simulation.Objects;
 using Assets.Scripts.Unity;
+using Assets.Scripts.Utils;
 using BloonsTD6_Mod_Helper.Extensions;
 using MelonLoader;
 using UnhollowerBaseLib;
@@ -526,13 +528,17 @@ namespace AbilityChoice
             var abilityWeapon = abilityAttack.weapons[0];
             var slowMutator = abilityWeapon.projectile.GetBehavior<SlowMinusAbilityDurationModel>().Mutator;
 
-            
+            var dontSlowBadBehavior = abilityWeapon.projectile.GetBehavior<SlowModifierForTagModel>();
+
             var slowBehavior = new SlowModel("Sabotage", 0f, 2f, slowMutator.mutationId, "", 999,
                 new Il2CppSystem.Collections.Generic.Dictionary<string, AssetPathModel>(), 0, true, false, null,
                 false, false) {mutator = slowMutator};
+            
+            
             foreach (var weaponModel in model.GetWeapons())
             {
                 weaponModel.projectile.AddBehavior(slowBehavior);
+                weaponModel.projectile.AddBehavior(dontSlowBadBehavior);
                 weaponModel.projectile.pierce += 5;
 
                 weaponModel.projectile.GetDamageModel().damageTypes = new Il2CppStringArray(new[] {"Normal"});

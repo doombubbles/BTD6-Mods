@@ -93,7 +93,7 @@ namespace AbilityChoice
             [HarmonyPrefix]
             internal static bool Prefix(Tower tower, TowerModel def, ref string __state)
             {
-                __state = "";
+                __state = null;
                 foreach (var upgrade in AllUpgrades.Keys)
                 {
                     if (!tower.towerModel.appliedUpgrades.Contains(upgrade) && def.appliedUpgrades.Contains(upgrade))
@@ -106,39 +106,31 @@ namespace AbilityChoice
             }
 
             [HarmonyPostfix]
-            internal static void Postfix(Tower tower, string __state)
+            internal static void Postfix(Tower tower, TowerModel def, string __state)
             {
-                if (__state != "")
+                if (__state != null)
                 {
                     PopupScreen.instance.ShowPopup(PopupScreen.Placement.inGameCenter,
                         "Ability Choice (Can't be Undone)",
                         $"Do you want to forego the {__state} ability to instead get \"{AllUpgrades[__state]}\"",
-                        new Action(() => { EnableForTower(tower); }), "Yes",
+                        new Action(() => { EnableForTower(tower, def); }), "Yes",
                         new Action(() => { DisableForTower(tower); }), "No", Popup.TransitionAnim.Scale
                     );
                 }
                 else if (CurrentTowerIDs.Contains(tower.Id))
                 {
-                    EnableForTower(tower);
+                    EnableForTower(tower, def);
                 }
             }
         }
 
-        public static void EnableForTower(Tower tower)
+        public static void EnableForTower(Tower tower, TowerModel towerModel)
         {
             CurrentTowerIDs.Add(tower.Id);
 
             var removeAbility = true;
 
-            TowerModel towerModel = Game.instance.model.GetTower(tower.towerModel.baseId, 
-                tower.towerModel.tiers[0], tower.towerModel.tiers[1], tower.towerModel.tiers[2]).Duplicate();
-            
-            //don't ask
-            towerModel.RemoveBehaviors<AbilityModel>();
-            foreach (var abilityModel in tower.towerModel.GetAbilites())
-            {
-                towerModel.AddBehavior(abilityModel);
-            }
+            towerModel = towerModel.Duplicate();
 
             foreach (var upgrade in AllUpgrades.Keys)
             {
@@ -229,7 +221,7 @@ namespace AbilityChoice
             {
                 if (towerData.metaData.ContainsKey("AbilityChoice"))
                 {
-                    EnableForTower(__instance);
+                    EnableForTower(__instance, __instance.towerModel);
                 }
 
                 if (towerData.metaData.ContainsKey("AbilityChoiceBoosting"))
