@@ -15,7 +15,7 @@ using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Assets.Scripts.Unity;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.4", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
@@ -60,14 +60,14 @@ namespace AbilityChoice
             {"Dark Champion", "Increased range."},
             {"Dark Knight", "Increased range."},
             {"Tech Terror", "Frequently does a weaker version of Annihilation ability."},
-            {"Grand Saboteur", "Ninja's attack do multiplicatively increased damage to MOAB class Bloons."},
+            {"Grand Saboteur", "Ninja's attack have further range and pierce, and do more damage to stronger Bloon types."},
             {"Bloon Sabotage", "Ninja’s attacks have more range and slow down Bloons themselves."},
             {"Spirit of the Forest", "Also 25 lives per round."},
             {"Jungle's Bounty", "$200 per round, nearby income increased by 15%."},
             {"Total Transformation", "Has permanent extra strength transformation laser attack on self only."},
             {"Transforming Tonic", "Has permanent but weaker transformation laser attack."},
             {"Monkey-Nomics", "No longer has a maximum capacity."},
-            {"IMF loan", "Maximum capacity is $14,000 (by default)."},
+            {"IMF loan", "Maximum capacity is $17,500 (by default)."},
             {"Homeland Defense", "Permanent global attack speed buff."},
             {"Call to Arms", "Permanent weaker nearby attack speed buff."},
             {"Ultraboost", "Modified Ability: Permanently boost (based on tier) one tower at a time."},

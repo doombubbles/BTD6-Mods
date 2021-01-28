@@ -632,12 +632,12 @@ namespace AbilityChoice
 
         public static void IMFloan(TowerModel model)
         {
-            model.GetBehavior<BankModel>().capacity = 17500;
+            model.GetBehavior<BankModel>().capacity += 7500;
         }
         
         public static void MonkeyNomics(TowerModel model)
         {
-            model.GetBehavior<BankModel>().capacity = 999999999999;
+            model.GetBehavior<BankModel>().capacity = 1000000000;
         }
         
         public static void CalltoArms(TowerModel model)
