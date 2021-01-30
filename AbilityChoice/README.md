@@ -25,6 +25,8 @@ Last tested with Pre-Release 1
 
 **Changelog**
 
+v1.0.5 Fixed another Dartling Gunner issue
+
 v1.0.4 Fixed misc Bank issues
 
 v1.0.3 Fixed Monkey Knowledge issues (Monkey-Nomics depositing hype) and Sabo slowing BADs (LOL)

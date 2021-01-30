@@ -298,13 +298,8 @@ namespace AbilityChoice
                 abilityWeapon.projectile.GetBehavior<CreateProjectileOnBlockerCollideModel>().projectile.GetBehavior<SlowModel>()
                     .dontRefreshDuration = true;
             }
-
-            var rotateModel = model.GetAttackModels()[0].GetBehavior<RotateToPointerModel>();
             
-            abilityAttack.RemoveBehavior<RotateToPointerModel>();
-            abilityAttack.AddBehavior(rotateModel);
-            
-            model.AddBehavior(abilityAttack);
+            model.GetAttackModels()[0].AddWeapon(abilityWeapon);
         }
         
         public static void MAD(TowerModel model)
