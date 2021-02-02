@@ -25,6 +25,8 @@ Last tested with Pre-Release 1
 
 **Changelog**
 
+v1.0.6 Updated for BloonsTD6 V23.0
+
 v1.0.5 Fixed another Dartling Gunner issue
 
 v1.0.4 Fixed misc Bank issues
