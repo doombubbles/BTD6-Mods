@@ -1,9 +1,14 @@
-﻿using Assets.Scripts.Unity;
+﻿using System;
+using Assets.Scripts.Unity;
+using Assets.Scripts.Unity.UI_New.InGame;
+using Assets.Scripts.Unity.UI_New.Popups;
 using MelonLoader;
 using Assets.Scripts.Utils;
 using BloonsTD6_Mod_Helper.Extensions;
 using UnityEngine;
 
+[assembly: MelonInfo(typeof(FasterForward.Main), "Faster Forward", "1.0.1", "doombubbles")]
+[assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace FasterForward
 {
     public class Main : MelonMod
@@ -29,11 +34,23 @@ namespace FasterForward
             {
                 speed = 25;
             }
+            
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                PopupScreen.instance.ShowSetValuePopup("Custom Fast Forward Speed", "Sets the Fast Forward speed to the specified value", 
+                    new Action<int>(i =>
+                    {
+                        speed = i;
+                        Game.instance.ShowMessage("Fast Forward Speed is now " + speed + "x" + (speed == 3 ? " (Default)" : ""), 1f);
+                    }), speed);
+            }
 
             if (speed != lastSpeed)
             {
                 Game.instance.ShowMessage("Fast Forward Speed is now " + speed + "x" + (speed == 3 ? " (Default)" : ""), 1f);
             }
+            
+            
 
             if (TimeManager.FastForwardActive)
             {
