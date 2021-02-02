@@ -26,7 +26,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.8", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.9", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -244,7 +244,7 @@ namespace PowersInShop
                 
                 if (tower.worth > 0)
                 {
-                    __instance.rechargeCostText.Method_Private_Virtual_Final_New_Void_String_0("$" + Utils.RealRechargePrice());
+                    __instance.rechargeCostText.SetText("$" + Utils.RealRechargePrice());
                     __instance.rechargeCostText.outlineColor = new Color32(0, 0, 0, 0);
                     __instance.rechargeCostText.color = Color.white;
                     
@@ -259,7 +259,7 @@ namespace PowersInShop
                 }
                 else
                 {
-                    __instance.rechargeCostText.Method_Private_Virtual_Final_New_Void_String_0(og);
+                    __instance.rechargeCostText.SetText(og);
                     __instance.rechargeCostText.outlineColor = outline;
                     __instance.rechargeCostText.color = color;
                     if (lastOpened)

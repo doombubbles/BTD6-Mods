@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using Assets.Scripts.Models.Towers;
-using Assets.Scripts.Models.Towers.Behaviors;
-using Assets.Scripts.Models.Towers.Upgrades;
 using Assets.Scripts.Simulation.Towers.Behaviors;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Bridge;
@@ -15,14 +10,13 @@ using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuTh
 using Assets.Scripts.Unity.UI_New.Main;
 using Harmony;
 using MelonLoader;
-using UnhollowerBaseLib;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using Image = UnityEngine.UI.Image;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace TempleSacrificeHelper
 {
@@ -256,7 +250,7 @@ namespace TempleSacrificeHelper
                         {
                             text[key].gameObject.SetActiveRecursively(true);
                             icons[key].gameObject.SetActiveRecursively(true);
-                            text[key].Method_Private_Virtual_Final_New_Void_String_0(
+                            text[key].SetText(
                                 "$" + worths[key]);
                             text[key].color = colors[key];
                         }

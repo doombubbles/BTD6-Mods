@@ -5,7 +5,7 @@ using Harmony;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace DetailedDescriptions
 {
@@ -33,6 +33,56 @@ namespace DetailedDescriptions
                 return "Error: couldn't find description for " + towerName;
             }
             return TOWER_DESCRIPTIONS[towerName];
+        }
+
+        public override void OnUpdate()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                OnModifierDown();
+            }
+
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                OnModifierUp();
+            }
+        }
+        
+        
+
+        public static void OnModifierDown()
+        {
+            if (popup != null)
+            {
+                popup.Show(tooltip);
+            }
+
+            if (MenuManager.instance.GetCurrentMenu() != null)
+            {
+                var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
+                if (upgradeScreen != null && upgradeScreen.towerDescription != null)
+                {
+                    baseDescription = upgradeScreen.towerDescription.text;
+                    upgradeScreen.towerDescription.SetText(GetDescription(currentTower));
+                }
+            }
+        }
+
+        public static void OnModifierUp()
+        {
+            if (popup != null)
+            {
+                popup.Show(baseTooltip);
+            }
+
+            if (MenuManager.instance.GetCurrentMenu() != null)
+            {
+                var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
+                if (upgradeScreen != null && upgradeScreen.towerDescription != null)
+                {
+                    upgradeScreen.towerDescription.SetText(baseDescription);
+                }
+            }
         }
 
         [HarmonyPatch(typeof(UpgradeDetails), nameof(UpgradeDetails.OnPointerEnter))]
@@ -84,7 +134,7 @@ namespace DetailedDescriptions
             }
         }
         
-        [HarmonyPatch(typeof(Input), nameof(Input.GetKeyDown), typeof(KeyCode))]
+        /*[HarmonyPatch(typeof(Input), nameof(Input.GetKeyDown), typeof(KeyCode))]
         internal class Input_GetKeyDown
         {
             [HarmonyPostfix]
@@ -92,20 +142,7 @@ namespace DetailedDescriptions
             {
                 if (key == KeyCode.LeftShift && __result)
                 {
-                    if (popup != null)
-                    {
-                        popup.Show(tooltip);
-                    }
-
-                    if (MenuManager.instance.GetCurrentMenu() != null)
-                    {
-                        var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
-                        if (upgradeScreen != null && upgradeScreen.towerDescription != null)
-                        {
-                            baseDescription = upgradeScreen.towerDescription.text;
-                            upgradeScreen.towerDescription.SetText(GetDescription(currentTower));
-                        }
-                    }
+                    
                 }
             }
         }
@@ -118,23 +155,11 @@ namespace DetailedDescriptions
             {
                 if (key == KeyCode.LeftShift && __result)
                 {
-                    if (popup != null)
-                    {
-                        popup.Show(baseTooltip);
-                    }
-
-                    if (MenuManager.instance.GetCurrentMenu() != null)
-                    {
-                        var upgradeScreen = MenuManager.instance.GetCurrentMenu().TryCast<UpgradeScreen>();
-                        if (upgradeScreen != null && upgradeScreen.towerDescription != null)
-                        {
-                            upgradeScreen.towerDescription.SetText(baseDescription);
-                        }
-                    }
+                    
                     
                 }
             }
-        }
+        }*/
         
         [HarmonyPatch(typeof(UpgradeScreen), nameof(UpgradeScreen.UpdateUi))]
         internal class UpgradeScreen_PopulatePath
@@ -143,6 +168,11 @@ namespace DetailedDescriptions
             public static void PostFix(string towerId)
             {
                 currentTower = towerId;
+
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    OnModifierDown();
+                }
             }
         }
 
@@ -157,7 +187,7 @@ namespace DetailedDescriptions
             {"SniperMonkey", "<u>Bullet</u> attack (2d, 1p, 1.59s, ∞r, <i>Sharp</i>, impact)"},
             {"MonkeySub", "<u>Dart</u> attack (1d, 2p, 0.75s, 42r, <i>Sharp</i>)"},
             {"MonkeyBuccaneer", "<u>Dart</u> attack (1d, 4p, 1.0s, 60r, <i>Sharp</i>) (Also shoots behind Boat if there are targets there)."},
-            {"MonkeyAce", "<u>Radial Darts</u> attack (1d, 5p, 8j, 2.1s, <i>Sharp</i>, passive). Flies on a circular path with radius 80, or a figure 8 or figure infinite with radii 40."},
+            {"MonkeyAce", "<u>Radial Darts</u> attack (1d, 5p, 8j, 1.68s, <i>Sharp</i>, passive). Flies on a circular path with radius 80, or a figure 8 or figure infinite with radii 40."},
             {"HeliPilot", "<u>Darts</u> attack (1d, 3p, 40r, 0.56s, 2j, <i>Sharp</i>)."},
             {"MortarMonkey", "<u>Shell</u> attack (2.0s, ∞r) creates <u>Explosion</u> effect (1d, 40p, <i>Explosion</i> type, ~34 blast radius)."},
             {"DartlingGunner", "<u>Dart</u> attack (1d, 1p, .2s, ∞r, <i>Sharp</i>, 23° spread)"},
@@ -167,7 +197,7 @@ namespace DetailedDescriptions
             {"Alchemist", "<u>Potion</u> attack (1d, 15p, 2.0s, 45r, <i>Acid</i>) that applies <u>Acid</u> status (1d/2.0s, 4s duration, <i>Acid</i>)."},
             {"Druid", "<u>Thorn</u> attack (1d, 1p, 1.1s, 35r, 5j, <i>Sharp</i>)."},
             {"BananaFarm", "<u>Banana</u> effect (40r, $80 income, split over 4 projectiles throughout the round, 15s lifetime)."},
-            {"SpikeFactory", "<u>Spikes</u> attack (1d, 5p, 2.2s, 34r, targets track, 50s or end of round lifespan)."},
+            {"SpikeFactory", "<u>Spikes</u> attack (1d, 5p, 1.75s, 34r, targets track, 50s or end of round lifespan)."},
             {"MonkeyVillage", "<u>Buff</u> effect (40r; grants: +10%r)."},
             {"EngineerMonkey", "<u>Nail</u> attack (1d, 3p, 0.7s, 40r, <i>Sharp</i>)."}
         };
@@ -178,7 +208,7 @@ namespace DetailedDescriptions
             {"Sharp Shots", "+1p (3)"},
             {"Razor Sharp Shots", "+2p (5)"},
             {"Spike-o-pult", "<u>Dart</u> replaced by <u>Spikeball</u> (1d, 1cd (2), 22p, 1.15s, <i>Shatter</i>). <u>Spikeball</u> can rebound off walls."},
-            {"Juggernaut", "<u>Spikeball</u> replaced by <u>Juggernaut</u> (1d, 2cd (3), 100p, 36.5r, 1.0s, <i>Normal</i>). <u>Juggernaut</u> can rebound off walls."},
+            {"Juggernaut", "<u>Spikeball</u> replaced by <u>Juggernaut</u> (2d, 2cd (3), 50p, 36.5r, 1.0s, <i>Normal</i>). <u>Juggernaut</u> can rebound off walls."},
             {"Ultra-Juggernaut", "<u>Juggernaut</u> replaced by <u>Ultrajugg</u> (4d, 8cd (12), 200p, 1.0s, <i>Normal</i>). <u>Ultrajugg</u> can re-hit Bloons after rebounding, " +
                                  "and emits 6 <u>Juggernauts</u> at 100p remaining and when it expires."},
             
@@ -194,7 +224,7 @@ namespace DetailedDescriptions
             {"Enhanced Eyesight", "+8r (48)\n" +
                                   "Gains Camo detection"},
             {"Crossbow", "<u>Dart</u> replaced by <u>Bolt</u> (3d, 3p, 0.95s, 56r, <i>Sharp</i>)"},
-            {"Sharp Shooter", "+3d (6), 0.85s\n" +
+            {"Sharp Shooter", "+2d (5), 0.75s\n" +
                               "50d Crit every 8-12 shots"},
             {"Crossbow Master", "+7p (10) (16p w/ 105, 23p w/ 205), +20r (76), 0.16s, <i>Normal</i>\n" +
                                 "Crit now occurs every 4-8 shots"},
@@ -231,8 +261,8 @@ namespace DetailedDescriptions
             
             {"Faster Reload", "75%s (1.125)"},
             {"Missile Launcher", "80%s (0.9), +4r (44), faster projectile speed"},
-            {"MOAB Mauler", "+4cd (5), +18md (19), +5r (49)"},
-            {"MOAB Assassin", "+12md (31), +5r (54). <b>Ability</b> (30s cooldown): Targets the strongest blimp: removes its top layer (up to 750d), and creates a (3d, 100p) <i>Explosion</i>."},
+            {"MOAB Mauler", "+3cd (4), +18md (19), +5r (49)"},
+            {"MOAB Assassin", "+12md (31), +1cd (5), +5r (54). <b>Ability</b> (30s cooldown): Targets the strongest blimp: removes its top layer (up to 750d), and creates a (3d, 100p) <i>Explosion</i>."},
             {"MOAB Eliminator", "99md (100), <i>Normal</i>. <b>Ability</b> (10s cooldown): Targets the strongest blimp: removes its top layer (up to 4500d), and creates a (3d, 100p) <i>Explosion</i>."},
             
             {"Extra Range", "+7r (47)"},
@@ -260,7 +290,7 @@ namespace DetailedDescriptions
             {"Even More Tacks", "+2j (12)"},
             {"Tack Sprayer", "75%s (1.05), +4j (16)"},
             {"Overdrive", "+1p (2), 33.33%s (0.35)"},
-            {"The Tack Zone", "+7p (9), 75%s (0.2625), +23r (46), +16j (32), <i>Normal</i>"},
+            {"The Tack Zone", "+1d (2), +2p (4) (10 w/ 025), 75%s (0.2625), +7r (30) (50 w/ 025), +16j (32), <i>Normal</i>"},
             #endregion
             
             #region Ice Monkey
@@ -273,7 +303,7 @@ namespace DetailedDescriptions
             {"Enhanced Freeze", "75%s (1.8s), <u>Frozen</u> status now lasts 2.2s."},
             {"Deep Freeze", "<u>Frozen</u> status is passed down 1 layer."},
             {"Arctic Wind", "+60p (100), gains <u>Slow</u> aura (<i>Cold</i>, 50% slow). Land towers are placeable on any water in range."},
-            {"Snowstorm", "+10r (30), <b>Ability</b> (60s cooldown): 1 damage to everything (non-white) on screen; " +
+            {"Snowstorm", "+10r (30), <b>Ability</b> (30s cooldown): 1 damage to everything (non-white) on screen; " +
                           "applies <u>Frozen</u> status to remaining Bloons (including white) for 4s and to Blimps for 2s."},
             {"Absolute Zero", "+200p (300), +10r (40), <u>Slow</u> effect is now 60%, <u>Frozen</u> status is passed down 3 layers. " +
                               "<b>Ability</b> (40s cooldown): 1 damage and 10s <u>Frozen</u> status to everything; all Ice Monkeys gain 66.66%s buff for 10s."},
@@ -289,7 +319,7 @@ namespace DetailedDescriptions
             {"Glue Soak", "<u>Glued</u> status soaks through all non-Blimp layers."},
             {"Corrosive Glue", "<u>Glued</u> status buffed: 1d/2.3s and can overwrites weaker effects. <u>Glue</u> can affect Blimps, but lasts half as long and doesn't slow."},
             {"Bloon Dissolver", "<u>Glued</u> status buffed: 1d/.575s"},
-            {"Bloon Liquefier", "<u>Glued</u> status buffed: 1d/.1s"},
+            {"Bloon Liquefier", "+1p (2). <u>Glued</u> status buffed: 1d/.1s"},
             {"The Bloon Solver", "2j, 4p, 25%s (0.25), impact. <u>Glued</u> status buffed: 3cd/0.1s and 3md/0.1s."},
             
             {"Bigger Globs", "+1p (2)"},
@@ -300,8 +330,8 @@ namespace DetailedDescriptions
             
             {"Stickier Glue", "<u>Glued</u> status buffed: +13s duration (24s)."},
             {"Stronger Glue", "<u>Glued</u> status buffed: 75% slow."},
-            {"MOAB Glue", "Can now target Blimps, but they are only slowed half as much as Bloons (37.5%) and for half the duration (12s)."},
-            {"Relentless Glue", "<u>Glued</u> Bloons drop the glue when popped, to be picked up by the next target, lasts 5s."},
+            {"MOAB Glue", "Can now target Blimps, but slowed for less (25%) and for half the duration (12s)."},
+            {"Relentless Glue", "<u>Glued</u> status buffed for Moabs: 37.5% slow. <u>Glued</u> Bloons drop the glue when popped, to be picked up by the next target, lasts 5s."},
             {"Super Glue", "+50md (50), +5p (6), <u>Glued</u> status buffed: 1d/2.3s (2.0s with 205); Bloons are slowed 100%; MOABs and DDTs are slowed 100% for the first 5s; BFBs are slowed 95% for the first 2.5s; ZOMGs are slowed 90% for the first 0.75s."},
             #endregion 
 
@@ -310,12 +340,12 @@ namespace DetailedDescriptions
             {"Large Calibre", "+3d (7)"},
             {"Deadly Precision", "+13d (20), +15cd (35)"},
             {"Maim MOAB", "+10d (30, 45cd), Stuns blimps (MOABs 3s, BFBs 1.5s, ZOMGs and DDTs 0.75s)."},
-            {"Cripple MOAB", "+30d (60, 75cd), Stun duration buffed: MOAB 7s, BFB 6s, ZOMG 3s, DDT 4s and applies <u>Crippled</u> status (take +5d) (0.75s for BADs)."},
+            {"Cripple MOAB", "+50d (80, 75cd), Stun duration buffed: MOAB 7s, BFB 6s, ZOMG 3s, DDT 4s and applies <u>Crippled</u> status (take +5d) (0.75s for BADs)."},
             
             {"Night Vision Goggles", "Gains Camo detection\n<u>Bullet</u> buffed: +2 Camo damage"},
             {"Shrapnel Shot", "On-hit effect: emits <u>Shrapnel</u> (1d (2d, 4d, 6d, 12d w/ 220 through 520), 3p (4p w/ 023), 5j, <u>Sharp</u>, 45° spread centred on the direction fired)"},
             {"Bouncing Bullet", "4p (no longer impact), jumps to targets within ~55r until pierce runs out."},
-            {"Supply Drop", "<u>Bullet</u> buffed: <i>Normal</i>. <b>Ability</b> (60s cooldown): Drops a crate worth $500-1000."},
+            {"Supply Drop", "<u>Shrapnel</u> buffed: +3p (6). <u>Bullet</u> buffed: <i>Normal</i>. <b>Ability</b> (60s cooldown): Drops a crate worth $500-1000."},
             {"Elite Sniper", "40%s (0.636s), buffs all other Snipers 75%s and provides Elite targeting (Near exit > Ceramics > Strong). <b>Ability</b> (60s cooldown): Drops a crate worth $1500-2500."},
             
             {"Fast Firing", "70%s (1.113s)"},
@@ -329,7 +359,7 @@ namespace DetailedDescriptions
             {"Longer Range", "+10r (52)"},
             {"Advanced Intel", "Can target anything in the primary attack range of any tower, including Camo detection."},
             {"Submerge and Support", "Gains Submerge targeting option, replacing <u>Dart</u> with <u>Sonar</u> (0d, ∞p, 1.75s (1.275s w/ 301, 0.956s w/ 302), de-camo)."},
-            {"Bloontonium Reactor", "<u>Sonar</u> buffed: 0.3s. While submerged, gains <u>Radioactive</u> attack (1d (2ld w/ 420), 70p (84p w/ 410), 0.3s (0.255s w/ 410, 0.191s w/ 420), <i>Normal</i>). " +
+            {"Bloontonium Reactor", "<u>Sonar</u> buffed: 0.3s. While submerged, gains <u>Radioactive</u> attack (1d (2ld w/ 420), 50p (70p w/ 410, 100p w/ 420), 0.3s (0.255s w/ 410, 0.191s w/ 420), <i>Normal</i>). " +
                                     "Water towers in range have 85% ability cooldowns."},
             {"Energizer", "<u>Radioactive</u> buffed: 3d, 1000p/ Water towers in range have 50% ability cooldowns, all others 80%. Heroes in range get +50% XP."},
             
@@ -370,13 +400,13 @@ namespace DetailedDescriptions
             #endregion
             
             #region Monkey Ace
-            {"Rapid Fire", "60%s (1.26)"},
+            {"Rapid Fire", "75%s (1.26)"},
             {"Lots More Darts", "<u>Radial Darts</u> buffed: +4j (12)"},
             {"Fighter Plane", "Flies 20% faster, gains <u>Moab Missile</u> attack (18md, 3p, 4.0s, 2j, <i>Explosion</i>, homing, Blimps only)"},
             {"Operation: Dart Storm", "<u>Radial Darts</u> buffed: 50%s (0.63), +4j (16). <u>Moab Missile</u> buffed: 50%s (2.0), +1p (4). All crosspath attacks twice as fast."},
             {"Sky Shredder", "<u>Radial Dart</u> buffed: +2d (3), +2cd (5), +3p (8), 50%s (0.315), +16j (32), <i>Normal</i>. <u>Moab Missile</u> buffed: 150md, +1p (5), <i>Normal</i>."},
             
-            {"Exploding Pineapple", "Gains <u>Pineapple</u> attack (1d, 20p (32p w/ 011), 3s, <i>Explosion</i>)"},
+            {"Exploding Pineapple", "Gains <u>Pineapple</u> attack (1d, 20p (32p w/ 011), 2s, <i>Explosion</i>)"},
             {"Spy Plane", "Camo"},
             {"Bomber Ace", "<u>Pineapple</u> replaced by <u>Bombing Run</u> (3d, 20p (32p w/ 031), 1.7s, 4j, <i>Explosion</i>) that's dropped on path"},
             {"Ground Zero", "<u>Bombing Run</u> buffed: +7d (10), +20p (40). <b>Ability</b> (45s cooldown): 700d to everything."},
@@ -405,7 +435,7 @@ namespace DetailedDescriptions
             {"Faster Darts", "Darts travel faster."},
             {"Faster Firing", "<u>Darts</u> buffed: 80%s."},
             {"MOAB Shove", "Gains <u>Shove</u> attack (0d, 1p) that pushes back MOABs and BFBs, or slows DDTs and ZOMGs."},
-            {"Comanche Defense", "<u>Passive</u>: Summons 1, 2, 3 Mini-Comanches for 12s when a Bloon crosses 25%, 50%, 75% of the track" +
+            {"Comanche Defense", "<u>Passive</u>: Summons 1, 2, 3 Mini-Comanches for 15s when a Bloon crosses 25%, 50%, 75% of the track" +
                                  "with <u>Darts</u> attack (2d, 3p, 0.3s, 40r, 3j, <i>Sharp</i>) and <u>Rocket</u> attack (1d, 2cd (3), 2md (3), 100p, 3.0s, <i>Explosion</i>)."},
             {"Comanche Commander", "+1d (including mini comanche attacks). Comanches are permanent."},
             #endregion
@@ -436,7 +466,7 @@ namespace DetailedDescriptions
             {"Laser Shock", "On-hit effect: <u>Laser Shock</u> (1d/1s, takes +1d from other Laser Shock Dartling Guns)."},
             {"Laser Cannon", "<u>Dart</u> attack replaced with <u>Laser</u> (2d, 4p, .2s, ∞r, <i>Energy</i>). <u>Laser Shock</u> now lasts 2s."},
             {"Plasma Accelerator", "<u>Laser</u> replaced with <u>Beam</u> (1d, 50p (75 w/ 402), .25s, ∞r, <i>Plasma</i>) " +
-                                   "that at the tip does (2d +10md, 50p, .25s, 4r) applying <u>Laser Shock</u> for 5s."},
+                                   "that at the tip does (2d +10md, 50p, .25s, 4r). <u>Laser Shock</u> now lasts 5s."},
             {"Ray of Doom", "No tip effect, but <u>Beam</u> buffed +3d (5), +13md (25), +950p (1000). <u>Laser Shock</u> buffed: 15d/.1s, 5s duration"},
             
             {"Advanced Targeting", "Camo."},
@@ -447,7 +477,7 @@ namespace DetailedDescriptions
             
             {"Faster Swivel", "2x faster turn speed."},
             {"Powerful Darts", "<u>Dart</u> attack buffed: +2p (3), and increased projectile speed."},
-            {"Buckshot", "<u>Dart</u> attack replaced with <u>Buckshot</u> (4d, 4p, 1.8s (1.2s w/ 023), 6j, 130r)."},
+            {"Buckshot", "<u>Dart</u> attack replaced with <u>Buckshot</u> (4d, 4p, 1.8s (1.2s w/ 023), 6j, 130r) that knocks back non-MOAB Bloons a small amount."},
             {"Bloon Area Denial System", "<u>Buckshot</u> attack buffed: 25%s (0.45s) (0.3s w/ 024). Gains 'Independent Targeting' option for barrels to shoot First, Last, Close Strong."},
             {"Bloon Exclusion Zone", "<u>Buckshot</u> attack buffed: 66%s (0.3s) (0.2s w/ 025), +6j (12), +4d (8). Top two barrels completely ignore Line of Sight."},
             #endregion
@@ -462,9 +492,9 @@ namespace DetailedDescriptions
             {"Fireball", "Gains <u>Fireball</u> attack (1d, 3.0s, <i>Fire</i>) that creates an explosion (1d, 15p, <i>Explosion</i>) on damage."},
             {"Wall of Fire", "Ever 5.5s creates <u>Wall of Fire</u> effect (1d, 15p (20p w/ 021), 20r, 0.1s, <i>Fire</i>, 4.5s lifetime)."},
             {"Dragon's Breath", "Gains <u>Flame</u> attack (1d, 1cd (2), 4p (6p w/ 031), 0.1s, 50r, <i>Fire</i>) that applies <u>Burn</u> status (1d/1.5s, <i>Fire</i>, 3s duration). " +
-                                "Wall of Fire now happens every 4.5s."},
+                                "Wall of Fire now happens every 4.5s. <u>Fireball</u> buffed: +2d (3)"},
             {"Summon Phoenix", "<b>Ability</b> (60s cooldown, 20s duration): Summons a <u>Phoenix</u> with <u>Flame</u> attack (4d, 6p, ∞r, 0.1s, <i>Fire</i>, Camo)."},
-            {"Wizard Lord Phoenix", "<u>Flame</u> buffed: +46p (50). <u>Phoenix</u> is permanent. <b>Ability</b> (50s cooldown, 20s duration): Transforms into <u>Phoenix Lord</u> " +
+            {"Wizard Lord Phoenix", "<u>Flame</u> buffed: +1d (2), +46p (50). <u>Fireball</u> buffed: +6d (9). <u>Phoenix</u> is permanent. <b>Ability</b> (50s cooldown, 20s duration): Transforms into <u>Phoenix Lord</u> " +
                                     "with <u>Flame</u> attack (20d, 50p, ∞r, 0.1s, <i>Normal</i>, Camo) and <u>Meteor</u> attack (50d, 500p, ∞r, 1.0s, 8j, Normal, Camo)."},
             
             {"Intense Magic", "<u>Bolt</u> buffed: +5p (7), faster projectile speed."},
@@ -473,8 +503,8 @@ namespace DetailedDescriptions
             {"Necromancer: Unpopped Army", "Stores up to 500 pops within 70r in <u>Graveyard</u> for 2 rounds (pops worth 7-13 after round 80). " +
                                            "Gains <u>Reanimate</u> attack (1.5s (-10% per 100 current <u>Graveyard</u>), spawns 1-4 <u>Zombloons</u>, costs 1-10 <u>Graveyard</u> pops.). " +
                                            "<u>Zombloon</u>: 2d (+1 per 200 current <u>Graveyard</u>), 1p (+1 per pop used), <i>Normal</i>, 10s."},
-            {"Soulbind", "+40r (80). <u>Bolt</u> buffed: 25%s (0.275). <u>Shimmer</u> buffed: 50%s (1.25). <u>Graveyard</u> capacity: 3000. " +
-                                   "Gains <u>Reanimate Blimp</u> attack (3s; 20 pops for <u>ZMoab</u> (40d (+1 per 200 current <u>Graveyard</u>), 20p, <i>Normal</i>, 20s), " +
+            {"Soulbind", "+40r (80). <u>Bolt</u> buffed: 25%s (0.275). <u>Shimmer</u> buffed: 50%s (1.25). <u>Graveyard</u> 3000 (3 rounds). " +
+                                   "Gains <u>Reanimate Blimp</u> attack (3s; 20 pops for <u>ZMoab</u> (40d (+1 per 300 current <u>Graveyard</u>), 20p, <i>Normal</i>, 20s), " +
                                    "or 50 pops for <u>ZBfb</u> (100d, 50p, <i>Normal</i>, 13.3s.) if Graveyard > 2000). ALL zombies have +1d and +50% lifetime."},
             #endregion
             
@@ -536,7 +566,7 @@ namespace DetailedDescriptions
             
             {"Alchemist Faster Throwing", "80%s (1.6)"},
             {"Acid Pool", "If no target for <u>Potion</u>, instead creates <u>Acid Pool</u> (7s lifetime, 1d, 5p) that applies <u>Acid</u> status."},
-            {"Lead to Gold", "<u>Potion</u> buffed: applies <b>Golden Lead</b> status (gives $50 when the Lead layer is popped)."},
+            {"Lead to Gold", "<u>Potion</u> buffed: +9ld, applies <b>Golden Lead</b> status (gives $50 when the Lead layer is popped)."},
             {"Rubber to Gold", "Gains <u>Gold Potion</u> attack (15p, 5.0s) that applies <u>Golden</u> status (+2 cash modifier), which soaks through Bloons but not Blimps, and doesn't affect BADs."},
             {"Bloon Master Alchemist", "Gains <u>Red Potion</u> attack (200p (MOABs use 20p, BFBs/DDTs 50p, ZOMGs 100p), 10.0s, ∞r) that transforms target into a Red Bloon."},
             #endregion
@@ -547,7 +577,7 @@ namespace DetailedDescriptions
             {"Druid of the Storm", "Gains <u>Tornado</u> attack (0d, 30p, 2.5s) that pushes back Bloons ~30-300 units."},
             {"Ball Lightning", "Gains <b>Ball Lightning</b> attack (2d, 30p, 6.0s creation, 0.35s damaging, <i>Plasma</i>)."},
             {"Superstorm", "Camo. <u>Lightning</u> buffed: +2d (3). <u>Ball Lightning</u> buffed: +3d (5). " +
-                           "Gains <u>Superstorm</u> attack (12d, 200p (MOABs use 20p, BFBs and DDTs 50p, ZOMGs 200p), 4.0s) that pushes back ~30-300 units and spawns <u>Ball Lightnings</u>."},
+                           "Gains <u>Superstorm</u> attack (12d, 200p (MOABs use 5p, DDTs 10p, BFBs 20, ZOMGs 50p), 4.0s) that pushes back ~30-300 units and spawns <u>Ball Lightnings</u>."},
             
             {"Thorn Swarm", "<u>Thorns</u> buffed: +3j (8)."},
             {"Heart of Oak", "All attacks gain on-hit effect: De-regrow."},
@@ -592,8 +622,8 @@ namespace DetailedDescriptions
             {"Super Mines", "Speed becomes 4.4s. <u>Explosion</u> buffed: +990d (1000), +20p (60), <i>Normal</i>. " +
                             "Each Spike of each mine makes a smaller <u>Explosion</u> (10d, 10p, 20r, <i>Explosion</i>)."},
             
-            {"Faster Production", "60%s (1.32)"},
-            {"Even Faster Production", "75%s (0.99)"},
+            {"Faster Production", "80%s (1.4)"},
+            {"Even Faster Production", "70%s (0.98)"},
             {"MOAB SHREDR", "+4md (5)"},
             {"Spike Storm", "<b>Ability</b> (40s cooldown): For 1s, places <u>Spikes</u> (1d, 4md (5), 5p, 10s (15s w/ 041) lifetime) every .005s randomly on track."},
             {"Carpet of Spikes", "Default and <b>Ability</b> spikes gain +2d (3, 7md). <b>Passive</b> (15s cooldown): Same as activated ability."},
@@ -616,7 +646,7 @@ namespace DetailedDescriptions
             {"Grow Blocker", "Applies Anti-regrow status to Bloons in range."},
             {"Radar Scanner", "Buff improved: Grants Camo."},
             {"Monkey Intelligence Bureau", "Buff improved: grants <i>Normal</i> damage."},
-            {"Call to Arms", "<b>Ability</b> (45s cooldown): Provides another buff for 10s (+50%p, 66.67%s)."},
+            {"Call to Arms", "<b>Ability</b> (45s cooldown): Provides another buff for 12s (+50%p, 66.67%s)."},
             {"Homeland Defense", "<b>Ability</b> (60s cooldown): Applies over an infinite range for 20s, and improved to (+100%p, 50%s)."},
             
             {"Monkey Business", "<u>Buff</u> improved: +10% discount to base towers and upgrades up to tier 3."},
@@ -637,16 +667,16 @@ namespace DetailedDescriptions
             {"Sentry Paragon", "Places <u>Paragon Sentries</u> with <u>Plasma</u> attack (2d, 5p, 50r, 0.06s, <i>Plasma</i>) that self-destruct for (100d, 50p, <i>Plasma</i>)."},
             
             {"Larger Service Area", "+20r (60)"},
-            {"Deconstruction", "<u>Nail</u> buffed: +1md (2), +1fd."},
+            {"Deconstruction", "All attacks buffed: +1md, +1fd."},
             {"Cleansing Foam", "Every 2s (1.2s w/ 230), places <u>Foam</u> (0d, 1 ld, 10p (15p w/ 230), <i>Normal</i>, 8.5s lifetime, De-camo, De-grow)."},
-            {"Overclock", "<b>Ability</b> (45s cooldown): Chosen tower attacks 1.667× faster for the next (105 - 15 tier)s. " +
+            {"Overclock", "<u>Nail</u> buffed: +12p (15). <b>Ability</b> (45s cooldown): Chosen tower attacks 1.667× faster for the next (105 - 15 tier)s. " +
                           "Heroes have 'tier' (level - 1)/4. Overclocked farms give more income; Villages have +25%r."},
-            {"Ultraboost", "<b>Ability</b> (45s cooldown): When Overclock is applied, the tower gains an additional permanent 4% reload (2.5%r for Villages) buff, which stacks additively up to 10 times."},
+            {"Ultraboost", "<u>Nail</u> buffed: +15p (30). <b>Ability</b> (35s cooldown): When Overclock is applied, the tower gains an additional permanent 4% reload (2.5%r for Villages) buff, which stacks additively up to 10 times."},
             
-            {"Oversize Nails", "<u>Nail</u> buffed: +5p (8), <i>Shatter</i>."},
+            {"Oversize Nails", "<u>Nail</u> buffed: +5p (8), <i>Shatter</i>. Sentry pierce +25%."},
             {"Pin", "<u>Nail</u> buffed: Applies <u>Pinned</u> status (0.95s duration, 100% slow, Ceramic and higher are immune)."},
             {"Double Gun", "50%s (0.35)."},
-            {"Bloon Trap", "Places <u>Traps</u> (500p, +1 cash modifier, 100r collection for extra money). Places new <u>Traps</u> 2.9s after collection of previous, 20s (16s with 204) cooldown."},
+            {"Bloon Trap", "Places <u>Traps</u> (500p, +1 cash modifier, 100r collection for extra money). Places new <u>Traps</u> 2.9s after collection of previous, 15s (9s with 204) cooldown."},
             {"XXXL Trap", "<u>Trap</u> buffed: 10000p, can trap blimps below BAD, and cools-down at 1/6th rate."},
             #endregion
             

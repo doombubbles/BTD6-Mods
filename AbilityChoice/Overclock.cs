@@ -24,10 +24,11 @@ namespace AbilityChoice
 
         public static Dictionary<Tower, int> UltraBoostFixes = new Dictionary<Tower, int>();
         
-        public static BehaviorMutator GetMutator(TowerModel engineer, int tier)
+        public static BehaviorMutator GetMutator(TowerModel engineer, int tier, bool ultra)
         {
             var model = engineer.GetAbilites()[0].GetBehavior<OverclockModel>().Duplicate();
-            model.rateModifier = .45f / (.45f + 2f / 3f * (1.05f - .15f * tier));
+            var cooldown = ultra ? .35f : .45f;
+            model.rateModifier = cooldown / (cooldown + 2f / 3f * (1.05f - .15f * tier));
             return new OverclockModel.OverclockMutator(model);
         }
 
@@ -44,7 +45,7 @@ namespace AbilityChoice
             {
                 tier = (tier - 1) / 4;
             }
-            to.AddMutator(GetMutator(from.towerModel, tier), -1, false);
+            to.AddMutator(GetMutator(from.towerModel, tier, from.towerModel.tier == 5), -1, false);
 
             Main.CurrentBoostIDs[from.Id] = to.Id;
         }
@@ -182,7 +183,7 @@ namespace AbilityChoice
                 {
                     if (TimeManager.fastForwardActive)
                     {
-                        ultraBoostTimer += TimeManager.compromisedFastFowardRate;
+                        ultraBoostTimer += (int) TimeManager.maxSimulationStepsPerUpdate;
                     }
                     else
                     {

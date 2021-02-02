@@ -13,9 +13,10 @@ using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Assets.Scripts.Unity;
+using Assets.Scripts.Utils;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.5", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.6", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
@@ -72,8 +73,8 @@ namespace AbilityChoice
             {"Call to Arms", "Permanent weaker nearby attack speed buff."},
             {"Ultraboost", "Modified Ability: Permanently boost (based on tier) one tower at a time."},
             {"Overclock", "Modified Ability: Permanently boost (based on tier) one tower at a time."},
-            {"Carpet of Spikes", "Launchs a continuous stream of spikes across the track."},
-            {"Spike Storm", "Launchs a continuous stream of spikes across the track."}
+            {"Carpet of Spikes", "Launches a continuous stream of spikes across the track."},
+            {"Spike Storm", "Launches a continuous stream of spikes across the track."}
         };
 
         [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.OnEnable))]
@@ -219,6 +220,11 @@ namespace AbilityChoice
             [HarmonyPostfix]
             public static void Postfix(Tower __instance, TowerSaveDataModel towerData)
             {
+                if (InGame.instance.IsCoop)
+                {
+                    return;
+                }
+                
                 if (towerData.metaData.ContainsKey("AbilityChoice"))
                 {
                     EnableForTower(__instance, __instance.towerModel);
@@ -258,6 +264,11 @@ namespace AbilityChoice
             [HarmonyPostfix]
             public static void Postfix(ref TowerSaveDataModel __result, Tower __instance)
             {
+                if (InGame.instance.IsCoop)
+                {
+                    return;
+                }
+                
                 if (CurrentTowerIDs.Contains(__instance.Id))
                 {
                     __result.metaData["AbilityChoice"] = "Yup";

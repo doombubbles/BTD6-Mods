@@ -11,7 +11,7 @@ using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace InGameHeroSwitch
 {
@@ -118,26 +118,14 @@ namespace InGameHeroSwitch
             ShopMenu.instance.PostInitialised();
         }
 
-        [HarmonyPatch(typeof(Input), nameof(Input.GetKeyDown), typeof(KeyCode))]
-        internal class Input_GetKeyDown
+        public override void OnUpdate()
         {
-            private static bool last = false;
-            
-            [HarmonyPostfix]
-            public static void Postfix(bool __result, KeyCode key)
+            if (Input.GetKeyDown(CycleUp))
             {
-                if (__result && !last)
-                {
-                    if (key == CycleUp)
-                    {
-                        ChangeHero(-1);
-                    } else if (key == CycleDown)
-                    {
-                        ChangeHero(1);
-                    }
-                }
-
-                last = __result;
+                ChangeHero(-1);
+            } else if (Input.GetKeyDown(CycleDown))
+            {
+                ChangeHero(1);
             }
         }
         
