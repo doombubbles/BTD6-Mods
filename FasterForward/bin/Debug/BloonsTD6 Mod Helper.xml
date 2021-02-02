@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BloonsTD6 Mod Helper</name>
+    </assembly>
+    <members>
+        <member name="M:BloonsTD6_Mod_Helper.Api.JsonSerializer.LoadFromFile``1(System.String)">
+            <summary>
+            Create an instance of a class from file
+            </summary>
+            <typeparam name="T">The type to load</typeparam>
+            <param name="filePath">Location of the file</param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Api.JsonSerializer.SaveToFile``1(``0,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Save an instance of a class to file
+            </summary>
+            <typeparam name="T">Type of class to save</typeparam>
+            <param name="jsonObject">Object to save. Must be of Type T</param>
+            <param name="savePath">Location to save file to</param>
+            <param name="overwriteExisting">Overwrite the file if it already exists</param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Api.SpriteRegister.RegisterSpriteFromImage(System.String,UnityEngine.Vector2)">
+            <summary>
+            Create a Sprite object and add it to the register. 
+            See <a href="https://gist.github.com/BowDown097/21e4940f72fde5d7c4480b24c4a21a53">this GitHub gist</a> for an example implementation.
+            </summary>
+            <param name="path">The location to an image file to be converted.</param>
+            <param name="pivot">No clue what this does, best bet is using default.</param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Api.SpriteRegister.RegisterSpriteFromImage(System.String,UnityEngine.Vector2,System.String@)">
+            <summary>
+            Create a Sprite object and add it to the register. Contains out parameter to obtain the GUID, which is useful when working with SpriteReferences. 
+            See <a href="https://gist.github.com/BowDown097/0dd7e40b278c4c064b6177d03aad1ee3">this GitHub gist</a> for an example implementation.
+            </summary>
+            <param name="path">The location to an image file to be converted.</param>
+            <param name="pivot">No clue what this does, best bet is using default.</param>
+            <param name="guid">Obtain the GUID for use in SpriteReferences.</param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnMainMenu">
+            <summary>
+            Called when you go to the main menu screen
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnKeyDown(UnityEngine.KeyCode)">
+            <summary>
+            Called on the frame that a key starts being held
+            </summary>
+            <param name="keyCode"></param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnKeyUp(UnityEngine.KeyCode)">
+            <summary>
+            Called on the frame that a key stops being held 
+            </summary>
+            <param name="keyCode"></param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToIl2CppList``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToIl2CppReferenceArray``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToSizedList``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToLockList``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.IEnumerableExt.ToLockList``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.LockedListExt.ToSizedList``1(Assets.Scripts.Utils.LockList{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Confirmed working
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToIl2CppList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToArray``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToSizedList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToLockList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToSystemList``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToArray``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToSizedList``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToLockList``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToIl2CppList``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToSizedList``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToIl2CppReferenceArray``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Confirmed working
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToLockList``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.SizedListExt.ToLockList``1(Assets.Scripts.Utils.SizedList{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Texture2DExt.CreateSpriteFromTexture(UnityEngine.Texture2D,System.Single)">
+            <summary>
+            Not added yet
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.GameExt.GetTowerListForTowerType(Assets.Scripts.Unity.Game,System.String)">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.TowerModelExt.SetMaxAmount(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="T:BloonsTD6_Mod_Helper.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.ingame_popup">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+    </members>
+</doc>
