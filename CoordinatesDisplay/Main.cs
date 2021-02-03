@@ -6,6 +6,7 @@ using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.Popups;
+using Assets.Scripts.Utils;
 using Harmony;
 using MelonLoader;
 using TMPro;
@@ -14,7 +15,7 @@ using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(CoordinatesDisplay.Main), "Coordinates Display", "1.1.0", "doombubbles")]
+[assembly: MelonInfo(typeof(CoordinatesDisplay.Main), "Coordinates Display", "1.2.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace CoordinatesDisplay
 {
@@ -27,46 +28,8 @@ namespace CoordinatesDisplay
 
         public static bool definitelyTryPlaceNext;
 
-        [HarmonyPatch(typeof(Input), nameof(Input.GetKeyDown), typeof(KeyCode))]
-        internal class Input_GetKeyDown
-        {
-            private static bool last = false;
-            
-            [HarmonyPostfix]
-            public static void Postfix(bool __result, KeyCode key)
-            {
-                if (__result && !last)
-                {
-                    if (key == KeyCode.Insert && InGame.instance != null)
-                    {
-                        var inputManager = InGame.instance.inputManager;
-                        if (inputManager.inPlacementMode)
-                        {
-                            PopupScreen.instance.ShowSetNamePopup("Place Tower at Coordinates", 
-                                "Use the form X.x, Y.y like \"42.0, 6.9\" (note the comma)",
-                                new Action<string>(s =>
-                                {
-                                    var split = s.Split(',');
-                                    float x = float.Parse(split[0].Trim());
-                                    float y = float.Parse(split[1].Trim());
-                            
-                                    Place(x, y);
-                                }), Math.Round(inputManager.towerPositionWorld.x, 1) + ", " + Math.Round(inputManager.towerPositionWorld.y, 1));
-
-                            PopupScreen.instance.GetFirstActivePopup().GetComponentInChildren<TMP_InputField>()
-                                .characterValidation = TMP_InputField.CharacterValidation.None;
-                        }
-                        else
-                        {
-                            showDisplay = !showDisplay;
-                        }
-                    }
-                }
-
-                last = __result;
-            }
-        }
-
+        public static bool changePopup = false;
+        
         public static void Place(float x, float y)
         {
             var inputManager = InGame.instance.inputManager;
@@ -94,8 +57,39 @@ namespace CoordinatesDisplay
 
         public override void OnUpdate()
         {
+            if (Input.GetKeyDown(KeyCode.Insert) && InGame.instance != null)
+            {
+                var inputManager = InGame.instance.inputManager;
+                if (inputManager.inPlacementMode)
+                {
+                    PopupScreen.instance.ShowSetNamePopup("Place Tower at Coordinates", 
+                        "Use the form X.x, Y.y like \"42.0, 6.9\" (note the comma)",
+                        new Action<string>(s =>
+                        {
+                            var split = s.Split(',');
+                            float x = float.Parse(split[0].Trim());
+                            float y = float.Parse(split[1].Trim());
+                            
+                            Place(x, y);
+                        }), Math.Round(inputManager.towerPositionWorld.x, 1) + ", " + Math.Round(inputManager.towerPositionWorld.y, 1));
+                    changePopup = true;
+                }
+                else
+                {
+                    showDisplay = !showDisplay;
+                }
+            }
+
+            if (changePopup && PopupScreen.instance.GetFirstActivePopup() != null)
+            {
+                PopupScreen.instance.GetFirstActivePopup().GetComponentInChildren<TMP_InputField>()
+                    .characterValidation = TMP_InputField.CharacterValidation.None;
+                changePopup = false;
+            }
+
+
             if (Game.instance == null || InGame.instance == null || InGame.Bridge == null || !showDisplay
-            || (TowerSelectionMenu.instance != null && TowerSelectionMenu.instance.GetSelectedTower() != null))
+                || (TowerSelectionMenu.instance != null && TowerSelectionMenu.instance.GetSelectedTower() != null))
             {
                 HideMMDisplay();
                 return;

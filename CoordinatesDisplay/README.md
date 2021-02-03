@@ -12,6 +12,8 @@ If you press the **Insert** key while not trying to place a tower, the display w
 
 **Changelog**
 
+v1.2.1 Updated for BloonsTD6 Version 23.0
+
 v1.2.0 Toggleable display and removed NKHook6 reliance
 
 v1.1.0 Inputting coordinates is nicer (Thanks Timotheeee1!)
