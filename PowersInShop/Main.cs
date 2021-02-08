@@ -144,7 +144,7 @@ namespace PowersInShop
         }
 
         
-        [HarmonyPatch(typeof(Game), "GetVersionString")]
+        [HarmonyPatch(typeof(Game), nameof(Game.GetVersionString))]
         public class GamePatch
         {
             [HarmonyPostfix]
@@ -314,7 +314,7 @@ namespace PowersInShop
             }
         }
         
-        [HarmonyPatch(typeof(TitleScreen), "UpdateVersion")]
+        [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.UpdateVersion))]
         public class TitleScreenPatch
         {
             [HarmonyPostfix]
@@ -349,7 +349,7 @@ namespace PowersInShop
             }
         }
 
-        [HarmonyPatch(typeof(Tower), "Initialise")]
+        [HarmonyPatch(typeof(Tower), nameof(Tower.Initialise))]
         public class Tower_Initialise
         {
             [HarmonyPostfix]
@@ -361,9 +361,6 @@ namespace PowersInShop
                         .First(b => !b.name.Contains("Create")).Cast<PowerBehaviorModel>();
 
                     InGame.instance.UnityToSimulation.simulation.powerManager.GetInstance(powerBehaviorModel).Activate(__instance.Position.ToVector2(), powerBehaviorModel, 0);
-                    
-                    
-                    ShopMenu.instance.GetTowerButtonFromBaseId(__instance.towerModel.baseId).ButtonActivated();
                 }
             }
         }
@@ -374,7 +371,7 @@ namespace PowersInShop
             [HarmonyPostfix]
             public static void Postfix(Tower __instance)
             {
-                if (TrackPowers.ContainsKey(__instance.towerModel.name))
+                if (TrackPowers.ContainsKey(__instance.towerModel.name) && (!InGame.instance.IsCoop || __instance.owner == Game.instance.nkGI.PeerID))
                 {
                     ShopMenu.instance.GetTowerButtonFromBaseId(__instance.towerModel.baseId).ButtonActivated();
                 }
@@ -383,7 +380,7 @@ namespace PowersInShop
         
         
 
-        [HarmonyPatch(typeof(TowerInventory), "Init")]
+        [HarmonyPatch(typeof(TowerInventory), nameof(TowerInventory.Init))]
         public class TowerInventoryPatch
         {
             public static List<TowerDetailsModel> allTowers = new List<TowerDetailsModel>();
@@ -413,7 +410,7 @@ namespace PowersInShop
             }
         }
         
-        [HarmonyPatch(typeof(UpgradeScreen), "UpdateUi")]
+        [HarmonyPatch(typeof(UpgradeScreen), nameof(UpgradeScreen.UpdateUi))]
         public class UpgradeScreen_UpdateUi
         {
             [HarmonyPrefix]
@@ -423,7 +420,7 @@ namespace PowersInShop
                 {
                     if (towerId.Contains(power))
                     {
-                        towerId = "DartMonkey";
+                        towerId = TowerType.DartMonkey;
                     }
                 }
 

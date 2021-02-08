@@ -87,9 +87,9 @@ namespace AbilityChoice
                 lastCursorPosUnity = cursorPosUnityWorld;
                 if (__instance.targetImages != null && Main.CurrentTowerIDs.Contains(__instance.tower.Id))
                 {
-                    foreach (var tts in __instance.targetImages.Keys)
+                    foreach (var kvp in __instance.targetImages)
                     {
-                        towers.Add(tts);
+                        towers.Add(kvp.Key);
                     }
                 }
             }
@@ -107,6 +107,10 @@ namespace AbilityChoice
 
                     var engi = __instance.tower.tower;
                     AddBoost(engi, tower);
+                    if (InGame.instance.IsCoop && __instance.tower.owner != Game.instance.nkGI.PeerID)
+                    {
+                        Game.instance.nkGI.SendMessage("Boost: " + __instance.tower.Id + " " + tower.Id, null, "AbilityChoice");
+                    }
 
                     if (engi.towerModel.tier == 5)
                     {
@@ -183,7 +187,7 @@ namespace AbilityChoice
                 {
                     if (TimeManager.fastForwardActive)
                     {
-                        ultraBoostTimer += (int) TimeManager.maxSimulationStepsPerUpdate;
+                        ultraBoostTimer += (int) TimeManager.networkScale;
                     }
                     else
                     {

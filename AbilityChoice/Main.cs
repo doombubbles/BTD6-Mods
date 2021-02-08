@@ -5,7 +5,6 @@ using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities;
 using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Unity.UI_New.InGame;
-using Assets.Scripts.Unity.UI_New.Main;
 using Assets.Scripts.Unity.UI_New.Popups;
 using BloonsTD6_Mod_Helper.Extensions;
 using Harmony;
@@ -13,15 +12,16 @@ using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Assets.Scripts.Unity;
-using Assets.Scripts.Utils;
+using BloonsTD6_Mod_Helper;
 using MelonLoader;
+using NinjaKiwi.NKMulti;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.6", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.7", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
         public static HashSet<int> CurrentTowerIDs = new HashSet<int>();
         public static Dictionary<int, int> CurrentBoostIDs = new Dictionary<int, int>();
@@ -77,50 +77,103 @@ namespace AbilityChoice
             {"Spike Storm", "Launches a continuous stream of spikes across the track."}
         };
 
-        [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.OnEnable))]
-        internal class MainMenu_OnEnable
+        private static Dictionary<int, TowerModel> CoOpTowerModelCache = new Dictionary<int, TowerModel>();
+
+        public override void OnMainMenu()
         {
-            [HarmonyPostfix]
-            internal static void Postfix()
+            CurrentTowerIDs = new HashSet<int>();
+            CurrentBoostIDs = new Dictionary<int, int>();
+            CoOpTowerModelCache = new Dictionary<int, TowerModel>();
+        }
+
+        public override bool ActOnMessage(Message message)
+        {
+            if (message.Code != "AbilityChoice") return false;
+
+            var abilityChoiceMessage = Game.instance.nkGI.ReadMessage<string>(message);
+            var towerId = int.Parse(abilityChoiceMessage.Split(' ')[1]);
+
+            var tower = InGame.instance.GetTowerManager().GetTowerById(towerId);
+            if (abilityChoiceMessage.Contains("Enable"))
             {
-                CurrentTowerIDs = new HashSet<int>();
-                CurrentBoostIDs = new Dictionary<int, int>();
+                EnableForTower(tower, CoOpTowerModelCache[towerId]);
+            }
+            else if (abilityChoiceMessage.Contains("Disable"))
+            {
+                DisableForTower(tower);
+            } 
+            else if (abilityChoiceMessage.Contains("Boost"))
+            {
+                var toId = int.Parse(abilityChoiceMessage.Split(' ')[2]);
+                var to = InGame.instance.GetTowerManager().GetTowerById(toId);
+                Overclock.AddBoost(tower, to);
+            }
+            
+
+            return true;
+        }
+
+        public static void AskApplyToTower(Tower tower, string upgradeName, TowerModel newBaseTowerModel)
+        {
+            if (!InGame.instance.IsCoop || tower.owner == Game.instance.nkGI.PeerID)
+            {
+                PopupScreen.instance.ShowPopup(PopupScreen.Placement.inGameCenter,
+                    "Ability Choice (Can't be Undone)",
+                    $"Do you want to forego the {upgradeName} ability to instead get \"{AllUpgrades[upgradeName]}\"",
+                    new Action(() =>
+                    {
+                        EnableForTower(tower, newBaseTowerModel);
+                        if (InGame.instance.IsCoop && Game.instance.nkGI != null)
+                        {
+                            Game.instance.nkGI.SendMessage("Enable: " + tower.Id, null, "AbilityChoice");
+                        }
+                    }), "Yes",
+                    new Action(() =>
+                    {
+                        DisableForTower(tower);
+                        if (InGame.instance.IsCoop && Game.instance.nkGI != null)
+                        {
+                            Game.instance.nkGI.SendMessage("Disable: " + tower.Id, null, "AbilityChoice");
+                        }
+                    }), "No", Popup.TransitionAnim.Scale
+                );
+            }
+            else
+            {
+                CoOpTowerModelCache[tower.Id] = newBaseTowerModel;
             }
         }
 
-        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.UpgradeTower))]
-        internal class TowerManager_UpgradeTower
+        public override void OnTowerUpgraded(Tower tower, string upgradeName, TowerModel newBaseTowerModel)
         {
-            [HarmonyPrefix]
-            internal static bool Prefix(Tower tower, TowerModel def, ref string __state)
+            if (AllUpgrades.ContainsKey(upgradeName))
             {
-                __state = null;
-                foreach (var upgrade in AllUpgrades.Keys)
-                {
-                    if (!tower.towerModel.appliedUpgrades.Contains(upgrade) && def.appliedUpgrades.Contains(upgrade))
-                    {
-                        __state = upgrade;
-                    }
-                }
-
-                return true;
+                AskApplyToTower(tower, upgradeName, newBaseTowerModel);
+            } else if (CurrentTowerIDs.Contains(tower.Id))
+            {
+                EnableForTower(tower, newBaseTowerModel);
             }
+        }
 
+        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
+        internal class TowerManager_CreateTower
+        {
             [HarmonyPostfix]
-            internal static void Postfix(Tower tower, TowerModel def, string __state)
+            internal static void Postfix(Tower __result, TowerModel def, bool isInstaTower)
             {
-                if (__state != null)
+                if (isInstaTower)
                 {
-                    PopupScreen.instance.ShowPopup(PopupScreen.Placement.inGameCenter,
-                        "Ability Choice (Can't be Undone)",
-                        $"Do you want to forego the {__state} ability to instead get \"{AllUpgrades[__state]}\"",
-                        new Action(() => { EnableForTower(tower, def); }), "Yes",
-                        new Action(() => { DisableForTower(tower); }), "No", Popup.TransitionAnim.Scale
-                    );
-                }
-                else if (CurrentTowerIDs.Contains(tower.Id))
-                {
-                    EnableForTower(tower, def);
+                    string upgradeName = null;
+                    foreach (var upgrade in AllUpgrades.Keys)
+                    {
+                        if (def.appliedUpgrades.Contains(upgrade))
+                        {
+                            upgradeName = upgrade;
+                        }
+                    }
+                    if (upgradeName == null) return;
+                    
+                    AskApplyToTower(__result, upgradeName, def);
                 }
             }
         }

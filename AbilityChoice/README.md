@@ -21,9 +21,11 @@ For a full list of possiblities and their exact effects, look [here](https://tin
 
 It can be found [here](https://github.com/gurrenm3/BloonsTD6-Mod-Helper/releases)
 
-Last tested with Pre-Release 1
+Last tested and working with Pre-Release 3
 
 **Changelog**
+
+v1.0.7 Now fully Co-Op compatible (other players still need mod as well)
 
 v1.0.6 Updated for BloonsTD6 V23.0
 
