@@ -6,18 +6,14 @@ using System.Linq;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.ActionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
-using Assets.Scripts.Utils;
 using BloonsTD6_Mod_Helper;
 using BloonsTD6_Mod_Helper.Extensions;
-using BloonsTD6_Mod_Helper.Extensions.UnityExtensions;
 using Harmony;
 using MelonLoader;
 using UnhollowerBaseLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Color = UnityEngine.Color;
-using File = Il2CppSystem.IO.File;
 using Image = UnityEngine.UI.Image;
 
 [assembly: MelonInfo(typeof(BetterAutoStart.Main), "Better Autostart", "1.0.0", "doombubbles")]
