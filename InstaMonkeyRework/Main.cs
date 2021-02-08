@@ -116,7 +116,8 @@ namespace InstaMonkeyRework
 
         public override void OnUpdate()
         {
-            if (InstaTowersMenu.instaTowersInstance != null && InGame.instance != null)
+            if (InstaTowersMenu.instaTowersInstance != null && InGame.instance != null
+            && InGame.instance.bridge != null)
             {
                 foreach (var button in InstaTowersMenu.instaTowersInstance
                     .GetComponentsInChildren<StandardInstaTowerButton>())
