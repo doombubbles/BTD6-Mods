@@ -21,7 +21,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace InstaMonkeyRework
@@ -191,12 +191,13 @@ namespace InstaMonkeyRework
 
                 var useCount = __instance.instaButton.GetUseCount();
                 var placed = GetTotalPlaced(__instance.instaModel.name);
-                if (placed >= useCount)
+                var cost = GetCostForThing(__instance.instaModel);
+                if (placed >= useCount || cost > InGame.instance.GetCash())
                 {
                     PopupScreen.instance.ShowPopup(PopupScreen.Placement.inGameCenter, "Real Insta Warning",
                         "You are placing an actual Insta Monkey, and doing so will remove it from your inventory. Are you sure you want to continue?",
                         null, "Yes",
-                        new Action(__instance.ExitInstaMode), "No", Popup.TransitionAnim.Scale
+                        new Action(__instance.CancelAllPlacementActions), "No", Popup.TransitionAnim.Scale
                     );
                 }
 

@@ -21,4 +21,6 @@ Last tested and working with Pre-Release 3
 
 **Changelog**
 
+v1.0.1 Fix bug with warning for really placing down insta
+
 v1.0.0 Release
