@@ -25,6 +25,8 @@ Last tested and working with Pre-Release 3
 
 **Changelog**
 
+v1.0.8 Bug fixes and compatibility with new Mega Knowledge mod
+
 v1.0.7 Now fully Co-Op compatible (other players still need mod as well)
 
 v1.0.6 Updated for BloonsTD6 V23.0

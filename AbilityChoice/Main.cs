@@ -16,7 +16,7 @@ using BloonsTD6_Mod_Helper;
 using MelonLoader;
 using NinjaKiwi.NKMulti;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.7", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.8", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
@@ -81,9 +81,23 @@ namespace AbilityChoice
 
         public override void OnMainMenu()
         {
-            CurrentTowerIDs = new HashSet<int>();
-            CurrentBoostIDs = new Dictionary<int, int>();
-            CoOpTowerModelCache = new Dictionary<int, TowerModel>();
+            ResetCaches();
+        }
+
+        public override void OnRestart(bool removeSave)
+        {
+            ResetCaches();
+        }
+
+        public void ResetCaches()
+        {
+            if (InGame.instance == null || !InGame.instance.quitting)
+            {
+                CurrentTowerIDs = new HashSet<int>();
+                CurrentBoostIDs = new Dictionary<int, int>();
+                CoOpTowerModelCache = new Dictionary<int, TowerModel>();
+                
+            }
         }
 
         public override bool ActOnMessage(Message message)

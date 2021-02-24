@@ -14,6 +14,8 @@ using Assets.Scripts.Models.Towers.TowerFilters;
 using Assets.Scripts.Models.Towers.Weapons;
 using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
+using Assets.Scripts.Unity.UI_New.InGame;
+using Assets.Scripts.Utils;
 using BloonsTD6_Mod_Helper.Extensions;
 using UnhollowerBaseLib;
 using CreateEffectOnExpireModel = Assets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel;
@@ -27,12 +29,16 @@ namespace AbilityChoice
         
         public static void SuperMonkeyFanClub(TowerModel model)
         {
-            model.GetWeapons()[0].rate *= 0.06f / .475f;
+            model.GetWeapon().rate *= 0.06f / .475f;
             model.range += 20;
             model.GetAttackModels()[0].range += 20;
             
             foreach (var projectileModel in model.GetAllProjectiles())
             {
+                if (projectileModel.display == null)
+                {
+                    continue;
+                }
                 projectileModel.GetBehavior<TravelStraitModel>().lifespan *= 2f;
                 projectileModel.GetBehavior<TravelStraitModel>().lifespanFrames *= 2;
             }
@@ -40,15 +46,19 @@ namespace AbilityChoice
 
         public static void PlasmaMonkeyFanClub(TowerModel model)
         {
-            model.GetWeapons()[0].rate *= 0.03f / .475f;
+            model.GetWeapon().rate *= 0.03f / .475f;
             model.range += 20;
             model.GetAttackModels()[0].range += 20;
 
             ProjectileModel plasmaModel =
-                Game.instance.model.GetTower(SuperMonkey, 2, 0, 0).GetWeapons()[0].projectile;
+                Game.instance.model.GetTower(SuperMonkey, 2, 0, 0).GetWeapon().projectile;
 
             foreach (var weaponProjectile in model.GetAllProjectiles())
             {
+                if (weaponProjectile.display == null)
+                {
+                    continue;
+                }
                 weaponProjectile.display = plasmaModel.display;
                 weaponProjectile.GetBehavior<DisplayModel>().display = plasmaModel.display;
                 weaponProjectile.GetDamageModel().damage += 2;
@@ -63,24 +73,32 @@ namespace AbilityChoice
 
         public static void TurboCharge(TowerModel model)
         {
-            model.GetWeapons()[0].rate *= .14f / .8f;
+            var mK = model.GetAbility().GetBehavior<TurboModel>().lifespanFrames > 600;
+            if (mK)
+            {
+                model.GetWeapon().rate *= .07f / .8f;
+            }
+            else
+            {
+                model.GetWeapon().rate *= .1f / .8f;
+            }
         }
 
         public static void PermaCharge(TowerModel model)
         {
-            model.GetWeapons()[0].projectile.GetDamageModel().damage += 3;
+            model.GetWeapon().projectile.GetDamageModel().damage += 3;
         }
 
         public static void MOABAssassin(TowerModel model)
         {
-            var realProjectile = model.GetWeapons()[0].projectile.GetBehavior<CreateProjectileOnContactModel>()
+            var realProjectile = model.GetWeapon().projectile.GetBehavior<CreateProjectileOnContactModel>()
                 .projectile;
             realProjectile.GetBehaviors<DamageModifierForTagModel>().First(m => m.tag == "Moabs").damageAddative += 18;
         }
 
         public static void MOABEliminator(TowerModel model)
         {
-            var realProjectile = model.GetWeapons()[0].projectile.GetBehavior<CreateProjectileOnContactModel>()
+            var realProjectile = model.GetWeapon().projectile.GetBehavior<CreateProjectileOnContactModel>()
                 .projectile;
             realProjectile.GetBehaviors<DamageModifierForTagModel>().First(m => m.tag == "Moabs").damageAddative += 99;
         }
@@ -108,7 +126,7 @@ namespace AbilityChoice
             behavior.constantlyAquireNewTarget = true;
             behavior.useLifetimeAsDistance = true;
             
-            var weaponProjectile = model.GetWeapons()[0].projectile;
+            var weaponProjectile = model.GetWeapon().projectile;
             weaponProjectile.AddBehavior(behavior);
             weaponProjectile.pierce += 6;
             weaponProjectile.GetBehavior<TravelStraitModel>().lifespanFrames *= 4;
@@ -126,7 +144,7 @@ namespace AbilityChoice
             behavior.constantlyAquireNewTarget = true;
             behavior.useLifetimeAsDistance = true;
             
-            var weaponProjectile = model.GetWeapons()[0].projectile;
+            var weaponProjectile = model.GetWeapon().projectile;
             weaponProjectile.AddBehavior(behavior);
             weaponProjectile.pierce += 14;
             weaponProjectile.GetBehavior<TravelStraitModel>().lifespanFrames *= 16;
@@ -178,7 +196,7 @@ namespace AbilityChoice
 
         public static void GlueStrike(TowerModel model)
         {
-            var realWeapon = model.GetWeapons()[0];
+            var realWeapon = model.GetWeapon();
             var ability = model.GetAbilites()[0];
             var abilityAttack = ability.GetBehavior<ActivateAttackModel>().attacks[0].Duplicate();
             var abilityWeapon = abilityAttack.weapons[0];
@@ -206,7 +224,7 @@ namespace AbilityChoice
             GlueStrike(model);
             model.range *= 2;
             model.GetAttackModels()[0].range *= 2;
-            model.GetWeapons()[0].rate /= 2f;
+            model.GetWeapon().rate /= 2f;
         }
         #endregion
 
@@ -278,7 +296,7 @@ namespace AbilityChoice
             var abilityAttack = model.GetAbilites()[0].GetBehavior<ActivateAttackModel>().attacks[0].Duplicate();
 
             var abilityWeapon = abilityAttack.weapons[0];
-            var realWeapon = model.GetWeapons()[0];
+            var realWeapon = model.GetWeapon();
             abilityWeapon.emission = realWeapon.emission;
             abilityWeapon.GetBehavior<EjectEffectModel>().effectModel.lifespan = .05f;
             abilityWeapon.rate /= 4;
@@ -305,7 +323,7 @@ namespace AbilityChoice
 
         public static void PopandAwe(TowerModel model)
         {
-            var realWeapon = model.GetWeapons()[0];
+            var realWeapon = model.GetWeapon();
             var ability = model.GetAbilites()[0];
             var abilityAttack = ability.GetBehavior<ActivateAttackModel>().attacks[0].Duplicate();
             var abilityWeapon = abilityAttack.weapons[0];
@@ -332,7 +350,7 @@ namespace AbilityChoice
             newWeapon.projectile.behaviors = newWeapon.projectile.behaviors
                 .RemoveItemOfType<Model, CreateEffectOnExhaustFractionModel>();
 
-            var sound = Game.instance.model.GetTower(MortarMonkey, 5).GetWeapons()[0].projectile
+            var sound = Game.instance.model.GetTower(MortarMonkey, 5).GetWeapon().projectile
                 .GetBehavior<CreateSoundOnProjectileExhaustModel>();
             newWeapon.projectile.behaviors = newWeapon.projectile.behaviors
                 .RemoveItemOfType<Model, CreateSoundOnProjectileExhaustModel>();
@@ -382,7 +400,7 @@ namespace AbilityChoice
 
             weapon.ejectX = weapon.ejectY = weapon.ejectZ = 0;
 
-            weapon.emission = model.GetWeapons()[0].emission.Duplicate();
+            weapon.emission = model.GetWeapon().emission.Duplicate();
             weapon.emission.Cast<EmissionWithOffsetsModel>().throwMarkerOffsetModels =
                 new Il2CppReferenceArray<ThrowMarkerOffsetModel>(new[]
                 {
@@ -427,9 +445,10 @@ namespace AbilityChoice
         {
             GroundZero(model);
 
-            model.GetAttackModels()[2].weapons[0].projectile.GetDamageModel().damage = 400;
-            model.GetAttackModels()[2].weapons[0].rate = 5;
-            model.GetAttackModels()[2].weapons[0].projectile.GetBehavior<SlowModel>().lifespan /= 8;
+            var attackModels = model.GetAttackModels();
+            attackModels[attackModels.Count].weapons[0].projectile.GetDamageModel().damage = 400;
+            attackModels[attackModels.Count].weapons[0].rate = 5;
+            attackModels[attackModels.Count].weapons[0].projectile.GetBehavior<SlowModel>().lifespan /= 8;
         }
         #endregion
 
@@ -442,7 +461,7 @@ namespace AbilityChoice
 
             var permaBehavior = lord.GetBehavior<TowerCreateTowerModel>().Duplicate();
 
-            permaBehavior.towerModel.GetWeapons()[0].rate *= 3;
+            permaBehavior.towerModel.GetWeapon().rate *= 3;
             
             model.AddBehavior(permaBehavior);
         }
@@ -593,7 +612,6 @@ namespace AbilityChoice
             var abilityAttack = ability.GetBehavior<ActivateAttackModel>().attacks[0].Duplicate();
             var abilityWeapon = abilityAttack.weapons[0];
 
-            abilityAttack.attackThroughWalls = false;
             abilityAttack.range = model.range;
             abilityWeapon.rate *= 3;
             
@@ -607,7 +625,6 @@ namespace AbilityChoice
             var abilityAttack = ability.GetBehavior<ActivateAttackModel>().attacks[0].Duplicate();
             var abilityWeapon = abilityAttack.weapons[0];
 
-            abilityAttack.attackThroughWalls = false;
             abilityAttack.range = model.range;
             abilityWeapon.rate /= 2;
             abilityWeapon.projectile.pierce += 10;
