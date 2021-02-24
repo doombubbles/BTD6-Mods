@@ -1,0 +1,435 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BloonsTD6 Mod Helper</name>
+    </assembly>
+    <members>
+        <member name="M:BloonsTD6_Mod_Helper.Api.JsonSerializer.LoadFromFile``1(System.String)">
+            <summary>
+            Create an instance of a class from file
+            </summary>
+            <typeparam name="T">The type to load</typeparam>
+            <param name="filePath">Location of the file</param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Api.JsonSerializer.SaveToFile``1(``0,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Save an instance of a class to file
+            </summary>
+            <typeparam name="T">Type of class to save</typeparam>
+            <param name="jsonObject">Object to save. Must be of Type T</param>
+            <param name="savePath">Location to save file to</param>
+            <param name="overwriteExisting">Overwrite the file if it already exists</param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Api.SpriteRegister.RegisterSpriteFromImage(System.String,UnityEngine.Vector2)">
+            <summary>
+            Create a Sprite object and add it to the register. 
+            See <a href="https://gist.github.com/BowDown097/21e4940f72fde5d7c4480b24c4a21a53">this GitHub gist</a> for an example implementation.
+            </summary>
+            <param name="path">The location to an image file to be converted.</param>
+            <param name="pivot">No clue what this does, best bet is using default.</param>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Api.SpriteRegister.RegisterSpriteFromImage(System.String,UnityEngine.Vector2,System.String@)">
+            <summary>
+            Create a Sprite object and add it to the register. Contains out parameter to obtain the GUID, which is useful when working with SpriteReferences. 
+            See <a href="https://gist.github.com/BowDown097/0dd7e40b278c4c064b6177d03aad1ee3">this GitHub gist</a> for an example implementation.
+            </summary>
+            <param name="path">The location to an image file to be converted.</param>
+            <param name="pivot">No clue what this does, best bet is using default.</param>
+            <param name="guid">Obtain the GUID for use in SpriteReferences.</param>
+        </member>
+        <member name="T:BloonsTD6_Mod_Helper.BloonsTD6Mod">
+            <summary>
+            Extend this Class instead of MelonMod to gain access to dozens of easy to use built-in hooks
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:BloonsTD6_Mod_Helper.BloonsTD6Mod.ActOnMessage(NinjaKiwi.NKMulti.Message)" -->
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnMainMenu">
+             <summary>
+             Called when you go to the main menu screen
+            
+             Equivalent to a HarmonyPostFix on MainMenu.OnEnable
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnKeyDown(UnityEngine.KeyCode)">
+             <summary>
+             Called on the frame that a key starts being held
+            
+             Equivalent to a HarmonyPostFix on Input.GetKeyDown
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnKeyUp(UnityEngine.KeyCode)">
+             <summary>
+             Called on the frame that a key stops being held
+            
+             Equivalent to a HarmonyPostFix on Input.GetKeyUp
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnKeyHeld(UnityEngine.KeyCode)">
+             <summary>
+             Called every frame that a key is being held 
+            
+             Equivalent to a HarmonyPostFix on Input.GetKey
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.PreBloonLeaked(Assets.Scripts.Simulation.Bloons.Bloon)">
+             <summary>
+             Called right before a Bloon would leak.
+             Return 'false' to prevent the leak from happening
+            
+             Equivalent to a HarmonyPreFix on Bloon.Leaked
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.PostBloonLeaked(Assets.Scripts.Simulation.Bloons.Bloon)">
+            <summary>
+            Called right after a Bloon leaks.
+            Return 'false' to prevent the leak from happening
+            
+            Equivalent to a HarmonyPostFix on Bloon.Leaked
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnBloonCreated(Assets.Scripts.Simulation.Bloons.Bloon)">
+            <summary>
+            Called right after a Bloon is first created
+            
+            Equivalent to a HarmonyPostFix on Bloon.Initialise
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnBloonDestroy(Assets.Scripts.Simulation.Bloons.Bloon)">
+            <summary>
+            Called right after a Bloon is destroyed
+            
+            Equivalent to a HarmonyPostFix on Bloon.OnDestroy
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.PostBloonDamaged(Assets.Scripts.Simulation.Bloons.Bloon,System.Single,UnhollowerBaseLib.Il2CppStringArray,Assets.Scripts.Simulation.Towers.Projectiles.Projectile,System.Boolean,System.Boolean,System.Boolean,Assets.Scripts.Simulation.Towers.Tower,UnhollowerBaseLib.Il2CppStringArray,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Called right after a Bloon is damaged
+            
+            Equivalent to a HarmonyPostFix on Bloon.Damaged
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.PostBloonDamaged(Assets.Scripts.Simulation.Bloons.Bloon,System.Single,System.Boolean)">
+            <summary>
+            Called right after a Bloon is damaged
+            
+            Equivalent to a HarmonyPostFix on Bloon.Damaged
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerCreated(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Simulation.Objects.Entity,Assets.Scripts.Models.Model)">
+            <summary>
+            Called right after a Tower is initialized
+            
+            Equivalent to a HarmonyPostFix on Tower.Initialise
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerDestroyed(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after a Tower is destroyed
+            
+            Equivalent to a HarmonyPostFix on Tower.Destroyed
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerSold(Assets.Scripts.Simulation.Towers.Tower,System.Single)">
+            <summary>
+            Called right after a Tower is sold
+            
+            Equivalent to a HarmonyPostFix on Tower.OnSold
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerSelected(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after a Tower is selected by the player
+            
+            Equivalent to a HarmonyPostFix on Tower.Highlight
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerDeselected(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after a Tower is deselected by the player
+            
+            Equivalent to a HarmonyPostFix on Tower.UnHighlight
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerUpgraded(Assets.Scripts.Simulation.Towers.Tower,System.String,Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Called right after a Tower is upgraded
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerModelChanged(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Tower's TowerModel is changed for any reason (creation, upgrading, etc.)
+            
+             Equivalent to a HarmonyPostFix on Tower.UpdatedModel
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerSaved(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Models.Profile.TowerSaveDataModel)">
+             <summary>
+             Called at the end of each round when a Tower's data is saved
+            
+             Use saveData.metaData to save custom information
+             
+             Equivalent to a HarmonyPostFix on Tower.GetSavedData
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnTowerLoaded(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Models.Profile.TowerSaveDataModel)">
+             <summary>
+             Called when you load a save file and a Tower's save data get loaded for the tower
+            
+             Use saveData.metaData to load custom information
+             
+             Equivalent to a HarmonyPostFix on Tower.SetSavedData
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.CanTowerTargetCamo(Assets.Scripts.Simulation.Towers.Tower,System.Boolean@)">
+             <summary>
+             Called when you load a save file and a Tower's save data get loaded for the tower
+            
+             Use saveData.metaData to load custom information
+             
+             Equivalent to a HarmonyPostFix on Tower.SetSavedData
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnCashAdded(System.Double,Assets.Scripts.Simulation.Simulation.CashType,System.Int32,Assets.Scripts.Simulation.Simulation.CashSource,Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after Cash is added in a game
+            Tower might be null
+            
+            Equivalent to a HarmonyPostFix on Simulation.AddCash
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnCashRemoved(System.Double,Assets.Scripts.Simulation.Simulation.CashType,System.Int32,Assets.Scripts.Simulation.Simulation.CashSource)">
+            <summary>
+            Called right after Cash is removed in a game
+            
+            Equivalent to a HarmonyPostFix on Simulation.RemoveCash
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnRoundStart">
+            <summary>
+            Called right after a round starts
+            
+            Equivalent to a HarmonyPostFix on Simulation.OnRoundStart
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnRoundEnd">
+            <summary>
+            Called right after a round starts
+            
+            Equivalent to a HarmonyPostFix on Simulation.OnRoundEnd
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnDefeat">
+            <summary>
+            Called right after a match ends in defeat
+            
+            Equivalent to a HarmonyPostFix on Simulation.OnDefeat
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnWeaponCreated(Assets.Scripts.Simulation.Towers.Weapons.Weapon,Assets.Scripts.Simulation.Objects.Entity,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Weapon is created
+            
+             Equivalent to a HarmonyPostFix on Weapon.Initialise
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnWeaponModelChanged(Assets.Scripts.Simulation.Towers.Weapons.Weapon,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Tower's TowerModel is changed for any reason (creation, upgrading, etc.)
+            
+             Equivalent to a HarmonyPostFix on Weapon.UpdatedModel
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnProjectileCreated(Assets.Scripts.Simulation.Towers.Projectiles.Projectile,Assets.Scripts.Simulation.Objects.Entity,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Projectile is created
+            
+             Equivalent to a HarmonyPostFix on Projectile.Initialise
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnProjectileModelChanged(Assets.Scripts.Simulation.Towers.Projectiles.Projectile,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Tower's TowerModel is changed for any reason (creation, upgrading, etc.)
+            
+             Equivalent to a HarmonyPostFix on Projectile.UpdatedModel
+             </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnVictory">
+            <summary>
+            Called right after a match ends in victory
+            
+            Equivalent to a HarmonyPostFix on InGame.OnVictory
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnMatchStart">
+            <summary>
+            Called right after a match first starts
+            
+            Equivalent to a HarmonyPostFix on InGame.StartMatch
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnRestart(System.Boolean)">
+            <summary>
+            Called when a match is restarted
+            
+            Equivalent to a HarmonyPostFix on InGame.Restart
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnFastForwardChanged(System.Boolean)">
+            <summary>
+            Called right after a game ends in victory
+            
+            Equivalent to a HarmonyPostFix on InGame.OnVictory
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnGameFinishedLoading">
+            <summary>
+            Called right after the game finishes loading everything
+            
+            Equivalent to a HarmonyPostFix on Game.GetVersionString
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnNewGameModel(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Called when a new GameModel is created, aka when things like Monkey Knowledge are applied to towers
+            
+            Equivalent to a HarmonyPostFix on GameModel_CreatedModded
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToIl2CppList``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToIl2CppReferenceArray``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToSizedList``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToLockList``1(``0[])">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.IEnumerableExt.ToLockList``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.LockedListExt.ToSizedList``1(Assets.Scripts.Utils.LockList{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Confirmed working
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToIl2CppList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToArray``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToSizedList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToLockList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToSystemList``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToArray``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToSizedList``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToLockList``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToIl2CppList``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToSizedList``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToIl2CppReferenceArray``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Confirmed working
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToLockList``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.SizedListExt.ToLockList``1(Assets.Scripts.Utils.SizedList{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.UnityExtensions.Texture2DExt.CreateSpriteFromTexture(UnityEngine.Texture2D,System.Single)">
+            <summary>
+            Not added yet
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.GameExt.GetTowerListForTowerType(Assets.Scripts.Unity.Game,System.String)">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BloonsTD6_Mod_Helper.Extensions.TowerModelExt.SetMaxAmount(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="T:BloonsTD6_Mod_Helper.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.ingame_popup">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+    </members>
+</doc>
