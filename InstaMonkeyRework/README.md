@@ -13,13 +13,15 @@ Also, for convenience, you can *Right Click* on a normal tower purchase button a
 
 With this mod, there's a new layer of decision making involved about whether you're safe enough to save up for a discounted Insta, or you need the immediate value of placing and upgrading a tower normally.
 
-**THIS MOD REQUIRES GURRENM4's BTD6 MOD HELPER API**
+**THIS MOD REQUIRES BTD6 MOD HELPER API**
 
 It can be found [here](https://github.com/gurrenm3/BloonsTD6-Mod-Helper/releases)
 
 Last tested and working with Pre-Release 3
 
 **Changelog**
+
+v1.0.2 Fixed a bug related to Insta quantities when loading games
 
 v1.0.1 Fix bug with warning for really placing down insta
 

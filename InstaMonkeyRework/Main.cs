@@ -21,7 +21,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace InstaMonkeyRework
@@ -34,11 +34,6 @@ namespace InstaMonkeyRework
         public static Dictionary<int, string> SavedPlacedInstas;
 
         public override void OnMainMenu()
-        {
-            SavedPlacedInstas = new Dictionary<int, string>();
-        }
-
-        public override void OnMatchStart()
         {
             SavedPlacedInstas = new Dictionary<int, string>();
         }
