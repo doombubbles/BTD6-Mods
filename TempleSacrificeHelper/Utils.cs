@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -46,25 +47,45 @@ namespace TempleSacrificeHelper
         public static void DefaultTemple(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "Sun Temple";
-            upgradeModel.cost = 100000;
+            upgradeModel.cost = CostForDifficulty(100000);
         }
         
         public static void ModifyTemple(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "";
-            upgradeModel.cost = Main.TempleAlternateCost;
+            upgradeModel.cost = CostForDifficulty(Main.TempleAlternateCost);
         }
         
         public static void DefaultGod(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "True Sun Temple";
-            upgradeModel.cost = 500000;
+            upgradeModel.cost = CostForDifficulty(500000);
         }
         
         public static void ModifyGod(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "";
-            upgradeModel.cost = Main.GodAlternateCost;
+            upgradeModel.cost = CostForDifficulty(Main.GodAlternateCost);
+        }
+
+        public static int CostForDifficulty(int mediumCost)
+        {
+            var price = (float) mediumCost;
+            switch (InGame.instance.SelectedDifficulty)
+            {
+                case "Easy":
+                    price *= .85f;
+                    break;
+                case "Hard":
+                    price *= 1.08f;
+                    break;
+                case "Impoppable":
+                    price *= 1.2f;
+                    break;
+            }
+            price /= 5f;
+            price = (int)Math.Round(price);
+            return (int) (price * 5);
         }
 
 

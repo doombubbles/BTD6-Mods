@@ -144,8 +144,6 @@ namespace TempleSacrificeHelper
             internal static void Postfix()
             {
                 SacrificesOff = false;
-                Utils.DefaultTemple(Game.instance.model.GetUpgrade("Sun Temple"));
-                Utils.DefaultGod(Game.instance.model.GetUpgrade("True Sun God"));
 
                 TSMTheme_Patch.text = null;
                 TSMTheme_Patch.icons = null;
