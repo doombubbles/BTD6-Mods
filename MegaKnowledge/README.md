@@ -6,7 +6,7 @@ You can find them at the bottom of the Primary, Military, Magic and Support tree
 Normally, you can have one Mega Knowledge active at a time for each of the four trees,
 but once you've unlocked every normal Monkey Knowledge in the tree, then you can use all of them at once!
 
-##[Requires Bloons TD6 Mod Helper](https://github.com/gurrenm3/BloonsTD6-Mod-Helper/releases)
+## [Requires Bloons TD6 Mod Helper](https://github.com/gurrenm3/BloonsTD6-Mod-Helper/releases)
 
 
 Many of the Mega Knowledge effects are based on premium/deluxe upgrades and specialty buildings from past Bloons games, but others are brand new.
