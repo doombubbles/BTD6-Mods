@@ -5,7 +5,7 @@ using Harmony;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace DetailedDescriptions
 {
@@ -224,7 +224,7 @@ namespace DetailedDescriptions
             {"Enhanced Eyesight", "+8r (48)\n" +
                                   "Gains Camo detection"},
             {"Crossbow", "<u>Dart</u> replaced by <u>Bolt</u> (3d, 3p, 0.95s, 56r, <i>Sharp</i>)"},
-            {"Sharp Shooter", "+2d (5), 0.75s\n" +
+            {"Sharp Shooter", "+3d (6), 0.75s\n" +
                               "50d Crit every 8-12 shots"},
             {"Crossbow Master", "+7p (10) (16p w/ 105, 23p w/ 205), +20r (76), 0.16s, <i>Normal</i>\n" +
                                 "Crit now occurs every 4-8 shots"},
@@ -235,7 +235,7 @@ namespace DetailedDescriptions
             {"Glaives", "+5p (13), 85%s (1.207)"},
             {"Glaive Ricochet", "<u>Boomerang</u> replaced by <u>Glaive</u> (1d, 50p, 1.2s, 43r, <i>Sharp</i>)"},
             {"M.O.A.R Glaives", "+50p (100), 50%s (0.6)"},
-            {"Glaive Lord", "Gains <u>Orbital Glaive</u> attack (2d, 5cd (7), 5md (7), ∞p, 0.1s, 40r zone, <i>Normal</i>, camo). <u>Glaive</u> buffed: first hit applies shred effect (10d/1.0s, 15s duration, stackable)."},
+            {"Glaive Lord", "Gains <u>Orbital Glaive</u> attack (2d, 5cd (7), 5md (7), 2fd (4), ∞p, 0.1s, 40r zone, <i>Normal</i>, camo). <u>Glaive</u> buffed: first hit applies shred effect (10d/1.0s, 15s duration, stackable)."},
             
             {"Faster Throwing", "75%s (1.065)"},
             {"Faster Rangs", "75%s (0.8), faster projectile speed"},
@@ -283,8 +283,8 @@ namespace DetailedDescriptions
             {"Long Range Tacks", "+4r (27)"},
             {"Super Range Tacks", "+4r (31), +1p (2)"},
             {"Blade Shooter", "<u>Tacks</u> replaced by <u>Blades</u> (1d, 6p, 1.19s, 31r, <i>Sharp</i>)"},
-            {"Blade Maelstrom", "<b>Ability</b> (20s cooldown): Emits blades (1d, ∞p, 0.0333s, 2j, <i>Sharp</i>) for 3s."},
-            {"Super Maelstrom", "+1d (2), <i>Normal</i>. <b>Ability</b> (20s cooldown): Emits blades (2d, ∞p, 0.0333s, 4j, <i>Normal</i>) for 9s"},
+            {"Blade Maelstrom", "<b>Ability</b> (20s cooldown): Emits blades (1d, 100p, 0.0333s, 2j, <i>Sharp</i>) for 3s."},
+            {"Super Maelstrom", "+1d (2), <i>Normal</i>. <b>Ability</b> (20s cooldown): Emits blades (2d, 500p, 0.0333s, 4j, <i>Normal</i>) for 9s"},
             
             {"More Tacks", "+2j (10)"},
             {"Even More Tacks", "+2j (12)"},
@@ -306,7 +306,7 @@ namespace DetailedDescriptions
             {"Snowstorm", "+10r (30), <b>Ability</b> (30s cooldown): 1 damage to everything (non-white) on screen; " +
                           "applies <u>Frozen</u> status to remaining Bloons (including white) for 4s and to Blimps for 2s."},
             {"Absolute Zero", "+200p (300), +10r (40), <u>Slow</u> effect is now 60%, <u>Frozen</u> status is passed down 3 layers. " +
-                              "<b>Ability</b> (40s cooldown): 1 damage and 10s <u>Frozen</u> status to everything; all Ice Monkeys gain 66.66%s buff for 10s."},
+                              "<b>Ability</b> (40s cooldown): 1 damage and 10s <u>Frozen</u> status to everything; all Ice Monkeys gain 66.66%s buff for 15s."},
             
             {"Larger Radius", "+7r (27)"},
             {"Re-Freeze", "<u>Freeze</u>: <i>Glacier</i>"},
@@ -330,8 +330,8 @@ namespace DetailedDescriptions
             
             {"Stickier Glue", "<u>Glued</u> status buffed: +13s duration (24s)."},
             {"Stronger Glue", "<u>Glued</u> status buffed: 75% slow."},
-            {"MOAB Glue", "Can now target Blimps, but slowed for less (25%) and for half the duration (12s)."},
-            {"Relentless Glue", "<u>Glued</u> status buffed for Moabs: 37.5% slow. <u>Glued</u> Bloons drop the glue when popped, to be picked up by the next target, lasts 5s."},
+            {"MOAB Glue", "Can now target Blimps, but slowed for less (37.5%) and for half the duration (12s)."},
+            {"Relentless Glue", "<u>Glued</u> Bloons drop the glue when popped, to be picked up by the next target, lasts 5s."},
             {"Super Glue", "+50md (50), +5p (6), <u>Glued</u> status buffed: 1d/2.3s (2.0s with 205); Bloons are slowed 100%; MOABs and DDTs are slowed 100% for the first 5s; BFBs are slowed 95% for the first 2.5s; ZOMGs are slowed 90% for the first 0.75s."},
             #endregion 
 
@@ -409,8 +409,8 @@ namespace DetailedDescriptions
             {"Exploding Pineapple", "Gains <u>Pineapple</u> attack (1d, 20p (32p w/ 011), 2s, <i>Explosion</i>)"},
             {"Spy Plane", "Camo"},
             {"Bomber Ace", "<u>Pineapple</u> replaced by <u>Bombing Run</u> (3d, 20p (32p w/ 031), 1.7s, 4j, <i>Explosion</i>) that's dropped on path"},
-            {"Ground Zero", "<u>Bombing Run</u> buffed: +7d (10), +20p (40). <b>Ability</b> (45s cooldown): 700d to everything."},
-            {"Tsar Bomba", "<u>Bombing Run</u> buffed: normal type. <b>Ability</b> (40s cooldown): 3000d to everything, with an 8.2s stun to anything that survives."},
+            {"Ground Zero", "<u>Bombing Run</u> buffed: +7d (10), +20p (40). <b>Ability</b> (45s cooldown): 700d bomb with 1000p."},
+            {"Tsar Bomba", "<u>Bombing Run</u> buffed: normal type. <b>Ability</b> (35s cooldown): 3000d bomb with 5000p, with an 8.2s stun to anything that survives."},
             
             {"Sharper Darts", "<u>Radial Darts</u> buffed: +3p (8)"},
             {"Centered Path", "Gains 'Centred Path' targeting (fly on a circular path in the center of the screen with radius 90)."},
@@ -422,7 +422,7 @@ namespace DetailedDescriptions
             #region Heli Pilot
             {"Quad Darts", "+2j (4)"},
             {"Pursuit", "Gains 'Pursuit' targeting (always flies towards a point slightly ahead of the first Bloon)."},
-            {"Razor Rotors", "Gains <u>Rotor</u> attack (1d, 10p, 35r zone, 0.75s, <i>Normal</i>)."},
+            {"Razor Rotors", "Gains <u>Rotor</u> attack (2d, 10p, 35r zone, 0.75s, <i>Normal</i>)."},
             {"Apache Dartship", "Gains <u>Machine Gun</u> attack (1d, 5p, 0.05s, <i>Sharp</i>) and <u>Rocket</u> attack (2d, 40p, 1.0s, ∞r, 4j, <i>Explosion</i>)."},
             {"Apache Prime", "<u>Dart</u> buffed: +5d (6), +20p (23), <i>Normal</i>. <u>Machine Gun</u> buffed: +4d (5), +6p (11), <i>Plasma</i>. <u>Rocket</u> buffed: +15md (17)."},
             
@@ -461,11 +461,11 @@ namespace DetailedDescriptions
                                 "<u>Shell</u> gains a <u>Firewall</u> effect (1d, 20p, 0.1s, <i>Normal</i>, Camo)."},
             #endregion
             
-            #region Dartling Gun
+            #region Dartling Gunner
             {"Focused Firing", "<u>Dart</u> buffed: -14° spread (9°)"},
             {"Laser Shock", "On-hit effect: <u>Laser Shock</u> (1d/1s, takes +1d from other Laser Shock Dartling Guns)."},
             {"Laser Cannon", "<u>Dart</u> attack replaced with <u>Laser</u> (2d, 4p, .2s, ∞r, <i>Energy</i>). <u>Laser Shock</u> now lasts 2s."},
-            {"Plasma Accelerator", "<u>Laser</u> replaced with <u>Beam</u> (1d, 50p (75 w/ 402), .25s, ∞r, <i>Plasma</i>) " +
+            {"Plasma Accelerator", "<u>Laser</u> replaced with <u>Beam</u> (1d, 50p (75 w/ 402), .2s, ∞r, <i>Plasma</i>) " +
                                    "that at the tip does (2d +10md, 50p, .25s, 4r). <u>Laser Shock</u> now lasts 5s."},
             {"Ray of Doom", "No tip effect, but <u>Beam</u> buffed +3d (5), +13md (25), +950p (1000). <u>Laser Shock</u> buffed: 15d/.1s, 5s duration"},
             
@@ -518,8 +518,8 @@ namespace DetailedDescriptions
             {"Super Range", "+10r (60)"},
             {"Epic Range", "+1p (2), +12r (72), faster projectile speed."},
             {"Robo Monkey", "+4p (6) and gains a second attack that's a copy of the first, with independent choice of targeting priority."},
-            {"Tech Terror", "Attack replaced by <u>Plasma</u> (1d, 8p, 0.048s, 72r, <i>Plasma</i>). <b>Ability</b> (45s cooldown): 1000d, ∞p, 60r."},
-            {"The Anti-Bloon", "+4d (5), +5p (13), +10r (82), <i>Normal</i>. <b>Ability</b> (45s cooldown): 3500d, ∞p, 100r."},
+            {"Tech Terror", "Attack replaced by <u>Plasma</u> (1d, 8p, 0.048s, 72r, <i>Plasma</i>). <b>Ability</b> (45s cooldown): 1000d, 2000p, 60r."},
+            {"The Anti-Bloon", "+4d (5), +5p (13), +10r (82), <i>Normal</i>. <b>Ability</b> (45s cooldown): 3500d, 10000p, 100r."},
             
             {"Knockback", "Applies <u>Knockback</u> status (~0.5s duration, 125% slow for regular Bloons, 60% for Leads/Ceramics, and 30% for Blimps)."},
             {"Ultravision", "+3r (53), Camo."},
@@ -552,8 +552,8 @@ namespace DetailedDescriptions
             
             #region Alchemist
             {"Larger Potions", "<u>Potion</u> buffed: +5p (20), larger blast radius."},
-            {"Acidic Mixture Dip", "Every 10s, applies <u>Acidified</u> (+1cd, +1md, lead, lasts 10 shots) to random non-Alchemists in range, prioritizing those not already buffed."},
-            {"Berserker Brew", "Every 8s applies <u>Berserk</u> (+1d, +2p, 90%s, +10%r, lasts 5.0s (6.0s w/ 320) or 25 (35 w/ 320) shots, cannot be reapplied for 5.0s (4.0s w/ 320)) " +
+            {"Acidic Mixture Dip", "Every 10s, applies <u>Acidified</u> (+1cd, +1md, lead, lasts 10 (13 w/ 220) shots) to random non-Alchemists in range, prioritizing those not already buffed."},
+            {"Berserker Brew", "Every 8s applies <u>Berserk</u> (+1d, +2p, 90%s, +10%r, lasts 5.0s (6.0s w/ 320) or 25 (40 w/ 320) shots, cannot be reapplied for 5.0s (4.0s w/ 320)) " +
                                "to closest non-Alchemist tower in range that's buffable."},
             {"Stronger Stimulant", "<u>Berserk</u> buffed: +1p (+3p), now 85%s, +5%r (+15%r), lasts +6.0s (12.0s) or +15 (40) shots."},
             {"Permanent Brew", "<u>Acidified</u> and <u>Berserk</u> buffs are permanent (unless this Alchemist is sold)."},
@@ -632,7 +632,7 @@ namespace DetailedDescriptions
             {"Directed Spikes", "Gains extra targeting options: close, far, and smart (earliest point Bloons haven't reached yet). <b>Passive</b> (1 round cooldown): 4× faster (0.55s) for 2.5s."},
             {"Long Life Spikes", "140s or end of 2 rounds lifespan."},
             {"Deadly Spikes", "+1d (2), 3 round lifespan."},
-            {"Perma-Spike", "+8d (10), +45p (50) (70p w/ 105), 6.0s, 300s lifespan."},
+            {"Perma-Spike", "+8d (10), +45p (50) (80p w/ 105), 6.0s, 300s lifespan."},
             #endregion
             
             #region Monkey Village

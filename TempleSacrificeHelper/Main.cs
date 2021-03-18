@@ -5,9 +5,11 @@ using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Simulation.Towers.Behaviors;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Bridge;
+using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Main;
+using Assets.Scripts.Utils;
 using Harmony;
 using MelonLoader;
 using UnhollowerRuntimeLib;
@@ -16,7 +18,7 @@ using Image = UnityEngine.UI.Image;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace TempleSacrificeHelper
 {
@@ -153,7 +155,7 @@ namespace TempleSacrificeHelper
 
         [HarmonyPatch(typeof(TSMThemeAmbidextrousRangs), nameof(TSMThemeAmbidextrousRangs.TowerInfoChanged))]
         public class TSMTheme_Patch {
-            private static Sprite magicSprite = null;
+            private static SpriteReference magicSprite = null;
 
             public static Dictionary<String, NK_TextMeshProUGUI> text = null;
             public static Dictionary<String, GameObject> icons = null;
@@ -182,11 +184,12 @@ namespace TempleSacrificeHelper
                         }
                         if (magicSprite != null) {
                             __instance.magicSprite = magicSprite;
-                            __instance.towerBackgroundImage.sprite = magicSprite;
+                            ResourceLoader.LoadSpriteFromSpriteReferenceAsync(magicSprite,
+                                __instance.towerBackgroundImage, false);
                         }
                     }
-
-                   
+                    ;
+                    
 
                     if (__instance.isMonkeyPortraitFlipped)
                     {

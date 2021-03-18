@@ -16,6 +16,8 @@ As far as the future of this mod, I'm probably not going to add any of the other
 
 **Changelog**
 
+v1.1.10 Fixed for BloonsTD6 V24.0
+
 v1.1.9 Fixed for BloonsTD6 V23.0
 
 v1.1.8 Fixed issue that could prevent Energising Totem recharging
