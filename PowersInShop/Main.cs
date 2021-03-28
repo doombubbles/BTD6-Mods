@@ -26,7 +26,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.10", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.11", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace PowersInShop
 {
@@ -290,7 +290,7 @@ namespace PowersInShop
             }
         }
         
-        /*[HarmonyPatch(typeof(ProfileModel), nameof(ProfileModel.Validate))]
+        [HarmonyPatch(typeof(ProfileModel), nameof(ProfileModel.Validate))]
         public class ProfileModelPatch
         {
             [HarmonyPostfix]
@@ -312,7 +312,7 @@ namespace PowersInShop
                 }
                 
             }
-        }*/
+        }
         
         [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.UpdateVersion))]
         public class TitleScreenPatch
