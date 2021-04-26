@@ -6,4 +6,6 @@ If this sounds too OP for you, the mod also generates a config file to let you a
 
 **Changelog**
 
+v1.0.2 Fixed v25.0 oversight
+
 v1.0.1 Updated for Bloons TD Mod Helper Official Release

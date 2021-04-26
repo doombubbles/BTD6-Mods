@@ -5,11 +5,12 @@ using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(BetterUltraVision.Main), "Better UltraVision", "1.1.1", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterUltraVision.Main), "Better UltraVision", "1.1.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace BetterUltraVision
 {
@@ -34,15 +35,20 @@ namespace BetterUltraVision
             minValue = 0
         };
 
-        public override void OnNewGameModel(GameModel result, List<ModModel> mods)
+        public override void OnNewGameModel(GameModel gameModel, List<ModModel> mods)
         {
-            Game.instance.model.GetUpgrade("Ultravision").cost = CostForDifficulty(UltravisionCost, mods);
+            gameModel.GetUpgrade("Ultravision").cost = CostForDifficulty(UltravisionCost, mods);
             
-            foreach (var towerModel in Game.instance.model.towers)
+            foreach (var towerModel in gameModel.towers)
             {
                 if (towerModel.appliedUpgrades.Contains("Ultravision"))
                 {
                     towerModel.range += UltravisionRangeBonus - 3;
+
+                    foreach (var attackModel in towerModel.GetAttackModels())
+                    {
+                        attackModel.range += UltravisionRangeBonus - 3;
+                    }
                 }
             }
         }
