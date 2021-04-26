@@ -17,13 +17,9 @@ Rocket Storm
 
 For a full list of possiblities and their exact effects, look [here](https://tinyurl.com/abilitychoice).
 
-**THIS MOD REQUIRES GURRENM4's BTD6 MOD HELPER API**
-
-It can be found [here](https://github.com/gurrenm3/BloonsTD6-Mod-Helper/releases)
-
-Last tested and working with Pre-Release 3
-
 **Changelog**
+
+v1.0.9 Updated for BTD Mod Helper official release and BloonsTD6 v25.0
 
 v1.0.8 Bug fixes and compatibility with new Mega Knowledge mod
 

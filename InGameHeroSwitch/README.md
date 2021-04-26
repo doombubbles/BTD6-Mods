@@ -9,6 +9,8 @@ Keys can be changed in the config, look [here](https://docs.unity3d.com/ScriptRe
 
 **Changelog**
 
+v1.0.4 Fixed for BloonsTD6 v25.0
+
 v1.0.3 Fixed for BloonsTD6 v23.0
 
 v1.0.2 Added config file

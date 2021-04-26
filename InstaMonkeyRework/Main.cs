@@ -12,8 +12,8 @@ using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu.Powers;
 using Assets.Scripts.Unity.UI_New.InGame.StoreMenu;
 using Assets.Scripts.Unity.UI_New.Popups;
-using BloonsTD6_Mod_Helper;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
 using TMPro;
@@ -21,13 +21,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace InstaMonkeyRework
 {
     public class Main : BloonsTD6Mod
     {
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/InstaMonkeyRework/Main.cs";
+
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/InstaMonkeyRework/InstaMonkeyRework.dll?raw=true";
+        
         public static bool ActuallyConsumeInsta = false;
         public static bool AllowActuallyPlaceInsta = false;
 
@@ -243,7 +249,7 @@ namespace InstaMonkeyRework
             [HarmonyPostfix]
             internal static void Postfix(Tower __result, TowerModel def, bool isInstaTower)
             {
-                if (isInstaTower && (!InGame.instance.IsCoop || __result.owner == Game.instance.nkGI.PeerID))
+                if (isInstaTower && (!InGame.instance.IsCoop || __result.owner == Game.instance.GetNkGI().PeerID))
                 {
                     var cost = GetCostForThing(def);
                     if (InGame.instance.GetCash() >= cost)

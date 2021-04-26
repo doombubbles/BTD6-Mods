@@ -7,25 +7,29 @@ using Assets.Scripts.Models.Map;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Unity;
-using Assets.Scripts.Unity.UI_New.InGame;
-using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
-using Assets.Scripts.Utils;
-using BloonsTD6_Mod_Helper;
-using BloonsTD6_Mod_Helper.Api;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Extensions;
+using BTD_Mod_Helper.Api;
 using Harmony;
 using MelonLoader;
 using UnityEngine;
 using static Assets.Scripts.Models.Towers.TowerType;
 using static MegaKnowledge.MegaKnowledge;
 
-[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace MegaKnowledge
 {
     public class Main : BloonsTD6Mod
     {
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/MegaKnowledge/Main.cs";
+
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/MegaKnowledge/MegaKnowledge.dll?raw=true";
+
+
         public static readonly Dictionary<string, MegaKnowledge> MegaKnowledges = new Dictionary<string, MegaKnowledge>
         {
             {
@@ -180,7 +184,7 @@ namespace MegaKnowledge
 
             if (File.Exists(Config))
             {
-                MelonLogger.Log("Reading config file");
+                MelonLogger.Msg("Reading config file");
                 using (StreamReader sr = File.OpenText(Config))
                 {
                     string s = "";
@@ -203,7 +207,7 @@ namespace MegaKnowledge
                         }
                         catch (Exception e)
                         {
-                            MelonLogger.LogError("Malformed line " + s);
+                            MelonLogger.Error("Malformed line " + s);
                             e.GetType(); //just to get rid of the warning lol
                         }
                     }
@@ -211,7 +215,7 @@ namespace MegaKnowledge
             }
             else
             {
-                MelonLogger.Log("Creating config file");
+                MelonLogger.Msg("Creating config file");
                 using (StreamWriter sw = File.CreateText(Config))
                 {
                     foreach (var (key, megaKnowledge) in MegaKnowledges)
@@ -220,27 +224,9 @@ namespace MegaKnowledge
                     }
                 }
 
-                MelonLogger.Log("Done Creating");
+                MelonLogger.Msg("Done Creating");
             }
         }
-
-        /*public override void OnKeyDown(KeyCode keyCode)
-        {
-            if (keyCode == KeyCode.RightShift)
-            {
-                var towerTowerModel = TowerSelectionMenu.instance.selectedTower.tower.towerModel;
-                FileIOUtil.SaveObject("selected.json", towerTowerModel);
-
-                /*var gameModel = Game.instance.model.GetTowerFromId(towerTowerModel.name);
-                FileIOUtil.SaveObject("gameModel.json", gameModel);#1#
-
-                var inGameModel = InGame.instance.GetGameModel().GetTowerFromId(towerTowerModel.name);
-                FileIOUtil.SaveObject("inGameModel.json", inGameModel);
-
-                /*var currentMenu = MenuManager.instance.GetCurrentMenu();
-                RecursivelyLog(currentMenu.gameObject);#1#
-            }
-        }*/
 
         public override void OnMainMenu()
         {
@@ -253,7 +239,7 @@ namespace MegaKnowledge
                         var methodInfo = typeof(Towers).GetMethod(name);
                         if (methodInfo == null)
                         {
-                            MelonLogger.Log("Couldn't find method " + name);
+                            MelonLogger.Msg("Couldn't find method " + name);
                             continue;
                         }
 
@@ -319,7 +305,7 @@ namespace MegaKnowledge
                             }
                             else if (methodInfo == null)
                             {
-                                MelonLogger.Log("Couldn't find method " + name);
+                                MelonLogger.Msg("Couldn't find method " + name);
                             }
                             else
                             {
@@ -358,7 +344,7 @@ namespace MegaKnowledge
                             var methodInfo = typeof(Towers).GetMethod(name);
                             if (methodInfo == null)
                             {
-                                MelonLogger.Log("Couldn't find method " + name);
+                                MelonLogger.Msg("Couldn't find method " + name);
                             }
                             else
                             {
@@ -369,7 +355,7 @@ namespace MegaKnowledge
                 }
             }
         }
-        
+
         public static void RecursivelyLog(GameObject gameObject, int depth = 0)
         {
             var str = gameObject.name;
@@ -387,7 +373,7 @@ namespace MegaKnowledge
             }
 
             str += ")";
-            MelonLogger.Log(str);
+            MelonLogger.Msg(str);
             for (int i = 0;
                 i < gameObject.transform.childCount;
                 i++)

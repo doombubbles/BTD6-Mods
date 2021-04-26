@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Assets.Main.Scenes;
@@ -18,147 +19,102 @@ using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Upgrade;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
-using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.1.11", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.2.0", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
+
 namespace PowersInShop
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
-        private static readonly string Dir = $"{Directory.GetCurrentDirectory()}\\Mods\\PowersInShop";
-        private static readonly string Config = $"{Dir}\\config.txt";
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/PowersInShop/Main.cs";
 
-        public static Dictionary<string, int> Powers = new Dictionary<string, int>();
-        public static Dictionary<string, int> TrackPowers = new Dictionary<string, int>();
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/PowersInShop/PowersInShop.dll?raw=true";
 
-        public static bool AllowInChimps = false;
-        public static bool RestrictAsSupport = true;
-        public static int RechargePrice = 500;
-        public static float AttackSpeedBoost = .15f;
 
-        public override void OnApplicationStart()
+        private static readonly ModSettingInt CostBananaFarmer = 500;
+        private static readonly ModSettingInt CostTechBotCost = 500;
+        private static readonly ModSettingInt CostPontoon = 750;
+        private static readonly ModSettingInt CostPortableLake = 750;
+        private static readonly ModSettingInt CostEnergisingTotem = 1000;
+        private static readonly ModSettingInt CostRoadSpikes = 50;
+        private static readonly ModSettingInt CostGlueTrap = 100;
+        private static readonly ModSettingInt CostCamoTrap = 100;
+        private static readonly ModSettingInt CostMoabMine = 500;
+
+        private static readonly ModSettingInt PierceRoadSpikes = 20;
+        private static readonly ModSettingInt PierceGlueTrap = 300;
+        private static readonly ModSettingInt PierceMoabMine = 1;
+        private static readonly ModSettingInt PierceCamoTrap = 500;
+
+        private static readonly ModSettingBool AllowInChimps = false;
+        private static readonly ModSettingBool RestrictAsSupport = true;
+        private static readonly ModSettingInt RechargePrice = 500;
+        private static readonly ModSettingDouble AttackSpeedBoost = .15;
+
+
+        public static readonly Dictionary<string, ModSettingInt> Powers = new Dictionary<string, ModSettingInt>
         {
-            Powers.Add("BananaFarmer", 500); 
-            Powers.Add("TechBot", 500);
-            Powers.Add("Pontoon", 750);
-            Powers.Add("PortableLake", 750);
-            Powers.Add("EnergisingTotem", 1000);
-            Powers.Add("RoadSpikes", 50);
-            Powers.Add("GlueTrap", 100);
-            Powers.Add("CamoTrap", 100);
-            Powers.Add("MoabMine", 500);
-            
-            TrackPowers.Add("RoadSpikes", 20);
-            TrackPowers.Add("GlueTrap", 300);
-            TrackPowers.Add("MoabMine", 1);
-            TrackPowers.Add("CamoTrap", 500);
-            
+            {"BananaFarmer", CostBananaFarmer},
+            {"TechBot", CostTechBotCost},
+            {"Pontoon", CostPontoon},
+            {"PortableLake", CostPortableLake},
+            {"EnergisingTotem", CostEnergisingTotem},
+            {"RoadSpikes", CostRoadSpikes},
+            {"GlueTrap", CostGlueTrap},
+            {"CamoTrap", CostCamoTrap},
+            {"MoabMine", CostMoabMine}
+        };
 
+        public static readonly Dictionary<string, ModSettingInt> TrackPowers = new Dictionary<string, ModSettingInt>
+        {
+            {"RoadSpikes", PierceRoadSpikes},
+            {"GlueTrap", PierceGlueTrap},
+            {"MoabMine", PierceMoabMine},
+            {"CamoTrap", PierceCamoTrap}
+        };
 
-            MelonLogger.Log("Powers In Shop mod loaded");
-            Directory.CreateDirectory($"{Dir}");
-            if (File.Exists(Config))
+        public override void OnTitleScreen()
+        {
+            foreach (var towerModel in TrackPowers.Keys.Select(Utils.CreateTower))
             {
-                MelonLogger.Log("Reading config file");
-                using (StreamReader sr = File.OpenText(Config))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        try
-                        {
-                            if (s.StartsWith("#"))
-                            {
-                                continue;
-                            }
-                        
-                            if (s.Contains("Cost"))
-                            {
-                                var index = s.IndexOf('=');
-                                var name = s.Substring(0, index).Replace("Cost", "");
-                                var cost = int.Parse(s.Substring(index + 1));
-                                if (Powers.ContainsKey(name))
-                                {
-                                    Powers[name] = cost;
-                                }
-                            } else if (s.Contains("AllowInCHIMPS"))
-                            {
-                                AllowInChimps = bool.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                            } else if (s.Contains("RestrictAsSupport"))
-                            {
-                                RestrictAsSupport = bool.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                            } else if (s.Contains("Pierce"))
-                            {
-                                var index = s.IndexOf('=');
-                                var name = s.Substring(0, index).Replace("Pierce", "");
-                                var pierce = int.Parse(s.Substring(index + 1));
-                                if (TrackPowers.ContainsKey(name))
-                                {
-                                    TrackPowers[name] = pierce;
-                                }
-                            } else if (s.Contains("Recharge"))
-                            {
-                                RechargePrice = int.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                            } else if (s.Contains("AttackSpeed"))
-                            {
-                                AttackSpeedBoost = float.Parse(s.Substring(s.IndexOf(char.Parse("=")) + 1));
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            MelonLogger.LogError("Malformed line " + s);
-                            e.GetType(); //just to get rid of the warning lol
-                        }
-                        
-                    }
-                }
+                AddTowerToGame(towerModel);
             }
-            else
+
+            foreach (var power in Powers.Keys)
             {
-                MelonLogger.Log("Creating config file");
-                using (StreamWriter sw = File.CreateText(Config))
+                var powerModel = Game.instance.model.GetPowerWithName(power);
+
+                if (powerModel.tower != null)
                 {
-                    foreach (var power in Powers.Keys)
+                    if (powerModel.tower.icon == null)
                     {
-                        sw.WriteLine(power + "Cost=" + Powers[power]);
+                        powerModel.tower.icon = powerModel.icon;
                     }
-                    sw.WriteLine("#Set any of the above to -1 to disable them in the shop");
-                    sw.WriteLine("AllowInCHIMPS=" + AllowInChimps);
-                    sw.WriteLine("RestrictAsSupport=" + RestrictAsSupport);
-                    foreach (var power in TrackPowers.Keys)
+
+                    powerModel.tower.cost = Powers[power];
+                    powerModel.tower.towerSet = "Support";
+
+                    if (power == "EnergisingTotem")
                     {
-                        sw.WriteLine(power + "Pierce=" + TrackPowers[power]);
+                        var behavior = powerModel.tower.GetBehavior<RateSupportModel>();
+                        behavior.multiplier = (float) (1 - AttackSpeedBoost);
                     }
-                    sw.WriteLine("RechargePrice=" + RechargePrice);
-                    sw.WriteLine("AttackSpeedBoost=" + AttackSpeedBoost);
                 }
-                MelonLogger.Log("Done Creating");
             }
         }
 
-        
-        [HarmonyPatch(typeof(Game), nameof(Game.GetVersionString))]
-        public class GamePatch
-        {
-            [HarmonyPostfix]
-            public static void Postfix()
-            {
-                foreach (var power in TrackPowers.Keys)
-                {
-                    var towerModel = Utils.CreateTower(power);
-
-                    Game.instance.model.towers = Game.instance.model.towers.Append(towerModel).ToArray();
-                }
-            }
-        }
-        
         [HarmonyPatch(typeof(InputManager), nameof(InputManager.EnterPlacementMode))]
         internal class InputManager_EnterPlacementMode
         {
@@ -167,12 +123,13 @@ namespace PowersInShop
             {
                 if (TrackPowers.ContainsKey(forTowerModel.name))
                 {
-                    var image = ShopMenu.instance.GetTowerButtonFromBaseId(forTowerModel.baseId).gameObject.transform.Find("Icon").GetComponent<Image>();
+                    var image = ShopMenu.instance.GetTowerButtonFromBaseId(forTowerModel.baseId).gameObject.transform
+                        .Find("Icon").GetComponent<Image>();
                     InGameObjects.instance.PowerIconStart(image.sprite);
                 }
             }
         }
-        
+
         [HarmonyPatch(typeof(InputManager), nameof(InputManager.Update))]
         internal class InputManager_Update
         {
@@ -184,11 +141,12 @@ namespace PowersInShop
                 if (towerModel != null && inputManager.inPlacementMode && TrackPowers.ContainsKey(towerModel.name))
                 {
                     var map = InGame.instance.UnityToSimulation.simulation.Map;
-                    InGameObjects.instance.PowerIconUpdate(inputManager.GetCursorPosition(), map.CanPlace(new Vector2(inputManager.cursorPositionWorld), towerModel));
+                    InGameObjects.instance.PowerIconUpdate(inputManager.GetCursorPosition(),
+                        map.CanPlace(new Vector2(inputManager.cursorPositionWorld), towerModel));
                 }
             }
         }
-        
+
         [HarmonyPatch(typeof(InputManager), nameof(InputManager.ExitPlacementMode))]
         internal class InputManager_ExitPlacementMode
         {
@@ -206,16 +164,18 @@ namespace PowersInShop
         public class TSMThemeEnergisingTotem_OnButtonPress
         {
             [HarmonyPrefix]
-            public static bool Prefix(TSMThemeEnergisingTotem __instance, TowerToSimulation tower, TSMButton button)
+            public static bool Prefix(TSMThemeEnergisingTotem __instance, TowerToSimulation tower)
             {
                 if (tower.worth > 0)
                 {
                     var cash = InGame.instance.bridge.simulation.cashManagers.entries[0].value.cash.Value;
-                    if (cash < Utils.RealRechargePrice())
+                    if (cash < CostForDifficulty(RechargePrice, InGame.instance))
                     {
                         return false;
                     }
-                    InGame.instance.bridge.simulation.cashManagers.entries[0].value.cash.Value = cash - Utils.RealRechargePrice();
+
+                    InGame.instance.bridge.simulation.cashManagers.entries[0].value.cash.Value =
+                        cash - CostForDifficulty(RechargePrice, InGame.instance);
                     var mm = Game.instance.playerService.Player.Data.monkeyMoney.Value;
                     Game.instance.playerService.Player.Data.monkeyMoney.Value = mm + 20;
                 }
@@ -223,7 +183,7 @@ namespace PowersInShop
                 return true;
             }
         }
-        
+
         [HarmonyPatch(typeof(TSMThemeEnergisingTotem), nameof(TSMThemeEnergisingTotem.Selected))]
         public class TSMThemeEnergisingTotem_Selected
         {
@@ -231,7 +191,7 @@ namespace PowersInShop
             private static string og;
             private static Color color;
             private static Color32 outline;
-            
+
             [HarmonyPostfix]
             public static void Postfix(TSMThemeEnergisingTotem __instance, TowerToSimulation tower)
             {
@@ -241,13 +201,13 @@ namespace PowersInShop
                     color = __instance.rechargeCostText.color;
                     outline = __instance.rechargeCostText.outlineColor;
                 }
-                
+
                 if (tower.worth > 0)
                 {
-                    __instance.rechargeCostText.SetText("$" + Utils.RealRechargePrice());
+                    __instance.rechargeCostText.SetText("$" + CostForDifficulty(RechargePrice, InGame.instance));
                     __instance.rechargeCostText.outlineColor = new Color32(0, 0, 0, 0);
                     __instance.rechargeCostText.color = Color.white;
-                    
+
                     if (!lastOpened)
                     {
                         __instance.rechargeButton.transform.GetChild(1).Translate(-5000, 0, 0);
@@ -273,11 +233,10 @@ namespace PowersInShop
                 }
             }
         }
-        
+
         [HarmonyPatch(typeof(Map), nameof(Map.CanPlace))]
         internal class Map_CanPlace
         {
-            
             [HarmonyPostfix]
             internal static void Patch(ref bool __result, Vector2 at, TowerModel tm)
             {
@@ -289,7 +248,7 @@ namespace PowersInShop
                 }
             }
         }
-        
+
         [HarmonyPatch(typeof(ProfileModel), nameof(ProfileModel.Validate))]
         public class ProfileModelPatch
         {
@@ -302,48 +261,12 @@ namespace PowersInShop
                 {
                     if (Powers[power] < 0)
                     {
-                        continue;  
+                        continue;
                     }
-                    
+
                     if (!unlockedTowers.Contains(power))
                     {
                         unlockedTowers.Add(power);
-                    }
-                }
-                
-            }
-        }
-        
-        [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.UpdateVersion))]
-        public class TitleScreenPatch
-        {
-            [HarmonyPostfix]
-            public static void Postfix()
-            {
-                foreach (var power in Powers.Keys)
-                {
-                    if (Powers[power] < 0)
-                    {
-                        continue;
-                    }
-                    PowerModel powerModel = Game.instance.model.GetPowerWithName(power);
-
-                    if (powerModel.tower != null)
-                    {
-                        if (powerModel.tower.icon == null)
-                        {
-                            powerModel.tower.icon = powerModel.icon;
-                        }
-                    
-                        powerModel.tower.cost = Powers[power];
-                        powerModel.tower.towerSet = "Support";
-
-                        if (power == "EnergisingTotem")
-                        {
-                            var behavior = powerModel.tower.behaviors
-                                .First(b => b.name == "RateSupportModel_EnergisingTotem_").Cast<RateSupportModel>();
-                            behavior.multiplier = 1 - AttackSpeedBoost;
-                        }
                     }
                 }
             }
@@ -357,47 +280,50 @@ namespace PowersInShop
             {
                 if (TrackPowers.ContainsKey(__instance.towerModel.name))
                 {
-                    var powerBehaviorModel = Game.instance.model.GetPowerWithName(__instance.towerModel.name).behaviors
-                        .First(b => !b.name.Contains("Create")).Cast<PowerBehaviorModel>();
+                    var powerBehaviorModel = Game.instance.model.GetPowerWithName(__instance.towerModel.name)
+                        .GetBehavior<PowerBehaviorModel>();
 
-                    InGame.instance.UnityToSimulation.simulation.powerManager.GetInstance(powerBehaviorModel).Activate(__instance.Position.ToVector2(), powerBehaviorModel, 0);
+                    InGame.instance.UnityToSimulation.simulation.powerManager.GetInstance(powerBehaviorModel)
+                        .Activate(__instance.Position.ToVector2(), powerBehaviorModel, 0);
                 }
             }
         }
-        
+
         [HarmonyPatch(typeof(Tower), nameof(Tower.OnDestroy))]
         public class Tower_OnDestroy
         {
             [HarmonyPostfix]
             public static void Postfix(Tower __instance)
             {
-                if (TrackPowers.ContainsKey(__instance.towerModel.name) && (!InGame.instance.IsCoop || __instance.owner == Game.instance.nkGI.PeerID))
+                if (TrackPowers.ContainsKey(__instance.towerModel.name) &&
+                    (!InGame.instance.IsCoop || __instance.owner == Game.instance.GetNkGI().PeerID))
                 {
                     ShopMenu.instance.GetTowerButtonFromBaseId(__instance.towerModel.baseId).ButtonActivated();
                 }
             }
         }
-        
-        
 
         [HarmonyPatch(typeof(TowerInventory), nameof(TowerInventory.Init))]
         public class TowerInventoryPatch
         {
-            public static List<TowerDetailsModel> allTowers = new List<TowerDetailsModel>();
+            public static Il2CppSystem.Collections.Generic.List<TowerDetailsModel> allTowers =
+                new Il2CppSystem.Collections.Generic.List<TowerDetailsModel>();
+
             public static TowerInventory towerInventory;
-            
+
             [HarmonyPrefix]
-            public static bool Prefix(TowerInventory __instance, ref List<TowerDetailsModel> allTowersInTheGame)
+            public static bool Prefix(TowerInventory __instance,
+                ref Il2CppSystem.Collections.Generic.List<TowerDetailsModel> allTowersInTheGame)
             {
-                int i = 22;
+                var i = 22;
                 foreach (var power in Powers.Keys)
                 {
                     if (Powers[power] < 0)
                     {
                         continue;
                     }
-                    
-                    ShopTowerDetailsModel powerDetails = new ShopTowerDetailsModel(power, i++, 0, 0, 0, -1, 0, null);
+
+                    var powerDetails = new ShopTowerDetailsModel(power, i++, 0, 0, 0, -1, 0, null);
                     allTowersInTheGame.Add(powerDetails);
                 }
 
@@ -405,11 +331,11 @@ namespace PowersInShop
                 towerInventory = __instance;
 
                 TSMThemeEnergisingTotem_Selected.lastOpened = false; //UI is reset, so we have to as well
-                
+
                 return true;
             }
         }
-        
+
         [HarmonyPatch(typeof(UpgradeScreen), nameof(UpgradeScreen.UpdateUi))]
         public class UpgradeScreen_UpdateUi
         {
@@ -427,7 +353,7 @@ namespace PowersInShop
                 return true;
             }
         }
-        
+
         [HarmonyPatch(typeof(InGame), nameof(InGame.StartMatch))]
         internal class InGame_StartMatch
         {
@@ -451,10 +377,11 @@ namespace PowersInShop
                         }
                     }
                 }
+
                 towerInventory.SetTowerMaxes(allTowers);
             }
         }
-        
+
         [HarmonyPatch(typeof(InGame), nameof(InGame.Restart))]
         internal class InGame_Restart
         {
@@ -478,9 +405,9 @@ namespace PowersInShop
                         }
                     }
                 }
+
                 towerInventory.SetTowerMaxes(allTowers);
             }
         }
-        
     }
 }

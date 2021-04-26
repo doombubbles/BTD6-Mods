@@ -1,95 +1,48 @@
 ﻿using System.IO;
-using System.Linq;
+using Assets.Scripts.Models;
 using Assets.Scripts.Models.Towers.Behaviors.Attack;
+using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Unity;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api.InGame_Mod_Options;
 using Harmony;
+using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(BetterUltraVision.Main), "Better UltraVision", "1.1.0", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterUltraVision.Main), "Better UltraVision", "1.1.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace BetterUltraVision
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
-        private static readonly string Dir = $"{Directory.GetCurrentDirectory()}\\Mods\\BetterUltraVison";
-        private static readonly string Config = $"{Dir}\\config.txt";
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/BetterUltraVision/Main.cs";
 
-        private static int UltravisionRangeBonus = 6;
-        private static int UltravisionCost = 1200;
-        private static bool UltravisionSeeThroughWalls = false;
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/BetterUltraVision/BetterUltraVision.dll?raw=true";
         
-        public override void OnApplicationStart()
+        
+        private static readonly ModSettingInt UltravisionRangeBonus = new ModSettingInt(6)
         {
-            base.OnApplicationStart();
-            MelonLogger.Log("Better Ultravision Enabled");
-            
-            Directory.CreateDirectory($"{Dir}");
-            if (File.Exists(Config))
-            {
-                MelonLogger.Log("Reading config file");
-                using (StreamReader sr = File.OpenText(Config))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        if (s.Contains("UltravisionRangeBonus"))
-                        {
-                            UltravisionRangeBonus = int.Parse(s.Substring(s.IndexOf('=') + 1));
-                        } else if (s.Contains("UltravisionCost"))
-                        {
-                            UltravisionCost = int.Parse(s.Substring(s.IndexOf('=') + 1));
-                        } else if (s.Contains("UltravisionSeeThroughWalls"))
-                        {
-                            UltravisionSeeThroughWalls = bool.Parse(s.Substring(s.IndexOf('=') + 1));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MelonLogger.Log("Creating config file");
-                using (StreamWriter sw = File.CreateText(Config))
-                {
-                    sw.WriteLine("UltravisionRangeBonus=" + UltravisionRangeBonus);
-                    sw.WriteLine("UltravisionCost=" + UltravisionCost);
-                    sw.WriteLine("UltravisionSeeThroughWalls=" + UltravisionSeeThroughWalls);
-                }
-            }
-        }
+            displayName = "Ultravision Range Bonus",
+            minValue = 0
+        };
+        
+        private static readonly ModSettingInt UltravisionCost = new ModSettingInt(1200)
+        {
+            displayName = "Ultravision Cost",
+            minValue = 0
+        };
 
-        [HarmonyPatch(typeof(Game), "GetVersionString")]
-        public class GamePatch
+        public override void OnNewGameModel(GameModel result, List<ModModel> mods)
         {
-            [HarmonyPostfix]
-            public static void Postfix()
+            Game.instance.model.GetUpgrade("Ultravision").cost = CostForDifficulty(UltravisionCost, mods);
+            
+            foreach (var towerModel in Game.instance.model.towers)
             {
-                Game.instance.model.GetUpgrade("Ultravision").cost = UltravisionCost;
-                
-                foreach (var towerModel in Game.instance.model.towers)
+                if (towerModel.appliedUpgrades.Contains("Ultravision"))
                 {
-                    if (towerModel.appliedUpgrades.Contains("Ultravision"))
-                    {
-                        towerModel.range += UltravisionRangeBonus - 3;
-                        if (UltravisionSeeThroughWalls)
-                        {
-                            towerModel.ignoreBlockers = true;
-                            foreach (var towerModelBehavior in towerModel.behaviors)
-                            {
-                                if (towerModelBehavior.name.Contains("AttackModel"))
-                                {
-                                    var attackModel = towerModelBehavior.Cast<AttackModel>();
-                                    attackModel.attackThroughWalls = true;
-                                    foreach (var weaponModel in attackModel.weapons)
-                                    {
-                                        if (weaponModel.projectile != null)
-                                        {
-                                            weaponModel.projectile.ignoreBlockers = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    towerModel.range += UltravisionRangeBonus - 3;
                 }
             }
         }

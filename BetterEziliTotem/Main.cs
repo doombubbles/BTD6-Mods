@@ -1,67 +1,39 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
+using Assets.Scripts.Models;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities;
 using Assets.Scripts.Unity;
-using Harmony;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api.InGame_Mod_Options;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(BetterEziliTotem.Main), "Better Ezili Totem", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterEziliTotem.Main), "Better Ezili Totem", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace BetterEziliTotem
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
-        private static readonly string Dir = $"{Directory.GetCurrentDirectory()}\\Mods\\BetterEziliTotem";
-        private static readonly string Config = $"{Dir}\\config.txt";
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/BetterEziliTotem/Main.cs";
 
-        public static int AbilityCooldown = 5399;
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/BetterEziliTotem/BetterEziliTotem.dll?raw=true";
 
-        public override void OnApplicationStart()
+        private static readonly ModSettingInt AbilityCooldown = new ModSettingInt(5399)
         {
-            base.OnApplicationStart();
-            MelonLogger.Log("Better Ezili Totem Enabled");
+            displayName = "Totem Ability Cooldown",
+            minValue = 0
+        };
 
-            Directory.CreateDirectory($"{Dir}");
-            if (File.Exists(Config))
-            {
-                MelonLogger.Log("Reading config file");
-                using (StreamReader sr = File.OpenText(Config))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        if (s.Contains("AbilityCooldown"))
-                        {
-                            AbilityCooldown = int.Parse(s.Substring(s.IndexOf('=') + 1));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MelonLogger.Log("Creating config file");
-                using (StreamWriter sw = File.CreateText(Config))
-                {
-                    sw.WriteLine("AbilityCooldown=" + AbilityCooldown);
-                }
-            }
-        }
-        
-        
-        [HarmonyPatch(typeof(Game), "GetVersionString")]
-        public class GamePatch
+
+        public override void OnNewGameModel(GameModel result)
         {
-            [HarmonyPostfix]
-            public static void Postfix()
+            for (int i = 7; i <= 20; i++)
             {
-                for (int i = 7; i <= 20; i++)
-                {
-                    var towerModel = Game.instance.model.GetTowerFromId("Ezili " + i);
-                    var ability = towerModel.behaviors.First(b => b.name.Contains("Totem")).Cast<AbilityModel>();
+                var towerModel = Game.instance.model.GetTowerFromId("Ezili " + i);
+                var ability = towerModel.behaviors.First(b => b.name.Contains("Totem")).Cast<AbilityModel>();
 
-                    ability.livesCost = 0;
-                    ability.cooldownFrames = AbilityCooldown;
-                }
+                ability.livesCost = 0;
+                ability.cooldownFrames = AbilityCooldown;
             }
         }
     }

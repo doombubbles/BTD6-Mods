@@ -101,26 +101,6 @@ namespace PowersInShop
 
             return towerModel;
         }
-
-        public static int RealRechargePrice()
-        {
-            var price = (float) Main.RechargePrice;
-            switch (InGame.instance.SelectedDifficulty)
-            {
-                case "Easy":
-                    price *= .85f;
-                    break;
-                case "Hard":
-                    price *= 1.08f;
-                    break;
-                case "Impoppable":
-                    price *= 1.2f;
-                    break;
-            }
-            price /= 5f;
-            price = (int)Math.Round(price);
-            return (int) (price * 5);
-        }
         
         public static void RecursivelyLogGameObject(Transform gameObject, int depth = 0)
         {
@@ -129,7 +109,7 @@ namespace PowersInShop
             {
                 str = "|  " + str;
             }
-            MelonLogger.Log(str);
+            MelonLogger.Msg(str);
             for (int i = 0; i < gameObject.childCount; i++)
             {
                 RecursivelyLogGameObject(gameObject.transform.GetChild(i), depth + 1);

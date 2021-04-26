@@ -1,32 +1,33 @@
 ﻿using Assets.Scripts.Simulation.Bloons;
 using Assets.Scripts.Unity.UI_New.InGame;
-using Harmony;
+using BTD_Mod_Helper;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(AutoEscape.Main), "AutoEscape", "1.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(AutoEscape.Main), "AutoEscape", "1.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace AutoEscape
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
-        [HarmonyPatch(typeof(Bloon), nameof(Bloon.Leaked))]
-        internal class Bloon_Leaked
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/AutoEscape/Main.cs";
+
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/AutoEscape/AutoEscape.dll?raw=true";
+        
+        public override bool PreBloonLeaked(Bloon bloon)
         {
-            [HarmonyPrefix]
-            internal static bool Prefix(Bloon __instance)
-            {
-                if (__instance.GetModifiedTotalLeakDamage() >= InGame.instance.bridge.GetHealth() + InGame.Bridge.simulation.Shield
+            if (bloon.GetModifiedTotalLeakDamage() >= InGame.instance.bridge.GetHealth() + InGame.Bridge.simulation.Shield
                 && !InGame.instance.IsSandbox)
+            {
+                if (!InGame.instance.quitting)
                 {
-                    if (!InGame.instance.quitting)
-                    {
-                        InGame.instance.Quit();
-                        MelonLogger.Log("You're Welcome.");
-                    }
-                    return false;
+                    InGame.instance.Quit();
+                    MelonLogger.Msg("You're Welcome.");
                 }
-                return true;
+                return false;
             }
+            return true;
         }
         
     }

@@ -16,7 +16,7 @@ using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Utils;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper.Extensions;
 using UnhollowerBaseLib;
 using CreateEffectOnExpireModel = Assets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel;
 using static Assets.Scripts.Models.Towers.TowerType;
@@ -62,7 +62,7 @@ namespace AbilityChoice
                 weaponProjectile.display = plasmaModel.display;
                 weaponProjectile.GetBehavior<DisplayModel>().display = plasmaModel.display;
                 weaponProjectile.GetDamageModel().damage += 2;
-                weaponProjectile.GetDamageModel().damageTypes = new Il2CppStringArray(new[] {"Plasma"});
+                weaponProjectile.GetDamageModel().immuneBloonProperties = BloonProperties.Purple;
                 weaponProjectile.pierce += 5;
                 
                 
@@ -550,7 +550,7 @@ namespace AbilityChoice
                 weaponModel.projectile.AddBehavior(dontSlowBadBehavior);
                 weaponModel.projectile.pierce += 5;
 
-                weaponModel.projectile.GetDamageModel().damageTypes = new Il2CppStringArray(new[] {"Normal"});
+                weaponModel.projectile.GetDamageModel().immuneBloonProperties = BloonProperties.None;
             }
         }
         
@@ -577,8 +577,8 @@ namespace AbilityChoice
                         10 * (i + 1), false, false) {tags = t};
                     weaponModel.projectile.AddBehavior(behavior);
                     weaponModel.projectile.pierce += 10;
-                    
-                    weaponModel.projectile.GetDamageModel().damageTypes = new Il2CppStringArray(new[] {"Normal"});
+
+                    weaponModel.projectile.GetDamageModel().immuneBloonProperties = BloonProperties.None;
                 }
             }
         }

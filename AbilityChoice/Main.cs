@@ -6,23 +6,29 @@ using Assets.Scripts.Models.Towers.Behaviors.Abilities;
 using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.Popups;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
 using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Assets.Scripts.Unity;
-using BloonsTD6_Mod_Helper;
+using BTD_Mod_Helper;
 using MelonLoader;
 using NinjaKiwi.NKMulti;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.8", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.9", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
 {
     public class Main : BloonsTD6Mod
     {
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/AbilityChoice/Main.cs";
+
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/AbilityChoice/AbilityChoice.dll?raw=true";
+    
         public static HashSet<int> CurrentTowerIDs = new HashSet<int>();
         public static Dictionary<int, int> CurrentBoostIDs = new Dictionary<int, int>();
 
@@ -103,8 +109,8 @@ namespace AbilityChoice
         public override bool ActOnMessage(Message message)
         {
             if (message.Code != "AbilityChoice") return false;
-
-            var abilityChoiceMessage = Game.instance.nkGI.ReadMessage<string>(message);
+            
+            var abilityChoiceMessage = Game.instance.GetNkGI().ReadMessage<string>(message);
             var towerId = int.Parse(abilityChoiceMessage.Split(' ')[1]);
 
             var tower = InGame.instance.GetTowerManager().GetTowerById(towerId);
@@ -129,25 +135,26 @@ namespace AbilityChoice
 
         public static void AskApplyToTower(Tower tower, string upgradeName, TowerModel newBaseTowerModel)
         {
-            if (!InGame.instance.IsCoop || tower.owner == Game.instance.nkGI.PeerID)
+            if (!InGame.instance.IsCoop || tower.owner == Game.instance.GetNkGI().PeerID)
             {
+                var nkGI = Game.instance.GetNkGI();
                 PopupScreen.instance.ShowPopup(PopupScreen.Placement.inGameCenter,
                     "Ability Choice (Can't be Undone)",
                     $"Do you want to forego the {upgradeName} ability to instead get \"{AllUpgrades[upgradeName]}\"",
                     new Action(() =>
                     {
                         EnableForTower(tower, newBaseTowerModel);
-                        if (InGame.instance.IsCoop && Game.instance.nkGI != null)
+                        if (InGame.instance.IsCoop && nkGI != null)
                         {
-                            Game.instance.nkGI.SendMessage("Enable: " + tower.Id, null, "AbilityChoice");
+                            nkGI.SendMessage("Enable: " + tower.Id, null, "AbilityChoice");
                         }
                     }), "Yes",
                     new Action(() =>
                     {
                         DisableForTower(tower);
-                        if (InGame.instance.IsCoop && Game.instance.nkGI != null)
+                        if (InGame.instance.IsCoop && nkGI != null)
                         {
-                            Game.instance.nkGI.SendMessage("Disable: " + tower.Id, null, "AbilityChoice");
+                            nkGI.SendMessage("Disable: " + tower.Id, null, "AbilityChoice");
                         }
                     }), "No", Popup.TransitionAnim.Scale
                 );
@@ -241,7 +248,7 @@ namespace AbilityChoice
                     var methodInfo = typeof(Towers).GetMethod(methodName);
                     if (methodInfo == null)
                     {
-                        MelonLogger.Log("Couldn't find method " + methodName);
+                        MelonLogger.Msg("Couldn't find method " + methodName);
                     }
                     else
                     {

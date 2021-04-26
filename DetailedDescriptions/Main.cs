@@ -1,16 +1,23 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Unity.Menu;
 using Assets.Scripts.Unity.UI_New.Upgrade;
+using BTD_Mod_Helper;
 using Harmony;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.3", "doombubbles")]
+[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.4", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace DetailedDescriptions
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/DetailedDescriptions/Main.cs";
+
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/DetailedDescriptions/DetailedDescriptions.dll?raw=true";
+        
         public static string tooltip;
         public static UpgradePopup popup;
         public static string baseTooltip;
@@ -256,13 +263,13 @@ namespace DetailedDescriptions
             {"Bigger Bombs", "+6p (20)"},
             {"Heavy Bombs", "+1d (2), +10p (30)"},
             {"Really Big Bombs", "+1d (3), +20p (48)"},
-            {"Bloon Impact", "+3r (43), <i>Normal</i>. Applies stun status for 1s (cannot affect Blimps)."},
-            {"Bloon Crush", "+9d (12)\nStun buffed: 2s duration, can affect Blimps"},
+            {"Bloon Impact", "+3r (43). Applies stun status for 1s (cannot affect Blimps)."},
+            {"Bloon Crush", "+9d (12), <i>Normal</i>\nStun buffed: 2s duration, can affect Blimps"},
             
             {"Faster Reload", "75%s (1.125)"},
             {"Missile Launcher", "80%s (0.9), +4r (44), faster projectile speed"},
-            {"MOAB Mauler", "+3cd (4), +18md (19), +5r (49)"},
-            {"MOAB Assassin", "+12md (31), +1cd (5), +5r (54). <b>Ability</b> (30s cooldown): Targets the strongest blimp: removes its top layer (up to 750d), and creates a (3d, 100p) <i>Explosion</i>."},
+            {"MOAB Mauler", "+1cd (2), +18md (19), +5r (49)"},
+            {"MOAB Assassin", "+12md (31), +3cd (5), +5r (54). <b>Ability</b> (30s cooldown): Targets the strongest blimp: removes its top layer (up to 750d), and creates a (3d, 100p) <i>Explosion</i>."},
             {"MOAB Eliminator", "99md (100), <i>Normal</i>. <b>Ability</b> (10s cooldown): Targets the strongest blimp: removes its top layer (up to 4500d), and creates a (3d, 100p) <i>Explosion</i>."},
             
             {"Extra Range", "+7r (47)"},
@@ -283,14 +290,14 @@ namespace DetailedDescriptions
             {"Long Range Tacks", "+4r (27)"},
             {"Super Range Tacks", "+4r (31), +1p (2)"},
             {"Blade Shooter", "<u>Tacks</u> replaced by <u>Blades</u> (1d, 6p, 1.19s, 31r, <i>Sharp</i>)"},
-            {"Blade Maelstrom", "<b>Ability</b> (20s cooldown): Emits blades (1d, 100p, 0.0333s, 2j, <i>Sharp</i>) for 3s."},
+            {"Blade Maelstrom", "<b>Ability</b> (20s cooldown): Emits blades (1d, 200p, 0.0333s, 2j, <i>Sharp</i>) for 3s."},
             {"Super Maelstrom", "+1d (2), <i>Normal</i>. <b>Ability</b> (20s cooldown): Emits blades (2d, 500p, 0.0333s, 4j, <i>Normal</i>) for 9s"},
             
             {"More Tacks", "+2j (10)"},
             {"Even More Tacks", "+2j (12)"},
             {"Tack Sprayer", "75%s (1.05), +4j (16)"},
             {"Overdrive", "+1p (2), 33.33%s (0.35)"},
-            {"The Tack Zone", "+1d (2), +2p (4) (10 w/ 025), 75%s (0.2625), +7r (30) (50 w/ 025), +16j (32), <i>Normal</i>"},
+            {"The Tack Zone", "+1d (2), +2p (4) (10 w/ 025), 75%s (0.2625), +7r (30) (50 w/ 025), +16j (32)"},
             #endregion
             
             #region Ice Monkey
@@ -306,7 +313,7 @@ namespace DetailedDescriptions
             {"Snowstorm", "+10r (30), <b>Ability</b> (30s cooldown): 1 damage to everything (non-white) on screen; " +
                           "applies <u>Frozen</u> status to remaining Bloons (including white) for 4s and to Blimps for 2s."},
             {"Absolute Zero", "+200p (300), +10r (40), <u>Slow</u> effect is now 60%, <u>Frozen</u> status is passed down 3 layers. " +
-                              "<b>Ability</b> (40s cooldown): 1 damage and 10s <u>Frozen</u> status to everything; all Ice Monkeys gain 66.66%s buff for 15s."},
+                              "<b>Ability</b> (20s cooldown): 1 damage and 10s <u>Frozen</u> status to everything; all Ice Monkeys gain 66.66%s buff for 10s."},
             
             {"Larger Radius", "+7r (27)"},
             {"Re-Freeze", "<u>Freeze</u>: <i>Glacier</i>"},
@@ -494,7 +501,7 @@ namespace DetailedDescriptions
             {"Dragon's Breath", "Gains <u>Flame</u> attack (1d, 1cd (2), 4p (6p w/ 031), 0.1s, 50r, <i>Fire</i>) that applies <u>Burn</u> status (1d/1.5s, <i>Fire</i>, 3s duration). " +
                                 "Wall of Fire now happens every 4.5s. <u>Fireball</u> buffed: +2d (3)"},
             {"Summon Phoenix", "<b>Ability</b> (60s cooldown, 20s duration): Summons a <u>Phoenix</u> with <u>Flame</u> attack (4d, 6p, ∞r, 0.1s, <i>Fire</i>, Camo)."},
-            {"Wizard Lord Phoenix", "<u>Flame</u> buffed: +1d (2), +46p (50). <u>Fireball</u> buffed: +6d (9). <u>Phoenix</u> is permanent. <b>Ability</b> (50s cooldown, 20s duration): Transforms into <u>Phoenix Lord</u> " +
+            {"Wizard Lord Phoenix", "<u>Flame</u> buffed: +5d (6), +46p (50). <u>Fireball</u> buffed: +24d (27). <u>Phoenix</u> is permanent. <b>Ability</b> (50s cooldown, 20s duration): Transforms into <u>Phoenix Lord</u> " +
                                     "with <u>Flame</u> attack (20d, 50p, ∞r, 0.1s, <i>Normal</i>, Camo) and <u>Meteor</u> attack (50d, 500p, ∞r, 1.0s, 8j, Normal, Camo)."},
             
             {"Intense Magic", "<u>Bolt</u> buffed: +5p (7), faster projectile speed."},
@@ -515,9 +522,9 @@ namespace DetailedDescriptions
             {"Sun Temple", "<u>Sun Beams</u> replaced by <u>Sunblast</u> (5d, 20p, 0.06s, 65r, <i>Normal</i>) (Look online for Sacrifice stuff lol)."},
             {"True Sun God", "+10d (15) (Look online for Sacrifice stuff lol)."},
             
-            {"Super Range", "+10r (60)"},
-            {"Epic Range", "+1p (2), +12r (72), faster projectile speed."},
-            {"Robo Monkey", "+4p (6) and gains a second attack that's a copy of the first, with independent choice of targeting priority."},
+            {"Super Range", "+1p (2), +10r (60)"},
+            {"Epic Range", "+1p (3), +12r (72), faster projectile speed."},
+            {"Robo Monkey", "+3p (6) and gains a second attack that's a copy of the first, with independent choice of targeting priority."},
             {"Tech Terror", "Attack replaced by <u>Plasma</u> (1d, 8p, 0.048s, 72r, <i>Plasma</i>). <b>Ability</b> (45s cooldown): 1000d, 2000p, 60r."},
             {"The Anti-Bloon", "+4d (5), +5p (13), +10r (82), <i>Normal</i>. <b>Ability</b> (45s cooldown): 3500d, 10000p, 100r."},
             
@@ -640,7 +647,7 @@ namespace DetailedDescriptions
             {"Jungle Drums", "<u>Buff</u> improved: now also gives 85%s."},
             {"Primary Training", "Gains <u>Primary Buff</u> (targets: primary towers; grants: +1p, +10%r, increased projectile speed)."},
             {"Primary Mentoring", "<u>Primary Buff</u> improved: free tier 1 upgrades, +5r, 90% ability cooldowns."},
-            {"Primary Expertise", "<u>Primary Buff</u> improved: +2p (so +3 overall), free tier 2 upgrades. " +
+            {"Primary Expertise", "+7r (55). <u>Primary Buff</u> improved: +2p (so +3 overall), free tier 2 upgrades. " +
                                   "Gains <u>Catapult</u> attack (10d, 190cd (200), 190md (200), 100p but Blimps use 10p, ∞r, 3.0s, <i>Normal</i>, Camo)."},
             
             {"Grow Blocker", "Applies Anti-regrow status to Bloons in range."},

@@ -9,8 +9,11 @@ using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Bridge;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Utils;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
+using NinjaKiwi.LiNK.Lobbies;
+using NinjaKiwi.NKMulti;
+using NKMultiConnection = NinjaKiwi.LiNK.Lobbies.NKMultiConnection;
 using Vector3 = UnityEngine.Vector3;
 
 namespace AbilityChoice
@@ -107,9 +110,10 @@ namespace AbilityChoice
 
                     var engi = __instance.tower.tower;
                     AddBoost(engi, tower);
-                    if (InGame.instance.IsCoop && __instance.tower.owner != Game.instance.nkGI.PeerID)
+                    if (InGame.instance.IsCoop && __instance.tower.owner != Game.instance.GetNkGI().PeerID)
                     {
-                        Game.instance.nkGI.SendMessage("Boost: " + __instance.tower.Id + " " + tower.Id, null, "AbilityChoice");
+                        
+                        Game.instance.GetNkGI().SendMessage("Boost: " + __instance.tower.Id + " " + tower.Id, null, "AbilityChoice");
                     }
 
                     if (engi.towerModel.tier == 5)

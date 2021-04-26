@@ -4,14 +4,19 @@
         <name>BloonsTD6 Mod Helper</name>
     </assembly>
     <members>
-        <member name="M:BloonsTD6_Mod_Helper.Api.JsonSerializer.LoadFromFile``1(System.String)">
+        <member name="T:BTD_Mod_Helper.Api.Enums.ScheduleType">
+            <summary>
+            Controls how you want to wait the Task Scheduler to wait for your tasks
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Api.JsonSerializer.LoadFromFile``1(System.String)">
             <summary>
             Create an instance of a class from file
             </summary>
             <typeparam name="T">The type to load</typeparam>
             <param name="filePath">Location of the file</param>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Api.JsonSerializer.SaveToFile``1(``0,System.String,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:BTD_Mod_Helper.Api.JsonSerializer.SaveToFile``1(``0,System.String,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Save an instance of a class to file
             </summary>
@@ -20,15 +25,7 @@
             <param name="savePath">Location to save file to</param>
             <param name="overwriteExisting">Overwrite the file if it already exists</param>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Api.SpriteRegister.RegisterSpriteFromImage(System.String,UnityEngine.Vector2)">
-            <summary>
-            Create a Sprite object and add it to the register. 
-            See <a href="https://gist.github.com/BowDown097/21e4940f72fde5d7c4480b24c4a21a53">this GitHub gist</a> for an example implementation.
-            </summary>
-            <param name="path">The location to an image file to be converted.</param>
-            <param name="pivot">No clue what this does, best bet is using default.</param>
-        </member>
-        <member name="M:BloonsTD6_Mod_Helper.Api.SpriteRegister.RegisterSpriteFromImage(System.String,UnityEngine.Vector2,System.String@)">
+        <member name="M:BTD_Mod_Helper.Api.SpriteRegister.RegisterSpriteFromImage(System.String,UnityEngine.Vector2,System.String@)">
             <summary>
             Create a Sprite object and add it to the register. Contains out parameter to obtain the GUID, which is useful when working with SpriteReferences. 
             See <a href="https://gist.github.com/BowDown097/0dd7e40b278c4c064b6177d03aad1ee3">this GitHub gist</a> for an example implementation.
@@ -37,158 +34,1263 @@
             <param name="pivot">No clue what this does, best bet is using default.</param>
             <param name="guid">Obtain the GUID for use in SpriteReferences.</param>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnMainMenu">
+        <member name="T:BTD_Mod_Helper.BloonsTD6Mod">
             <summary>
-            Called when you go to the main menu screen
+            Extend this Class instead of MelonMod to gain access to dozens of easy to use built-in hooks
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnKeyDown(UnityEngine.KeyCode)">
-            <summary>
-            Called on the frame that a key starts being held
-            </summary>
-            <param name="keyCode"></param>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.AddTowerToGame(Assets.Scripts.Models.Towers.TowerModel,Assets.Scripts.Models.TowerSets.TowerDetailsModel)">
+             <summary>
+             Adds a TowerModel to the official list of TowerModels being used by the game
+            
+             Equivalent to calling Game.instance.model.AddTowerToGame(...)
+             </summary>
+             <param name="newTowerModel">The new tower model</param>
+             <param name="towerDetailsModel">A TowerDetailsModel to go with it, if it'll be in the shop</param>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.BloonsTD6Mod.OnKeyUp(UnityEngine.KeyCode)">
+        <!-- Badly formed XML comment ignored for member "M:BTD_Mod_Helper.BloonsTD6Mod.ActOnMessage(NinjaKiwi.NKMulti.Message)" -->
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnNewGameModel(Assets.Scripts.Models.GameModel)">
             <summary>
-            Called on the frame that a key stops being held 
+            Called when a new GameModel is created, aka when things like Monkey Knowledge are applied to towers
+            
+            Equivalent to a HarmonyPostFix on GameModel_CreatedModded
             </summary>
-            <param name="keyCode"></param>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToIl2CppList``1(``0[])">
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnNewGameModel(Assets.Scripts.Models.GameModel,Il2CppSystem.Collections.Generic.List{Assets.Scripts.Models.Towers.Mods.ModModel})">
+            <summary>
+            Called when a new GameModel is created, aka when things like Monkey Knowledge are applied to towers
+            
+            Equivalent to a HarmonyPostFix on GameModel_CreatedModded
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnMainMenu">
+             <summary>
+             Called when you go to the main menu screen
+            
+             Equivalent to a HarmonyPostFix on MainMenu.OnEnable
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnVictory">
+            <summary>
+            Called right after a match ends in victory
+            
+            Equivalent to a HarmonyPostFix on InGame.OnVictory
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnMatchStart">
+            <summary>
+            Called right after a match is started up (restart included it seems like)
+            
+            Equivalent to a HarmonyPostFix on InGame.StartMatch
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnRestart(System.Boolean)">
+            <summary>
+            Called when a match is restarted
+            
+            Equivalent to a HarmonyPostFix on InGame.Restart
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnFastForwardChanged(System.Boolean)">
+            <summary>
+            Called right after a game ends in victory
+            
+            Equivalent to a HarmonyPostFix on InGame.OnVictory
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTitleScreen">
+            <summary>
+            Called right after the game finishes loading everything
+            
+            Equivalent to a HarmonyPostFix on TitleScreen.Start
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnKeyDown(UnityEngine.KeyCode)">
+             <summary>
+             Called on the frame that a key starts being held
+            
+             Equivalent to a HarmonyPostFix on Input.GetKeyDown
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnKeyUp(UnityEngine.KeyCode)">
+             <summary>
+             Called on the frame that a key stops being held
+            
+             Equivalent to a HarmonyPostFix on Input.GetKeyUp
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnKeyHeld(UnityEngine.KeyCode)">
+             <summary>
+             Called every frame that a key is being held 
+            
+             Equivalent to a HarmonyPostFix on Input.GetKey
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.PreBloonLeaked(Assets.Scripts.Simulation.Bloons.Bloon)">
+             <summary>
+             Called right before a Bloon would leak.
+             Return 'false' to prevent the leak from happening
+            
+             Equivalent to a HarmonyPreFix on Bloon.Leaked
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.PostBloonLeaked(Assets.Scripts.Simulation.Bloons.Bloon)">
+            <summary>
+            Called right after a Bloon leaks.
+            Return 'false' to prevent the leak from happening
+            
+            Equivalent to a HarmonyPostFix on Bloon.Leaked
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnBloonCreated(Assets.Scripts.Simulation.Bloons.Bloon)">
+            <summary>
+            Called right after a Bloon is first created
+            
+            Equivalent to a HarmonyPostFix on Bloon.Initialise
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnBloonDestroy(Assets.Scripts.Simulation.Bloons.Bloon)">
+            <summary>
+            Called right after a Bloon is destroyed
+            
+            Equivalent to a HarmonyPostFix on Bloon.OnDestroy
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.PostBloonDamaged(Assets.Scripts.Simulation.Bloons.Bloon,System.Single,Assets.Scripts.Simulation.Towers.Projectiles.Projectile,System.Boolean,System.Boolean,System.Boolean,Assets.Scripts.Simulation.Towers.Tower,BloonProperties,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Called right after a Bloon is damaged
+            
+            Equivalent to a HarmonyPostFix on Bloon.Damaged
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.PostBloonDamaged(Assets.Scripts.Simulation.Bloons.Bloon,System.Single,System.Boolean)">
+            <summary>
+            Called right after a Bloon is damaged
+            
+            Equivalent to a HarmonyPostFix on Bloon.Damaged
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerCreated(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Simulation.Objects.Entity,Assets.Scripts.Models.Model)">
+            <summary>
+            Called right after a Tower is initialized
+            
+            Equivalent to a HarmonyPostFix on Tower.Initialise
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerDestroyed(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after a Tower is destroyed
+            
+            Equivalent to a HarmonyPostFix on Tower.Destroyed
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerSold(Assets.Scripts.Simulation.Towers.Tower,System.Single)">
+            <summary>
+            Called right after a Tower is sold
+            
+            Equivalent to a HarmonyPostFix on Tower.OnSold
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerSelected(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after a Tower is selected by the player
+            
+            Equivalent to a HarmonyPostFix on Tower.Highlight
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerDeselected(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after a Tower is deselected by the player
+            
+            Equivalent to a HarmonyPostFix on Tower.UnHighlight
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerUpgraded(Assets.Scripts.Simulation.Towers.Tower,System.String,Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Called right after a Tower is upgraded
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerModelChanged(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Tower's TowerModel is changed for any reason (creation, upgrading, etc.)
+            
+             Equivalent to a HarmonyPostFix on Tower.UpdatedModel
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerSaved(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Models.Profile.TowerSaveDataModel)">
+             <summary>
+             Called at the end of each round when a Tower's data is saved
+            
+             Use saveData.metaData to save custom information
+             
+             Equivalent to a HarmonyPostFix on Tower.GetSavedData
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnTowerLoaded(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Models.Profile.TowerSaveDataModel)">
+             <summary>
+             Called when you load a save file and a Tower's save data get loaded for the tower
+            
+             Use saveData.metaData to load custom information
+             
+             Equivalent to a HarmonyPostFix on Tower.SetSavedData
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.CanTowerTargetCamo(Assets.Scripts.Simulation.Towers.Tower,System.Boolean@)">
+             <summary>
+             Called when you load a save file and a Tower's save data get loaded for the tower
+            
+             Use saveData.metaData to load custom information
+             
+             Equivalent to a HarmonyPostFix on Tower.SetSavedData
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnCashAdded(System.Double,Assets.Scripts.Simulation.Simulation.CashType,System.Int32,Assets.Scripts.Simulation.Simulation.CashSource,Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Called right after Cash is added in a game
+            Tower might be null
+            
+            Equivalent to a HarmonyPostFix on Simulation.AddCash
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnCashRemoved(System.Double,Assets.Scripts.Simulation.Simulation.CashType,System.Int32,Assets.Scripts.Simulation.Simulation.CashSource)">
+            <summary>
+            Called right after Cash is removed in a game
+            
+            Equivalent to a HarmonyPostFix on Simulation.RemoveCash
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnRoundStart">
+            <summary>
+            Called right after a round starts
+            
+            Equivalent to a HarmonyPostFix on Simulation.OnRoundStart
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnRoundEnd">
+            <summary>
+            Called right after a round starts
+            
+            Equivalent to a HarmonyPostFix on Simulation.OnRoundEnd
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnDefeat">
+            <summary>
+            Called right after a match ends in defeat
+            
+            Equivalent to a HarmonyPostFix on Simulation.OnDefeat
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnWeaponCreated(Assets.Scripts.Simulation.Towers.Weapons.Weapon,Assets.Scripts.Simulation.Objects.Entity,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Weapon is created
+            
+             Equivalent to a HarmonyPostFix on Weapon.Initialise
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnWeaponModelChanged(Assets.Scripts.Simulation.Towers.Weapons.Weapon,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Tower's TowerModel is changed for any reason (creation, upgrading, etc.)
+            
+             Equivalent to a HarmonyPostFix on Weapon.UpdatedModel
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnProjectileCreated(Assets.Scripts.Simulation.Towers.Projectiles.Projectile,Assets.Scripts.Simulation.Objects.Entity,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Projectile is created
+            
+             Equivalent to a HarmonyPostFix on Projectile.Initialise
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.BloonsTD6Mod.OnProjectileModelChanged(Assets.Scripts.Simulation.Towers.Projectiles.Projectile,Assets.Scripts.Models.Model)">
+             <summary>
+             Called right after a Tower's TowerModel is changed for any reason (creation, upgrading, etc.)
+            
+             Equivalent to a HarmonyPostFix on Projectile.UpdatedModel
+             </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.ArrayExt.ToSizedList``1(``0[])">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToIl2CppReferenceArray``1(``0[])">
+        <member name="M:BTD_Mod_Helper.Extensions.ArrayExt.ToIl2CppList``1(``0[])">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToSizedList``1(``0[])">
+        <member name="M:BTD_Mod_Helper.Extensions.ArrayExt.ToIl2CppReferenceArray``1(``0[])">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ArrayExt.ToLockList``1(``0[])">
+        <member name="M:BTD_Mod_Helper.Extensions.ArrayExt.ToLockList``1(``0[])">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.IEnumerableExt.ToLockList``1(System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppGenericsExt.ToSizedList``1(Il2CppSystem.Collections.Generic.List{``0})">
+            <summary>
+            Not tested
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppGenericsExt.ToLockList``1(Il2CppSystem.Collections.Generic.List{``0})">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.LockedListExt.ToSizedList``1(Assets.Scripts.Utils.LockList{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToSizedList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
             <summary>
-            Not Tested
+            Not tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
             <summary>
             Confirmed working
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToIl2CppList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToIl2CppList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
             <summary>
             Not tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToArray``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToArray``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
             <summary>
             Not tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToSizedList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
-            <summary>
-            Not tested
-            </summary>
-        </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToLockList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppReferenceArrayExt.ToLockList``1(UnhollowerBaseLib.Il2CppReferenceArray{``0})">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToSystemList``1(Il2CppSystem.Collections.Generic.List{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.ListExt.ToSizedList``1(System.Collections.Generic.List{``0})">
             <summary>
             Not tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToArray``1(Il2CppSystem.Collections.Generic.List{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.ListExt.ToIl2CppList``1(System.Collections.Generic.List{``0})">
             <summary>
             Not tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToSizedList``1(Il2CppSystem.Collections.Generic.List{``0})">
-            <summary>
-            Not tested
-            </summary>
-        </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Il2CppGenericsExt.ToLockList``1(Il2CppSystem.Collections.Generic.List{``0})">
-            <summary>
-            Not Tested
-            </summary>
-        </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToIl2CppList``1(System.Collections.Generic.List{``0})">
-            <summary>
-            Not tested
-            </summary>
-        </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToSizedList``1(System.Collections.Generic.List{``0})">
-            <summary>
-            Not tested
-            </summary>
-        </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToIl2CppReferenceArray``1(System.Collections.Generic.List{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.ListExt.ToIl2CppReferenceArray``1(System.Collections.Generic.List{``0})">
             <summary>
             Confirmed working
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.ListExt.ToLockList``1(System.Collections.Generic.List{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.ListExt.ToLockList``1(System.Collections.Generic.List{``0})">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.SizedListExt.ToLockList``1(Assets.Scripts.Utils.SizedList{``0})">
+        <member name="M:BTD_Mod_Helper.Extensions.LockedListExt.ToSizedList``1(Assets.Scripts.Utils.LockList{``0})">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.Texture2DExt.CreateSpriteFromTexture(UnityEngine.Texture2D,System.Single)">
+        <member name="M:BTD_Mod_Helper.Extensions.SizedListExt.ToLockList``1(Assets.Scripts.Utils.SizedList{``0})">
             <summary>
-            Not added yet
+            Not Tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.GameExt.GetTowerListForTowerType(Assets.Scripts.Unity.Game,System.String)">
+        <member name="M:BTD_Mod_Helper.Extensions.NKMultiGameInterfaceExt.SendMessage(NinjaKiwi.NKMulti.NKMultiGameInterface,NinjaKiwi.NKMulti.Message)">
+            <summary>
+            Send a Message to all players in the lobby
+            </summary>
+            <param name="message">Message to send</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.NKMultiGameInterfaceExt.SendMessage``1(NinjaKiwi.NKMulti.NKMultiGameInterface,``0,System.Nullable{System.Byte},System.String)">
+            <summary>
+            Convert an object to json and send it players or a player in the lobby
+            </summary>
+            <param name="objectToSend">Object you want to send</param>
+            <param name="peerId">The id of the peer you want the message to go to. Leave null if you want to send to all players</param>
+            <param name="code">Coop code used to distinguish this message from others. Like a lock and key for reading messages</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.NKMultiGameInterfaceExt.SendMessage(NinjaKiwi.NKMulti.NKMultiGameInterface,Il2CppSystem.String,System.Nullable{System.Byte},System.String)">
+            <summary>
+            Send a string to players or a player in the lobby
+            </summary>
+            <param name="objectToSend">string message to send. Can be JSON</param>
+            <param name="peerId">The id of the peer you want the message to go to. Leave null if you want to send to all players</param>
+            <param name="code">Coop code used to distinguish this message from others. Like a lock and key for reading messages</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.NKMultiGameInterfaceExt.ReadMessage``1(NinjaKiwi.NKMulti.NKMultiGameInterface,UnhollowerBaseLib.Il2CppStructArray{System.Byte})">
+            <summary>
+            Convert messageBytes to an object of type T
+            </summary>
+            <typeparam name="T">Type to convert bytes to</typeparam>
+            <param name="messageBytes">messageBytes</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.NKMultiGameInterfaceExt.ReadMessage``1(NinjaKiwi.NKMulti.NKMultiGameInterface,NinjaKiwi.NKMulti.Message)">
+            <summary>
+            Convert a Message's bytes to an object of type T
+            </summary>
+            <typeparam name="T">Type to convert bytes to</typeparam>
+            <param name="message">Message you want to read</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.NKMultiGameInterfaceExt.ReadChatMessage(NinjaKiwi.NKMulti.NKMultiGameInterface,NinjaKiwi.NKMulti.Message)">
+            <summary>
+            Used to read messages from BTD6 InGameChat Mod. If Message is a ChatMessage, will be converted to a Chat_Message object
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.AddTowerToGame(Assets.Scripts.Models.GameModel,Assets.Scripts.Models.Towers.TowerModel,Assets.Scripts.Models.TowerSets.TowerDetailsModel)">
+            <summary>
+            Add a TowerModel to the game.
+            </summary>
+            <param name="towerModel">TowerModel to add</param>
+            <param name="towerDetailsModel">Optionally add a TowerDetailsModel for your towerModel</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetBloonModelBuilder(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get the instance of the API's BloonModelBuilder. Used to create custom bloon types and add them to the game
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetAllTowerDetails(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get all TowerDetailModels
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetAllShopTowerDetails(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get all ShopTowerDetailModels
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetTowerModels(Assets.Scripts.Models.GameModel,System.String)">
+            <summary>
+            Get all TowerModels with a specific base id
+            </summary>
+            <param name="towerBaseId">The base id all towers should share. Example: "DartMonkey"</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetTowerModel(Assets.Scripts.Models.GameModel,Assets.Scripts.Models.Towers.TowerType,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Get TowerModel from it's TowerType and it's upgrades
+            </summary>
+            <param name="towerType">Type of tower you want</param>
+            <param name="path1">Number of upgrades in first path</param>
+            <param name="path2">Number of upgrades in second path</param>
+            <param name="path3">Number of upgrades in third path</param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.CreateBloonEmissions(Assets.Scripts.Models.GameModel,Assets.Scripts.Models.Bloons.BloonModel,System.Int32,System.Single)">
+            <summary>
+            Create a BloonEmissionModel from a bloonModel
+            </summary>
+            <param name="bloonModel">The bloon model that these bloons should be</param>
+            <param name="number">Number of Bloons in this emission</param>
+            <param name="spacing">Space between each bloon in this emission</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.CreateBloonEmissions(Assets.Scripts.Models.GameModel,System.String,System.Int32,System.Single)">
+            <summary>
+            Create a BloonEmissionModel from a bloon's name
+            </summary>
+            <param name="bloonName">Name of bloon. Example: "Red"</param>
+            <param name="number">Number of Bloons in this emission</param>
+            <param name="spacing">Space between each bloon in this emission</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.CreateBloonEmission(Assets.Scripts.Models.GameModel,System.String,System.Single)">
+            <summary>
+            Create a single BloonEmission
+            </summary>
+            <param name="bloonName">Name of this bloon. Example: "Red"</param>
+            <param name="time">Time the bloon should be spawned</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.CreateBloonEmission(Assets.Scripts.Models.GameModel,System.String,System.Single,Il2CppSystem.Collections.Generic.List{Assets.Scripts.Simulation.Bloons.Bloon.ChargedMutator},Il2CppSystem.Collections.Generic.List{Assets.Scripts.Simulation.Objects.BehaviorMutator})">
+            <summary>
+            Create a single BloonEmission
+            </summary>
+            <param name="bloonName">Name of this bloon. Example: "Red"</param>
+            <param name="time">Time the bloon should be spawned</param>
+            <param name="chargedMutators"></param>
+            <param name="behaviorMutators"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetAllAttackModels(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get all AttackModels from every TowerModel in the game
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetAllWeaponModels(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get all WeaponModels from every AttackModel in the game
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetAllProjectileModels(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get all ProjectileModels from every TowerModel in the game
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetAllAbilityModels(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get all AbilityModels from every TowerModel in the game
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameModelExt.GetTowerModelsWithAbilities(Assets.Scripts.Models.GameModel)">
+            <summary>
+            Get all TowerModels that have at least one AbilityModel
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.ProjectileModelExt.GetDamageModel(Assets.Scripts.Models.Towers.Projectiles.ProjectileModel)">
+            <summary>
+            Get the DamageModel behavior from the list of behaviors
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.ProjectileModelExt.GetProjectileSims(Assets.Scripts.Models.Towers.Projectiles.ProjectileModel)">
+            <summary>
+            Get all Projectile Simulations that have this ProjectileModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.EntityExt.GetDisplayNode(Assets.Scripts.Simulation.Objects.Entity)">
+            <summary>
+            Get the DisplayNode for this Entity
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.EntityExt.GetUnityDisplayNode(Assets.Scripts.Simulation.Objects.Entity)">
+            <summary>
+            Get the UnityDisplayNode for this Entity
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.UnityToSimulationExt.SetRoundSet(Assets.Scripts.Unity.Bridge.UnityToSimulation,Assets.Scripts.Models.Rounds.RoundSetModel)">
+            <summary>
+            Custom API method that changes the game's round set to a custom RoundSetModel.
+            </summary>
+            <param name="roundSet">New Round Set Model to use</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonExt.SetCamo(Assets.Scripts.Simulation.Bloons.Bloon,System.Boolean)">
+            <summary>
+            Set bloon to be camo or not. Will change bloonModel to camo version if it exists
+            </summary>
+            <param name="isCamo">Should bloon be camo</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonExt.SetFortified(Assets.Scripts.Simulation.Bloons.Bloon,System.Boolean)">
+            <summary>
+            Set bloon to be fortified or not. Will change bloonModel to fortified version if it exists
+            </summary>
+            <param name="isFortified">Should bloon be fortified</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonExt.SetRegrow(Assets.Scripts.Simulation.Bloons.Bloon,System.Boolean)">
+            <summary>
+            Set bloon to be regrow or not. Will change bloonModel to regrow version if it exists
+            </summary>
+            <param name="isRegrow">Should bloon be regrow</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonExt.RemoveBloonStatus(Assets.Scripts.Simulation.Bloons.Bloon,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Remove current statuses from bloon
+            </summary>
+            <param name="removeCamo">Should remove camo if present?</param>
+            <param name="removeFortify">Should remove fortify if present?</param>
+            <param name="removeRegrow">Should remove regrow if present?</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonExt.SetBloonStatus(Assets.Scripts.Simulation.Bloons.Bloon,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Set the statuses of the bloon. Will change bloonModel if one exists with these statuses
+            </summary>
+            <param name="setCamo">Should have camo?</param>
+            <param name="setFortified">Should have fortify?</param>
+            <param name="setRegrow">Should have regrow?</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonExt.GetBloonToSim(Assets.Scripts.Simulation.Bloons.Bloon)">
+            <summary>
+            Get the BloonToSimulation for this specific Bloon
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.CanGetFlagged(Assets.Scripts.Unity.Game)">
+            <summary>
+            Checks if Player is in a game mode that would get them flagged if using mods
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.IsInRace(Assets.Scripts.Unity.Game)">
+            <summary>
+            Returns if Player is in a race
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.IsInPublicCoop(Assets.Scripts.Unity.Game)">
+            <summary>
+            Returns if Player is in a public co-op match
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.IsInOdyssey(Assets.Scripts.Unity.Game)">
+            <summary>
+            Returns if Player is in a Odyssey game
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetNkGI(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get nkGI for the current session. Will be null if not in multiplayer game or lobby
+            </summary>
+            <param name="game"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetDisplayFactory(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the Unity Display Factory that manages on screen sprites. This Factory is different from other Factories in the game
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetSpriteRegister(Assets.Scripts.Unity.Game)">
+            <summary>
+            Gets the Sprite Register. Can be used to add custom sprites
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetJsonSerializer(Assets.Scripts.Unity.Game)">
+            <summary>
+            Gets a Json Serializer. Not necessary but can be useful
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetPopupScreen(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the instance of PopupScreen
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetShopMenu(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the instance of ShopMenu
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetCommonForegroundScreen(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the instance of CommonForegroundScreen
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetCommonBackgroundScreen(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the instance of CommonBackgroundScreen
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetLocalizationManager(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the instance of LocalizationManager
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetMenuManager(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the instance of MenuManager
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetUI(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the instance of UI
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetTowerListForTowerType(Assets.Scripts.Unity.Game,System.String)">
             <summary>
             Not tested
             </summary>
         </member>
-        <member name="M:BloonsTD6_Mod_Helper.Extensions.TowerModelExt.SetMaxAmount(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetBtd6Player(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the Btd6Player data for the player. Contains different info than PlayerProfile
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetTowerDetailModels(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get all TowerDetailModels
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetHeroDetailModels(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get all HeroDetailModels
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetPowerDetailModels(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get all PowerDetailModels
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetMonkeyMoney(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get player's current Monkey Money amount
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.AddMonkeyMoney(Assets.Scripts.Unity.Game,System.Double)">
+            <summary>
+            Add Monkey Money to player's total Monkey Money
+            </summary>
+            <param name="amount">Amount to add</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.SetMonkeyMoney(Assets.Scripts.Unity.Game,System.Double)">
+            <summary>
+            Set player's Monkey Money amount
+            </summary>
+            <param name="amount">Value to set Monkey Money to</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.ScheduleTask(Assets.Scripts.Unity.Game,System.Action)">
+            <summary>
+            Schedule a task to execute later on. By default will wait until the end of this current frame
+            </summary>
+            <param name="game"></param>
+            <param name="action">The action you want to execute once it's time to run your task</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.ScheduleTask(Assets.Scripts.Unity.Game,System.Action,BTD_Mod_Helper.Api.Enums.ScheduleType,System.Int32)">
+            <summary>
+            Schedule a task to execute later on
+            </summary>
+            <param name="game"></param>
+            <param name="action">The action you want to execute once it's time to run your task</param>
+            <param name="scheduleType">How you want to wait for your task</param>
+            <param name="amountToWait">The amount you want to wait</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetPlayerLiNKAccount(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get Player LinkAccount. Contains limited info about player's NinjaKiwi account
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.GetPlayerService(Assets.Scripts.Unity.Game)">
+            <summary>
+            Get the Profile for the player
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.ShowMessage(Assets.Scripts.Unity.Game,System.String,System.String)">
+            <summary>
+            Uses custom message popup to show a message in game. Currently only works in active game sessions and not on Main Menu
+            </summary>
+            <param name="message">Message body</param>
+            <param name="title">Message title. Will be mod name by default</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.GameExt.ShowMessage(Assets.Scripts.Unity.Game,System.String,System.Single,System.String)">
+            <summary>
+            Uses custom message popup to show a message in game. Currently only works in active game sessions and not on Main Menu
+            </summary>
+            <param name="message">Message body</param>
+            <param name="displayTime">Time to show message on screen</param>
+            <param name="title">Message title. Will be mod name by default</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetInGameUI(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the game object that owns all InGame UI elements
+            </summary>
+            <param name="inGame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetSavePath(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the save path for the game (I think?)
+            </summary>
+            <param name="inGame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetCashManager(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Int32)">
+            <summary>
+            Get the Cash Manager for the current game
+            </summary>
+            <param name="index">Index of the cash manager. Default is 0</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetCash(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the Player's current cash
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.AddCash(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Double)">
+            <summary>
+            Add cash to the Player's wallet
+            </summary>
+            <param name="amount">Amount of cash to add to player wallet</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SetCash(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Double)">
+            <summary>
+            Set the Player's cash to a specific amount
+            </summary>
+            <param name="amount">Value to set cash to</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetHealth(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the Player's current health
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.AddHealth(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Double)">
+            <summary>
+            Add health to the players current health
+            </summary>
+            <param name="amount">Amount of health to add</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SetHealth(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Double)">
+            <summary>
+            Set player's health to specific amount
+            </summary>
+            <param name="amount">Value to set health to</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetMaxHealth(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the player's max health
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.AddMaxHealth(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Double)">
+            <summary>
+            Add to the player's max health
+            </summary>
+            <param name="amount">Amount to add to the player's max health</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SetMaxHealth(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Double)">
+            <summary>
+            Set the player's maximum health to a new value
+            </summary>
+            <param name="amount">Value to set max health to</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetPoppedBloons(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get collection of popped bloons in this game. Right now only works for current games. Does not store results from loaded games 
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetTowerInventory(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the current instance of TowerInventory being used in this game session
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SetRound(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Int32)">
+            <summary>
+            Set the current round
+            </summary>
+            <param name="inGame"></param>
+            <param name="round"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SpawnBloons(Assets.Scripts.Unity.UI_New.InGame.InGame,System.String,System.Int32,System.Single)">
+            <summary>
+            Spawn bloons in game
+            </summary>
+            <param name="inGame"></param>
+            <param name="bloonName"></param>
+            <param name="number"></param>
+            <param name="spacing"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SpawnBloons(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Collections.Generic.List{Assets.Scripts.Models.Rounds.BloonEmissionModel})">
+            <summary>
+            Spawn bloons in game
+            </summary>
+            <param name="inGame"></param>
+            <param name="bloonEmissionModels"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SpawnBloons(Assets.Scripts.Unity.UI_New.InGame.InGame,Il2CppSystem.Collections.Generic.List{Assets.Scripts.Models.Rounds.BloonEmissionModel})">
+            <summary>
+            Spawn bloons in game
+            </summary>
+            <param name="inGame"></param>
+            <param name="bloonEmissionModels"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SpawnBloons(Assets.Scripts.Unity.UI_New.InGame.InGame,UnhollowerBaseLib.Il2CppReferenceArray{Assets.Scripts.Models.Rounds.BloonEmissionModel})">
+            <summary>
+            Spawn bloons in game
+            </summary>
+            <param name="inGame"></param>
+            <param name="bloonEmissionModels"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.SpawnBloons(Assets.Scripts.Unity.UI_New.InGame.InGame,System.Int32)">
+            <summary>
+            Spawn bloons in game
+            </summary>
+            <param name="inGame"></param>
+            <param name="round"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetMap(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the current Map
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetSimulation(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the current Simulation for this InGame session
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetGameModel(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            The Game.model that is being used for this InGame.instance
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetMainFactory(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the main Factory that creates and manages all other Factories
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetTowerManager(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Get the current TowerManager for this game session
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.InGameExt.GetAllObjectsOfType``1(Assets.Scripts.Unity.UI_New.InGame.InGame)">
+            <summary>
+            Gets all objects of type T. Does this by returning all objects created by the Factory of type T
+            </summary>
+            <typeparam name="T">The type of items you want</typeparam>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerDetailsModelExt.IsHero(Assets.Scripts.Models.TowerSets.TowerDetailsModel)">
+            <summary>
+            Returns if this TowerDetailModel is actually for a Hero
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerDetailsModelExt.GetTowerPurchaseButton(Assets.Scripts.Models.TowerSets.TowerDetailsModel)">
+            <summary>
+            Get the TowerPurchaseButton that is used to buy this specific TowerDetailModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerDetailsModelExt.GetShopTowerDetails(Assets.Scripts.Models.TowerSets.TowerDetailsModel)">
+            <summary>
+            Get the ShopTowerDetails for this TowerDetailModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.SetMaxAmount(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Not Tested. Use to set the maximum allowed number of this tower
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetTowerDetailsModel(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get all TowerDetailModels that share a base id with this towerModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetTowerPurchaseButton(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get the TowerPurchaseButton for this TowerModel.
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetIndex(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get the number position of this TowerModel in the list of all tower models
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetUpgradeLevel(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Get the current upgrade level of a specific path
+            </summary>
+            <param name="path">What tier of upgrade is currently applied to tower</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.IsHeroUnlocked(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            If this TowerModel is for a Hero, is this Hero unlocked?
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.IsUpgradeUnlocked(Assets.Scripts.Models.Towers.TowerModel,System.Int32,System.Int32)">
+            <summary>
+            Has a specific upgrade for this TowerModel been unlocked already?
+            </summary>
+            <param name="path">Upgrade path</param>
+            <param name="tier">Tier of upgrade</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.IsUpgradePathUsed(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Check if a specific upgrade path is being used/ has any upgrades applied to it
+            </summary>
+            <param name="path">Upgrade path to check</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.HasUpgrade(Assets.Scripts.Models.Towers.TowerModel,System.Int32,System.Int32)">
+            <summary>
+            Check if an upgrade has been applied
+            </summary>
+            <param name="path"></param>
+            <param name="tier"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.HasUpgrade(Assets.Scripts.Models.Towers.TowerModel,Assets.Scripts.Models.Towers.Upgrades.UpgradeModel)">
+            <summary>
+            Check if an upgrade has been applied
+            </summary>
+            <param name="upgradeModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAppliedUpgrades(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get all UpgradeModels that are currently applied to this TowerModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetUpgrade(Assets.Scripts.Models.Towers.TowerModel,System.Int32,System.Int32)">
+            <summary>
+            Get the UpgradeModel for a specific upgrade path/tier
+            </summary>
+            <param name="path"></param>
+            <param name="tier"></param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetHeroModel(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            If this TowerModel is a Hero, get the HeroModel behavior
+            </summary>
+            <param name="towerModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.IsTowerUnlocked(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Has player already unlocked this TowerModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetTowerSims(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get all TowerToSimulations with this TowerModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAbilites(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get all AbilityModel behaviors from this tower, if it has any
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAbility(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get a specific Ability of the tower. By default will get the first ability
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAbility(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Get a specific Ability of the tower.
+            </summary>
+            <param name="index">Index of the ability you want.</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAttackModels(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get all AttackModel behaviors for this TowerModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAttackModel(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Gets the first AttackModel from this TowerModel, if it has one
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAttackModel(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Get one of the AttackModels from this TowerModel. By default will give the first AttackModel
+            </summary>
+            <param name="index">Index of the AttackModel you want</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetWeapons(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Recursively get every WeaponModels this TowerModel has
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetWeapon(Assets.Scripts.Models.Towers.TowerModel,System.Int32)">
+            <summary>
+            Get one of the WeaponModels this TowerModel has. By default will return the first one
+            </summary>
+            <param name="index">Index of WeaponModel that you want</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetWeapon(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Gets the first WeaponModel this TowerModel has, if it has one.
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerModelExt.GetAllProjectiles(Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Get every ProjectileModels this TowerModel has
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.UpgradeModelExt.IsUpgradeUnlocked(Assets.Scripts.Models.Towers.Upgrades.UpgradeModel)">
+            <summary>
+            Return whether or not this upgrade has been unlocked by the player
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppGenericIEnumerableExt.ToLockList``1(Il2CppSystem.Collections.Generic.IEnumerable{``0})">
             <summary>
             Not Tested
             </summary>
         </member>
-        <member name="T:BloonsTD6_Mod_Helper.Properties.Resources">
+        <member name="M:BTD_Mod_Helper.Extensions.IEnumerableExt.ToLockList``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppIEnumeratorExt.ToIl2CppList(Il2CppSystem.Collections.IEnumerator)">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppIEnumeratorExt.ToIl2CppReferenceArray(Il2CppSystem.Collections.IEnumerator)">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppIEnumeratorExt.ToLockList(Il2CppSystem.Collections.IEnumerator)">
+            <summary>
+            Not Tested
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppSystemObjectExt.IsType``1(Il2CppSystem.Object)">
+            <summary>
+            Check if object is the same type as T
+            </summary>
+            <typeparam name="T">Type to check</typeparam>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Il2CppSystemObjectExt.IsType``1(Il2CppSystem.Object,``0@)">
+            <summary>
+            Check if object is the same type as T
+            </summary>
+            <param name="instance"></param>
+            <param name="castObject">The casted object if this is of type T</param>
+            <typeparam name="T">Type to check</typeparam>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.AbilityModelExt.GetAbilitySims(Assets.Scripts.Models.Towers.Behaviors.Abilities.AbilityModel)">
+            <summary>
+            Get the all AbilityToSimulation with this AbilityModel
+            </summary>
+            <param name="abiltyModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.AttackModelExt.AddWeapon(Assets.Scripts.Models.Towers.Behaviors.Attack.AttackModel,Assets.Scripts.Models.Towers.Weapons.WeaponModel)">
+            <summary>
+            Add a weapon to this Attack Model
+            </summary>
+            <param name="weaponToAdd">Weapon to add</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.AttackModelExt.GetAllProjectiles(Assets.Scripts.Models.Towers.Behaviors.Attack.AttackModel)">
+            <summary>
+            Recursively get all ProjectileModels for this attack model and all of it's weapons
+            </summary>
+            <param name="attackModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonModelExt.GetIndex(Assets.Scripts.Models.Bloons.BloonModel)">
+            <summary>
+            Get the number position of this bloon from the list of all bloons
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonModelExt.SpawnBloonModel(Assets.Scripts.Models.Bloons.BloonModel)">
+            <summary>
+            Spawn this BloonModel on the map right now
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonModelExt.CreateBloonEmissionModel(Assets.Scripts.Models.Bloons.BloonModel,System.Int32,System.Int32)">
+            <summary>
+            Create a BloonEmissionModel from this BloonModel
+            </summary>
+            <param name="count">Number of bloons in this emission model</param>
+            <param name="spacing">Space between each bloon in this emission model</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonModelExt.GetBloonSims(Assets.Scripts.Models.Bloons.BloonModel)">
+            <summary>
+            Get all BloonToSimulations with this BloonModel
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.ModelExt.Duplicate``1(``0)">
+            <summary>
+            Create a new and seperate copy of this object. Same as using:  .Clone().Cast();
+            </summary>
+            <typeparam name="T">Type of object you want to cast to when duplicating. Done automatically</typeparam>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.BloonToSimulationExt.GetSimBloon(Assets.Scripts.Unity.Bridge.BloonToSimulation)">
+            <summary>
+            Get the Simulation Bloon for this specific BloonToSimulation. Returns object of class Bloon
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerExt.SetTowerModel(Assets.Scripts.Simulation.Towers.Tower,Assets.Scripts.Models.Towers.TowerModel)">
+            <summary>
+            Change TowerModel to a different one. Will update display
+            </summary>
+            <param name="towerModel">TowerModel to change to</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerExt.SellTower(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Sell this tower
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.TowerExt.GetTowerSim(Assets.Scripts.Simulation.Towers.Tower)">
+            <summary>
+            Get the TowerToSimulation for this specific Tower
+            </summary>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.ImageExt.SaveToPNG(UnityEngine.UI.Image,System.String)">
+            <summary>
+            Saves an image as a PNG files
+            Coded in a robust manner that should work for all images, including those with multiple sprites on them being used
+            </summary>
+            <param name="filePath">Absolute file path on the machine to save the file to</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Texture2DExt.CreateFromColor(UnityEngine.Texture2D,UnityEngine.Color)">
+            <summary>
+            Create Texture2D from a unity Color. Texture will only be this color
+            </summary>
+            <param name="color">Color to make new texture</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Texture2DExt.SaveToPNG(UnityEngine.Texture2D,System.String)">
+            <summary>
+            Save Texture2D as a png to file.
+            </summary>
+            <param name="filePath">File path to save texture to</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Texture2DExt.LoadFromFile(UnityEngine.Texture2D,System.String)">
+            <summary>
+            Create Texture2D from a file on local PC
+            </summary>
+            <param name="filePath">path of file on PC</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Texture2DExt.CreateFromProjResource(UnityEngine.Texture2D,System.Resources.ResourceManager,System.String)">
+            <summary>
+            Create Texture2D from a visual studio Project Resource. Requires adding image as a resource to project
+            </summary>
+            <param name="manager">The resource manager for your current project</param>
+            <param name="resourceName">The name of your image, as it is in the resource manager</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Texture2DExt.CreateFromBitmap(UnityEngine.Texture2D,System.Drawing.Bitmap)">
+            <summary>
+            Create Texture2D from an existing bitmap
+            </summary>
+            <param name="bitmapImage">bitmap to create Texture2D from</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Texture2DExt.CreateSpriteFromTexture(UnityEngine.Texture2D,System.Single)">
+            <summary>
+            Create a Sprite from this Texture2D
+            </summary>
+            <param name="pixelsPerUnit">Number of pixels you want in each unit. More pixels means bigger sprite in game</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Texture2DExt.CreateSpriteFromTexture(UnityEngine.Texture2D,System.Single,UnityEngine.Vector2)">
+            <summary>
+            Create a Sprite from this Texture2D
+            </summary>
+            <param name="pixelsPerUnit">Number of pixels you want in each unit. More pixels means bigger sprite in game</param>
+        </member>
+        <member name="M:BTD_Mod_Helper.Extensions.Vector3Ext.ToSMathVector(UnityEngine.Vector3)">
+            <summary>
+            Convert UnityEngine.Vector3 to NinjaKiwi's SMath.Vector3
+            </summary>
+            <param name="vector3"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BTD_Mod_Helper.Properties.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
             </summary>
         </member>
-        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.ResourceManager">
+        <member name="P:BTD_Mod_Helper.Properties.Resources.ResourceManager">
             <summary>
               Returns the cached ResourceManager instance used by this class.
             </summary>
         </member>
-        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.Culture">
+        <member name="P:BTD_Mod_Helper.Properties.Resources.Culture">
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
-        <member name="P:BloonsTD6_Mod_Helper.Properties.Resources.ingame_popup">
+        <member name="P:BTD_Mod_Helper.Properties.Resources.ingame_popup">
             <summary>
               Looks up a localized resource of type System.Byte[].
             </summary>
+        </member>
+        <member name="P:BTD_Mod_Helper.Properties.Resources.modoptions">
+            <summary>
+              Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="P:BTD_Mod_Helper.BloonsMod.GithubReleaseURL">
+             <summary>
+             Github API URL used to check if this mod is up to date.
+            
+                 For example: "https://api.github.com/repos/gurrenm3/BTD-Mod-Helper/releases"
+             </summary>
+        </member>
+        <member name="P:BTD_Mod_Helper.BloonsMod.MelonInfoCsURL">
+             <summary>
+             As an alternative to a GithubReleaseURL, a direct link to a web-hosted version of the .cs file that
+             has the "MelonInfo" attribute with the version of your mod
+            
+                 
+                 For example: "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/MegaKnowledge/Main.cs"
+            
+                 because the file contains
+                 [assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.1", "doombubbles")]
+             </summary>
+        </member>
+        <member name="P:BTD_Mod_Helper.BloonsMod.LatestURL">
+             <summary>
+             Link that people should be prompted to go to when this mod is out of date.
+            
+                 For example: "https://github.com/gurrenm3/BTD-Mod-Helper/releases/latest"
+             </summary>
         </member>
     </members>
 </doc>

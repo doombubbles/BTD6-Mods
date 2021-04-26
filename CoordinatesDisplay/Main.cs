@@ -6,7 +6,7 @@ using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.Popups;
-using Assets.Scripts.Utils;
+using BTD_Mod_Helper;
 using Harmony;
 using MelonLoader;
 using TMPro;
@@ -15,12 +15,18 @@ using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(CoordinatesDisplay.Main), "Coordinates Display", "1.2.1", "doombubbles")]
+[assembly: MelonInfo(typeof(CoordinatesDisplay.Main), "Coordinates Display", "1.2.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace CoordinatesDisplay
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/CoordinatesDisplay/Main.cs";
+
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/CoordinatesDisplay/CoordinatesDisplay.dll?raw=true";
+        
         public static GameObject display;
         public static AssetBundle assetBundle;
 

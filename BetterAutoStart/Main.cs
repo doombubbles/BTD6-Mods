@@ -6,8 +6,8 @@ using System.Linq;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.ActionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
-using BloonsTD6_Mod_Helper;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
 using UnhollowerBaseLib;
@@ -16,13 +16,19 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-[assembly: MelonInfo(typeof(BetterAutoStart.Main), "Better Autostart", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterAutoStart.Main), "Better Autostart", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace BetterAutoStart
 {
     public class Main : BloonsTD6Mod
     {
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/BetterAutoStart/Main.cs";
+
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/BetterAutoStart/BetterAutoStart.dll?raw=true";
+    
         public static Il2CppStructArray<byte> Alt;
 
         public static Dictionary<string, Image> Images = new Dictionary<string, Image>()

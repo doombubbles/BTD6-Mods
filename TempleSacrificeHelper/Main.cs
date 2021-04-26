@@ -10,6 +10,8 @@ using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Main;
 using Assets.Scripts.Utils;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api.InGame_Mod_Options;
 using Harmony;
 using MelonLoader;
 using UnhollowerRuntimeLib;
@@ -18,56 +20,33 @@ using Image = UnityEngine.UI.Image;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace TempleSacrificeHelper
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
-        private static readonly string Dir = $"{Directory.GetCurrentDirectory()}\\Mods\\TempleSacrificeHelper";
-        private static readonly string Config = $"{Dir}\\config.txt";
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/TempleSacrificeHelper/Main.cs";
 
-        public static int TempleAlternateCost = 50000;
-        public static int GodAlternateCost = 100000;
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/TempleSacrificeHelper/TempleSacrificeHelper.dll?raw=true";
+        
+        public static readonly ModSettingInt TempleAlternateCost = new ModSettingInt(50000)
+        {
+            displayName = "Alternate Sub Temple Cost",
+            minValue = 0
+        };
+        public static readonly ModSettingInt GodAlternateCost = new ModSettingInt(100000)
+        {
+            displayName = "Alternate True Sun God Cost",
+            minValue = 0
+        };
         
         public static bool SacrificesOff = false;
         public static Sprite leftSprite = null;
         public static Sprite rightSprite = null;
         
-        public override void OnApplicationStart()
-        {
-            base.OnApplicationStart();
-            MelonLogger.Log("Temple Sacrifice Helper Enabled");
-            
-            Directory.CreateDirectory($"{Dir}");
-            if (File.Exists(Config))
-            {
-                MelonLogger.Log("Reading config file");
-                using (StreamReader sr = File.OpenText(Config))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        if (s.Contains("TempleAlternateCost"))
-                        {
-                            TempleAlternateCost = int.Parse(s.Substring(s.IndexOf('=') + 1));
-                        } else if (s.Contains("GodAlternateCost"))
-                        {
-                            GodAlternateCost = int.Parse(s.Substring(s.IndexOf('=') + 1));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MelonLogger.Log("Creating config file");
-                using (StreamWriter sw = File.CreateText(Config))
-                {
-                    sw.WriteLine("TempleAlternateCost=" + TempleAlternateCost);
-                    sw.WriteLine("GodAlternateCost=" + GodAlternateCost);
-                }
-            }
-        }
 
         [HarmonyPatch(typeof(MonkeyTemple), nameof(MonkeyTemple.StartSacrifice))]
         public class MonkeyTemple_StartSacrifice
@@ -139,17 +118,12 @@ namespace TempleSacrificeHelper
             }
         }
 
-        [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.OnEnable))]
-        internal class MainMenu_OnEnable
+        public override void OnMainMenu()
         {
-            [HarmonyPostfix]
-            internal static void Postfix()
-            {
-                SacrificesOff = false;
+            SacrificesOff = false;
 
-                TSMTheme_Patch.text = null;
-                TSMTheme_Patch.icons = null;
-            }
+            TSMTheme_Patch.text = null;
+            TSMTheme_Patch.icons = null;
         }
 
 
@@ -286,20 +260,17 @@ namespace TempleSacrificeHelper
             }
         }
 
-        [HarmonyPatch(typeof(Game), "GetVersionString")]
-        public class Update_Patch {
-            private static void AddSwitch(TowerModel towerModel) => towerModel.towerSelectionMenuThemeId = "AmbidextrousRangs";
-            [HarmonyPostfix]
-            public static void Postfix() {
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, 0));
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0 ,0));
-                for(int t = 1; t <= 2; t++) {
-                    AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, t, 0));
-                    AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, t ,0));
+        private static void AddSwitch(TowerModel towerModel) => towerModel.towerSelectionMenuThemeId = "AmbidextrousRangs";
+        public override void OnTitleScreen()
+        {
+            AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, 0));
+            AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0 ,0));
+            for(int t = 1; t <= 2; t++) {
+                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, t, 0));
+                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, t ,0));
                     
-                    AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, t));
-                    AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0 ,t));
-                }
+                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, t));
+                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0 ,t));
             }
         }
     }

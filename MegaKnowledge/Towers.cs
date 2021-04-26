@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Linq;
 using Assets.Scripts.Models.Bloons.Behaviors;
-using Assets.Scripts.Models.Effects;
-using Assets.Scripts.Models.GenericBehaviors;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Behaviors;
-using Assets.Scripts.Models.Towers.Behaviors.Attack;
 using Assets.Scripts.Models.Towers.Behaviors.Attack.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Emissions;
 using Assets.Scripts.Models.Towers.Behaviors.Emissions.Behaviors;
 using Assets.Scripts.Models.Towers.Filters;
 using Assets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Assets.Scripts.Models.Towers.Weapons.Behaviors;
-using Assets.Scripts.Simulation.Towers.Projectiles.Behaviors;
 using Assets.Scripts.Unity;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
-using MelonLoader;
 using UnhollowerBaseLib;
 using static Assets.Scripts.Models.Towers.TowerType;
 
@@ -114,7 +108,7 @@ namespace MegaKnowledge
                 }
 
                 projectileModel.display = "c840e245a0b1deb4284cfc3f953e16cf";
-                projectileModel.GetDamageModel().damageTypes = new Il2CppStringArray(new[] {"Normal"});
+                projectileModel.GetDamageModel().immuneBloonProperties = BloonProperties.None;
             }
         }
 
@@ -552,8 +546,8 @@ namespace MegaKnowledge
                 var damageModel = projectileModel.GetDamageModel();
                 if (damageModel == null)
                 {
-                    damageModel = new DamageModel("DamageModel_", amount, 0f, new Il2CppStringArray(new[] {"Normal"}),
-                        true, false, true, null);
+                    damageModel = new DamageModel("DamageModel_", amount, 0f,
+                        true, false, true, BloonProperties.None);
                     projectileModel.AddBehavior(damageModel);
                 }
                 else
@@ -579,7 +573,7 @@ namespace MegaKnowledge
                 var damageModel = projectileModel.GetBehavior<DamageModel>();
                 if (damageModel != null)
                 {
-                    damageModel.damageTypes = new Il2CppStringArray(new[] {"Normal"});
+                    damageModel.immuneBloonProperties = BloonProperties.None;
                 }
 
                 var travelStraitModel = projectileModel.GetBehavior<TravelStraitModel>();

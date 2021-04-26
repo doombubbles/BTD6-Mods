@@ -4,4 +4,6 @@ This is a simple and personalized speedhack mod that I'm not advertising too har
 
 Use F1 through F4 for 3x, 5x, 10x, 25x speeds for fast forwarding
 
-Requires BTD6 Mod Helper https://github.com/gurrenm3/BloonsTD6-Mod-Helper/releases
+**Changelog**
+
+v1.0.2 Updated for Bloons TD Mod Helper Official Release

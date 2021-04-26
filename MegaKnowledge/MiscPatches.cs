@@ -16,7 +16,7 @@ using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.JsonConverters;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Utils;
-using BloonsTD6_Mod_Helper.Extensions;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
 using Newtonsoft.Json;
@@ -127,8 +127,7 @@ namespace MegaKnowledge
                 {
                     if (!SpikeInfo.ContainsKey(__instance.Id))
                     {
-                        var projectileBehavior = __instance.projectileBehaviors
-                            .FirstOrDefault(b => b.TryCast<ArriveAtTarget>() != null);
+                        var projectileBehavior = __instance.projectileBehaviors.list.FirstOrDefault(b => b.TryCast<ArriveAtTarget>() != null);
                         if (projectileBehavior != null)
                         {
                             SpikeInfo[__instance.Id] = (projectileBehavior.Cast<ArriveAtTarget>(), 0);

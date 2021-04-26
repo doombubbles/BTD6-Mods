@@ -1,80 +1,54 @@
-﻿using System.IO;
-using System.Linq;
-using Assets.Scripts.Models.Towers.Behaviors.Attack;
-using Assets.Scripts.Models.Towers.Projectiles.Behaviors;
+﻿using System.Linq;
+using Assets.Scripts.Models;
+using Assets.Scripts.Models.Towers;
+using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Unity;
-using Harmony;
+using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Extensions;
+using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(BetterArmorPiercing.Main), "Better Armor Piercing", "1.1.1", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterArmorPiercing.Main), "Better Armor Piercing", "1.2.0", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace BetterArmorPiercing
 {
-    public class Main : MelonMod
+    public class Main : BloonsTD6Mod
     {
-        private static readonly string Dir = $"{Directory.GetCurrentDirectory()}\\Mods\\BetterArmorPiercing";
-        private static readonly string Config = $"{Dir}\\config.txt";
+        public override string MelonInfoCsURL =>
+            "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/BetterArmorPiercing/Main.cs";
 
-        private static int ArmorPiercingDartsCost = 3000;
-        private static int HeatTippedDartsBonus = 1;
-
-        public override void OnApplicationStart()
+        public override string LatestURL =>
+            "https://github.com/doombubbles/BTD6-Mods/blob/main/BetterArmorPiercing/BetterArmorPiercing.dll?raw=true";
+        
+        
+        private static readonly ModSettingInt ArmorPiercingDartsCost = new ModSettingInt(3000)
         {
-            base.OnApplicationStart();
-            MelonLogger.Log("Better Armor Piercing Enabled");
-            
-            Directory.CreateDirectory($"{Dir}");
-            if (File.Exists(Config))
-            {
-                MelonLogger.Log("Reading config file");
-                using (StreamReader sr = File.OpenText(Config))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        if (s.Contains("ArmorPiercingDartsCost"))
-                        {
-                            ArmorPiercingDartsCost = int.Parse(s.Substring(s.IndexOf('=') + 1));
-                        } else if (s.Contains("HeatTippedDartsBonus"))
-                        {
-                            HeatTippedDartsBonus = int.Parse(s.Substring(s.IndexOf('=') + 1));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MelonLogger.Log("Creating config file");
-                using (StreamWriter sw = File.CreateText(Config))
-                {
-                    sw.WriteLine("ArmorPiercingDartsCost=" + ArmorPiercingDartsCost);
-                    sw.WriteLine("HeatTippedDartsBonus=" + HeatTippedDartsBonus);
-                }
-            }
-        }
-
-        [HarmonyPatch(typeof(Game), "GetVersionString")]
-        public class GamePatch
+            displayName = "Armor Piercing Darts Cost",
+            minValue = 0
+        };
+        
+        private static readonly ModSettingInt HeatTippedDartsBonus = new ModSettingInt(1)
         {
-            [HarmonyPostfix]
-            public static void Postfix()
+            displayName = "Heat Tipped Darts Bonus Damage w/ Armor Piercing",
+            minValue = 0,
+            maxValue = 10,
+            isSlider = true
+        };
+
+
+        public override void OnNewGameModel(GameModel gameModel, List<ModModel> mods)
+        {
+            gameModel.GetUpgrade("Armor Piercing Darts").cost = CostForDifficulty(ArmorPiercingDartsCost, mods);
+
+            foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeySub)
+                .Where(model => model.appliedUpgrades.Contains("Armor Piercing Darts")))
             {
-                Game.instance.model.GetUpgrade("Armor Piercing Darts").cost = ArmorPiercingDartsCost;
-                
-                foreach (var towerModel in Game.instance.model.towers)
+                var damageModel = towerModel.GetWeapon().projectile.GetDamageModel();
+                damageModel.immuneBloonProperties = BloonProperties.None;
+                if (towerModel.appliedUpgrades.Contains("Heat-tipped Darts"))
                 {
-                    if (!towerModel.appliedUpgrades.Contains("Armor Piercing Darts")) continue;
-                    
-                    var attackModel = towerModel.behaviors.First(b=>b.name.Contains("AttackModel")).Cast<AttackModel>();
-                    
-                    var projectile = attackModel.weapons[0].projectile;
-                    DamageModel damage = projectile.behaviors.First(b=>b.name.Contains("Damage")).Cast<DamageModel>();
-                    damage.damageTypes = new[] { "Normal" };
-                    if (towerModel.appliedUpgrades.Contains("Heat-tipped Darts"))
-                    {
-                        damage.damage += HeatTippedDartsBonus;
-                    }
-                    
+                    damageModel.damage += HeatTippedDartsBonus;
                 }
             }
         }
