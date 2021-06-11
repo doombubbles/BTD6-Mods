@@ -1,20 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.TowerSets;
-using Assets.Scripts.Simulation.Input;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
 using Assets.Scripts.Unity.UI_New.InGame.StoreMenu;
 using BTD_Mod_Helper;
-using Harmony;
-using Il2CppSystem.Collections.Generic;
+using BTD_Mod_Helper.Extensions;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.4", "doombubbles")]
+[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.5", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace InGameHeroSwitch
@@ -27,11 +24,7 @@ namespace InGameHeroSwitch
         public override string LatestURL =>
             "https://github.com/doombubbles/BTD6-Mods/blob/main/InGameHeroSwitch/InGameHeroSwitch.dll?raw=true";
         
-        public static ProfileModel profile;
-        public static List<TowerDetailsModel> allTowers = new List<TowerDetailsModel>();
-        public static TowerInventory towerInventory;
         public static string realSelectedHero;
-
 
         private static readonly string Dir = $"{Directory.GetCurrentDirectory()}\\Mods\\InGameHeroSwitch";
         private static readonly string Config = $"{Dir}\\config.txt";
@@ -99,7 +92,7 @@ namespace InGameHeroSwitch
 
         public static void ChangeHero(int delta)
         {
-            var hero = realSelectedHero;
+            var hero = realSelectedHero ?? InGame.instance.SelectedHero;
 
             if (!CycleIfPlaced && ShopMenu.instance.GetTowerButtonFromBaseId(hero).GetLockedState() ==
                 TowerPurchaseLockState.TowerInventoryLocked)
@@ -107,32 +100,34 @@ namespace InGameHeroSwitch
                 return;
             }
 
-            var heroDetailsModels = Game.instance.model.heroSet.Select(tdm => tdm.Cast<HeroDetailsModel>());
+            var towerInventory = InGame.instance.GetTowerInventory();
+            var unlockedHeroes = Game.instance.GetPlayerProfile().unlockedHeroes;
+
+            var heroDetailsModels = InGame.instance.GetGameModel().heroSet.Select(tdm => tdm.Cast<HeroDetailsModel>());
             var heroes = heroDetailsModels as HeroDetailsModel[] ?? heroDetailsModels.ToArray();
             
             var index = heroes.First(hdm => hdm.towerId == hero).towerIndex;
-            var newHero = heroes.First(hdm => hdm.towerIndex == (index + delta + heroes.Length) % heroes.Length).towerId;
-            
-            foreach (var unlockedHero in profile.unlockedHeroes)
+            var newHero = "";
+            while (!unlockedHeroes.Contains(newHero))
             {
-                foreach (var towerDetailsModel in allTowers)
-                {
-                    if (towerDetailsModel.name.Contains(newHero))
-                    {
-                        towerDetailsModel.towerCount = 1;
-                    }
-                    else if (towerDetailsModel.name.Contains(unlockedHero))
-                    {
-                        towerDetailsModel.towerCount = 0;
-                    }
-                }
+                index += delta;
+                index = (index + heroes.Length) % heroes.Length;
+                newHero = heroes.First(hdm => hdm.towerIndex == index).towerId;
             }
 
-            towerInventory.SetTowerMaxes(allTowers);
+            foreach (var unlockedHero in unlockedHeroes)
+            {
+                towerInventory.towerMaxes[unlockedHero] = 0;
+            }
+            
+            towerInventory.towerMaxes[newHero] = 1;
+            
             realSelectedHero = newHero;
-            ShopMenu.instance.ClearButtons();
-            ShopMenu.instance.Initialise();
-            ShopMenu.instance.PostInitialised();
+            ShopMenu.instance.RebuildTowerSet();
+            foreach (var button in ShopMenu.instance.activeTowerButtons)
+            {
+                button.Update();
+            }
         }
 
         public override void OnUpdate()
@@ -144,29 +139,6 @@ namespace InGameHeroSwitch
             else if (Input.GetKeyDown(CycleDown))
             {
                 ChangeHero(1);
-            }
-        }
-
-        [HarmonyPatch(typeof(TowerInventory), nameof(TowerInventory.Init))]
-        internal class TowerInventory_Init
-        {
-            [HarmonyPrefix]
-            internal static bool Prefix(TowerInventory __instance, ref List<TowerDetailsModel> allTowersInTheGame)
-            {
-                towerInventory = __instance;
-                allTowers = allTowersInTheGame;
-                realSelectedHero = InGame.instance.SelectedHero;
-                return true;
-            }
-        }
-
-        [HarmonyPatch(typeof(ProfileModel), nameof(ProfileModel.Validate))]
-        internal class ProfileModel_Validate
-        {
-            [HarmonyPostfix]
-            public static void Postfix(ProfileModel __instance)
-            {
-                profile = __instance;
             }
         }
     }
