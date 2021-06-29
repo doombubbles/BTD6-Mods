@@ -16,6 +16,8 @@ As far as the future of this mod, I'm probably not going to add any of the other
 
 **Changelog**
 
+v1.2.1 Updated for new Mod Helper
+
 v1.2.0 Updated for Bloons TD Mod Helper Official Release
 
 v1.1.11 Fixed Power Tower unlocking for new users

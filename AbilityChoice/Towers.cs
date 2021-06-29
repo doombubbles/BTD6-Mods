@@ -14,8 +14,6 @@ using Assets.Scripts.Models.Towers.TowerFilters;
 using Assets.Scripts.Models.Towers.Weapons;
 using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
-using Assets.Scripts.Unity.UI_New.InGame;
-using Assets.Scripts.Utils;
 using BTD_Mod_Helper.Extensions;
 using UnhollowerBaseLib;
 using CreateEffectOnExpireModel = Assets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel;
@@ -33,7 +31,7 @@ namespace AbilityChoice
             model.range += 20;
             model.GetAttackModels()[0].range += 20;
             
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 if (projectileModel.display == null)
                 {
@@ -53,7 +51,7 @@ namespace AbilityChoice
             ProjectileModel plasmaModel =
                 Game.instance.model.GetTower(SuperMonkey, 2, 0, 0).GetWeapon().projectile;
 
-            foreach (var weaponProjectile in model.GetAllProjectiles())
+            foreach (var weaponProjectile in model.GetDescendants<ProjectileModel>().ToList())
             {
                 if (weaponProjectile.display == null)
                 {
@@ -105,7 +103,7 @@ namespace AbilityChoice
 
         public static void BombBlitz(TowerModel model)
         {
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 if (projectileModel.GetDamageModel() != null)
                 {
@@ -120,7 +118,7 @@ namespace AbilityChoice
             model.range += 9;
 
             var neva = Game.instance.model.GetTower(MonkeyAce, 0, 0, 3);
-            var behavior = neva.GetAllProjectiles()[0].GetBehavior<TrackTargetModel>().Duplicate();
+            var behavior = neva.GetDescendants<ProjectileModel>().ToList()[0].GetBehavior<TrackTargetModel>().Duplicate();
 
             behavior.TurnRate *= 3;
             behavior.constantlyAquireNewTarget = true;
@@ -138,7 +136,7 @@ namespace AbilityChoice
             model.range += 20;
 
             var neva = Game.instance.model.GetTower(MonkeyAce, 0, 0, 3);
-            var behavior = neva.GetAllProjectiles()[0].GetBehavior<TrackTargetModel>().Duplicate();
+            var behavior = neva.GetDescendants<ProjectileModel>().ToList()[0].GetBehavior<TrackTargetModel>().Duplicate();
 
             behavior.TurnRate *= 3;
             behavior.constantlyAquireNewTarget = true;
@@ -262,7 +260,7 @@ namespace AbilityChoice
         
         public static void BuccaneerMonkeyPirates(TowerModel model)
         {
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 if (projectileModel.id == "Explosion")
                 {
@@ -274,7 +272,7 @@ namespace AbilityChoice
 
         public static void BuccaneerPirateLord(TowerModel model)
         {
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 if (projectileModel.GetDamageModel() != null)
                 {
@@ -590,9 +588,9 @@ namespace AbilityChoice
             var behavior = village.GetBehavior<MonkeyCityIncomeSupportModel>().Duplicate();
             behavior.incomeModifier = 1.15f;
             behavior.appliesToOwningTower = false;
-            behavior.isUnique = false;
+            behavior.isUnique = true;
+            behavior.maxStackSize = 0;
             model.AddBehavior(behavior);
-
             var boat = Game.instance.model.GetTower(MonkeyBuccaneer, 0, 0, 3);
             var cash = boat.GetBehavior<PerRoundCashBonusTowerModel>().Duplicate();
             model.AddBehavior(cash);

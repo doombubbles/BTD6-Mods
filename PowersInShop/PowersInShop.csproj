@@ -35,7 +35,7 @@
         <Reference Include="Assembly-CSharp, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
-        <Reference Include="BloonsTD6 Mod Helper, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="BloonsTD6 Mod Helper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\BloonsTD6 Mod Helper.dll</HintPath>
         </Reference>
         <Reference Include="Il2Cppmscorlib, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
@@ -46,6 +46,9 @@
         </Reference>
         <Reference Include="MelonLoader, Version=0.3.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\MelonLoader.dll</HintPath>
+        </Reference>
+        <Reference Include="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Managed\mscorlib.dll</HintPath>
         </Reference>
         <Reference Include="NinjaKiwi.Common, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Managed\NinjaKiwi.Common.dll</HintPath>
@@ -65,7 +68,7 @@
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Managed\System.Net.Http.dll</HintPath>
         </Reference>
         <Reference Include="System.Xml" />
-        <Reference Include="UnhollowerBaseLib, Version=0.4.10.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="UnhollowerBaseLib, Version=0.4.13.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Managed\UnhollowerBaseLib.dll</HintPath>
         </Reference>
         <Reference Include="Unity.TextMeshPro, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">

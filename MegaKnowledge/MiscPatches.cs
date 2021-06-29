@@ -157,7 +157,8 @@ namespace MegaKnowledge
             }
         }
 
-        [HarmonyPatch(typeof(Projectile), nameof(Projectile.Destroy))]
+        [HarmonyPatch(typeof(Projectile), nameof(Projectile.OnDestroy))]
+        [HarmonyPatch]
         internal class Projectile_Destroy
         {
             [HarmonyPostfix]

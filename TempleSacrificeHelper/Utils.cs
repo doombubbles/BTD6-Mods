@@ -6,6 +6,7 @@ using System.IO;
 using Assets.Scripts.Models.Towers.Upgrades;
 using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Unity.UI_New.InGame;
+using BTD_Mod_Helper;
 using UnityEngine;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
@@ -14,7 +15,7 @@ namespace TempleSacrificeHelper
 {
     public class Utils
     {
-        public static Texture2D GetTexture(string name) {
+        /*public static Texture2D GetTexture(string name) {
             object bitmap = Icons.ResourceManager.GetObject(name);
             if (bitmap != null) {
                 MemoryStream memory = new MemoryStream();
@@ -42,52 +43,31 @@ namespace TempleSacrificeHelper
             }
             image.canvasRenderer.SetTexture(texture);
             image.sprite = sprite;
-        }
+        }*/
         
         public static void DefaultTemple(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "Sun Temple";
-            upgradeModel.cost = CostForDifficulty(100000);
+            upgradeModel.cost = BloonsTD6Mod.CostForDifficulty(100000, InGame.instance);
         }
         
         public static void ModifyTemple(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "";
-            upgradeModel.cost = CostForDifficulty(Main.TempleAlternateCost);
+            upgradeModel.cost = BloonsTD6Mod.CostForDifficulty(Main.TempleAlternateCost, InGame.instance);
         }
         
         public static void DefaultGod(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "True Sun Temple";
-            upgradeModel.cost = CostForDifficulty(500000);
+            upgradeModel.cost = BloonsTD6Mod.CostForDifficulty(500000, InGame.instance);
         }
         
         public static void ModifyGod(UpgradeModel upgradeModel)
         {
             upgradeModel.confirmation = "";
-            upgradeModel.cost = CostForDifficulty(Main.GodAlternateCost);
+            upgradeModel.cost = BloonsTD6Mod.CostForDifficulty(Main.GodAlternateCost, InGame.instance);
         }
-
-        public static int CostForDifficulty(int mediumCost)
-        {
-            var price = (float) mediumCost;
-            switch (InGame.instance.SelectedDifficulty)
-            {
-                case "Easy":
-                    price *= .85f;
-                    break;
-                case "Hard":
-                    price *= 1.08f;
-                    break;
-                case "Impoppable":
-                    price *= 1.2f;
-                    break;
-            }
-            price /= 5f;
-            price = (int)Math.Round(price);
-            return (int) (price * 5);
-        }
-
 
         public static Dictionary<string, Color> GetColors(Dictionary<string, float> worths, bool god)
         {

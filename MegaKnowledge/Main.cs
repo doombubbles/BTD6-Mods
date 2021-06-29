@@ -6,17 +6,17 @@ using Assets.Scripts.Models;
 using Assets.Scripts.Models.Map;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Mods;
+using Assets.Scripts.Simulation.Towers.Projectiles;
 using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Extensions;
-using BTD_Mod_Helper.Api;
 using Harmony;
 using MelonLoader;
 using UnityEngine;
 using static Assets.Scripts.Models.Towers.TowerType;
 using static MegaKnowledge.MegaKnowledge;
 
-[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace MegaKnowledge
@@ -34,137 +34,113 @@ namespace MegaKnowledge
         {
             {
                 SplodeyDarts, new MegaKnowledge("Splodey Darts", "Dart Monkey projectiles explode on expiration.",
-                    "Primary", "MoreCash", -1200, -400, 0, DartMonkey,
-                    "https://media.discordapp.net/attachments/800115046134186026/810247093888876564/SplodeyDarts.png")
+                    "Primary", "MoreCash", -1200, -400, 0, DartMonkey)
             },
             {
                 DoubleRanga, new MegaKnowledge("Double Ranga", "Boomerang Monkeys throw 2 Boomerangs at a time!",
-                    "Primary", "MoreCash", -800, -400, 0, BoomerangMonkey,
-                    "https://media.discordapp.net/attachments/800115046134186026/810260328529133628/DoubleRanga.png")
+                    "Primary", "MoreCash", -800, -400, 0, BoomerangMonkey)
             },
             {
                 BombVoyage, new MegaKnowledge("Bomb Voyage",
                     "Bomb Shooters' bombs travel much faster and can damage any Bloon type.",
-                    "Primary", "MoreCash", -400, -400, 0, BombShooter,
-                    "https://media.discordapp.net/attachments/800115046134186026/813119143468728390/BombVoyage.png")
+                    "Primary", "MoreCash", -400, -400, 0, BombShooter)
             },
             {
                 TackAttack, new MegaKnowledge("Tack Attack",
                     "Tack Shooter attacks constantly, and its projectiles travel farther.",
-                    "Primary", "MoreCash", 0, -400, 0, TackShooter,
-                    "https://media.discordapp.net/attachments/800115046134186026/810666019823157258/TackAttack.png")
+                    "Primary", "MoreCash", 0, -400, 0, TackShooter)
             },
             {
                 IceFortress, new MegaKnowledge("Ice See You",
                     "Ice Monkeys detect and remove Camo from Bloons.",
-                    "Primary", "MoreCash", 400, -400, 0, IceMonkey,
-                    "https://media.discordapp.net/attachments/800115046134186026/810660056362254386/IceFortress.png")
+                    "Primary", "MoreCash", 400, -400, 0, IceMonkey)
             },
             {
                 GorillaGlue, new MegaKnowledge("Gorilla Glue",
                     "Glue Gunners' glue globs do moderate damage themselves.",
-                    "Primary", "MoreCash", 800, -400, 0, GlueGunner,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/812958872036704256/GorillaGlue.png")
+                    "Primary", "MoreCash", 800, -400, 0, GlueGunner)
             },
             {
                 RifleRange, new MegaKnowledge("Rifle Range",
                     "Sniper Monkey shots can critically strike for double damage.",
-                    "Military", "BigBloonSabotage", -1200, -400, 0, SniperMonkey,
-                    "https://media.discordapp.net/attachments/800115046134186026/810676434602295306/RifleRange.png")
+                    "Military", "BigBloonSabotage", -1200, -400, 0, SniperMonkey)
             },
             {
                 AttackAndSupport, new MegaKnowledge("Attack and Support",
                     "Monkey Subs don't need to submerge to gain submerged benefits.",
-                    "Military", "BigBloonSabotage", -800, -400, 0, MonkeySub,
-                    "https://media.discordapp.net/attachments/800115046134186026/812826877009461279/AttackAndSupport.png",
-                    true)
+                    "Military", "BigBloonSabotage", -800, -400, 0, MonkeySub, true)
             },
             {
                 Dreadnought, new MegaKnowledge("Dreadnought",
                     "Monkey Buccaneers shoot molten cannon balls instead of darts and grapes.",
-                    "Military", "BigBloonSabotage", -400, -400, 0, MonkeyBuccaneer,
-                    "https://media.discordapp.net/attachments/800115046134186026/810370809872646184/Dreadnought.png")
+                    "Military", "BigBloonSabotage", -400, -400, 0, MonkeyBuccaneer)
             },
             {
                 AceHardware, new MegaKnowledge("Ace Hardware",
                     "Monkey Aces get a new shorter ranged focus-firing gunner attack.",
-                    "Military", "BigBloonSabotage", 0, -400, 0, MonkeyAce,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/812900285344383006/AcePrivateHangar.png")
+                    "Military", "BigBloonSabotage", 0, -400, 0, MonkeyAce)
             },
             {
                 AllPowerToThrusters, new MegaKnowledge("All Power To Thrusters",
                     "Heli Pilots can move at hyper-sonic speeds",
-                    "Military", "BigBloonSabotage", 400, -400, 0, HeliPilot,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/812780479690047488/AllPowerToThrusters.png")
+                    "Military", "BigBloonSabotage", 400, -400, 0, HeliPilot)
             },
             {
                 MortarEmpowerment, new MegaKnowledge("Mortar Empowerment",
                     "Mortar Monkey can attack like a regular tower.",
                     "Military", "BigBloonSabotage", 800, -400, 0, MortarMonkey,
-                    "https://media.discordapp.net/attachments/800115046134186026/810362033249189969/MortarEmpowerment.png",
                     true)
             },
             {
                 DartlingEmpowerment, new MegaKnowledge("Dartling Empowerment",
                     "Dartling Gunner can attack like a regular tower.",
                     "Military", "BigBloonSabotage", 1200, -400, 0, DartlingGunner,
-                    "https://media.discordapp.net/attachments/800115046134186026/810553105128882226/DartlingEmpowerment.png",
                     true)
             },
             {
                 CrystalBall, new MegaKnowledge("Crystal Ball",
                     "Instead of letting Wizard Monkeys see through walls, the Guided Magic upgrade gives them Advanced Intel style targeting.",
-                    "Magic", "ManaShield", -2000, -400, 0, WizardMonkey,
-                    "https://media.discordapp.net/attachments/800115046134186026/810613374068588574/CrystalBall.png")
+                    "Magic", "ManaShield", -2000, -400, 0, WizardMonkey)
             },
             {
                 XrayVision, new MegaKnowledge("X-Ray Vision",
                     "Super Monkeys can see through walls and have increased pierce.",
-                    "Magic", "ManaShield", -1600, -400, 0, SuperMonkey,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/810689149329604638/XrayVision.png")
+                    "Magic", "ManaShield", -1600, -400, 0, SuperMonkey)
             },
             {
                 ShadowDouble, new MegaKnowledge("Shadow Double",
                     "Ninja Monkeys can throw extra Shurikens behind them if Bloons are present.",
-                    "Magic", "ManaShield", -1200, -400, 0, NinjaMonkey,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/812832140068519966/ShadowDouble.png")
+                    "Magic", "ManaShield", -1200, -400, 0, NinjaMonkey)
             },
             {
                 Oktoberfest, new MegaKnowledge("Oktoberfest",
                     "Alchemist buff potions last for 50% more shots.",
-                    "Magic", "ManaShield", -800, -400, 0, Alchemist,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/810968077889175572/Oktoberfest.png")
+                    "Magic", "ManaShield", -800, -400, 0, Alchemist)
             },
             {
                 BloonAreNotPrepared, new MegaKnowledge("Bloon are not Prepared",
                     "Druids' personal stacking buffs always have maximum effect.",
-                    "Magic", "ManaShield", -400, -400, 0, Druid,
-                    "https://media.discordapp.net/attachments/800115046134186026/810948418435940392/BloonAreNotPrepared.png")
+                    "Magic", "ManaShield", -400, -400, 0, Druid)
             },
             {
                 RealHealthyBananas, new MegaKnowledge("Real Healthy Bananas",
                     "Healthy Bananas makes all Banana Farms give 1 life per round per upgrade (aka tier + 1 per round).",
-                    "Support", "BankDeposits", 0, -400, 0, BananaFarm,
-                    "https://media.discordapp.net/attachments/800115046134186026/810336352255344680/RealHealthyBananas.png")
+                    "Support", "BankDeposits", 0, -400, 0, BananaFarm)
             },
             {
                 SpikeEmpowerment, new MegaKnowledge("Spike Empowerment",
                     "Spike Factories choose the spot where their spikes land, and spikes damage Bloons while traveling.",
-                    "Support", "BankDeposits", 400, -400, 0, SpikeFactory,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/810696194383937547/SpikeEmpowerment.png",
-                    true)
+                    "Support", "BankDeposits", 400, -400, 0, SpikeFactory, true)
             },
             {
                 DigitalAmplification, new MegaKnowledge("Digital Amplification",
                     "Monkey Villages have greatly increased range.",
-                    "Support", "BankDeposits", 800, -400, 0, MonkeyVillage,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/810689161111404594/DigitalAmplification.png")
+                    "Support", "BankDeposits", 800, -400, 0, MonkeyVillage)
             },
             {
                 Overtime, new MegaKnowledge("Overtime",
                     "Engineers and their Sentries are permanently Overclocked.",
-                    "Support", "BankDeposits", 1200, -400, 0, null,
-                    "https://cdn.discordapp.com/attachments/800115046134186026/810683625111945216/Overtime.png")
+                    "Support", "BankDeposits", 1200, -400, 0, null)
             },
         };
 
@@ -176,11 +152,6 @@ namespace MegaKnowledge
         public override void OnApplicationStart()
         {
             Directory.CreateDirectory($"{Dir}");
-            foreach (var megaKnowledge in MegaKnowledges.Values)
-            {
-                SpriteRegister.Instance.RegisterSpriteFromURL("Mods\\MegaKnowledge\\" + megaKnowledge.name + ".png",
-                    megaKnowledge.URL, default, out megaKnowledge.GUID);
-            }
 
             if (File.Exists(Config))
             {

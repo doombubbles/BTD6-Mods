@@ -6,6 +6,7 @@ using Assets.Scripts.Models.Towers.Behaviors.Attack.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Emissions;
 using Assets.Scripts.Models.Towers.Behaviors.Emissions.Behaviors;
 using Assets.Scripts.Models.Towers.Filters;
+using Assets.Scripts.Models.Towers.Projectiles;
 using Assets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
@@ -20,7 +21,7 @@ namespace MegaKnowledge
     {
         public static void SplodeyDarts(TowerModel model)
         {
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 var bomb = Game.instance.model.GetTowerFromId(BombShooter).GetWeapon()
                     .projectile.Duplicate();
@@ -86,7 +87,7 @@ namespace MegaKnowledge
             var attackModel = model.GetAttackModel();
             var flameGrape = Game.instance.model.GetTower(MonkeyBuccaneer, 0, 2, 0).GetWeapons()[3]
                 .projectile;
-            foreach (var projectileModel in attackModel.GetAllProjectiles())
+            foreach (var projectileModel in attackModel.GetDescendants<ProjectileModel>().ToList())
             {
                 if (projectileModel.name.Contains("Explosion") || projectileModel.GetDamageModel() == null)
                 {
@@ -158,7 +159,7 @@ namespace MegaKnowledge
                     new EmissionCamoIfTargetIsCamoModel("EmissionCamoIfTargetIsCamoModel_CamoEmissionBehavior"));
             }
 
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 var travelStraitModel = projectileModel.GetBehavior<TravelStraitModel>();
                 if (travelStraitModel != null)
@@ -179,7 +180,7 @@ namespace MegaKnowledge
         {
             model.GetAttackModel().fireWithoutTarget = true;
 
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 var tsm = projectileModel.GetBehavior<TravelStraitModel>();
                 if (tsm != null)
@@ -198,7 +199,7 @@ namespace MegaKnowledge
         {
             var behavior = new RemoveBloonModifiersModel("RemoveBloonModifiersModel_", false, true, false, false, false,
                 new Il2CppStringArray(new string[0]));
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 projectileModel.AddBehavior(behavior.Duplicate());
             }
@@ -224,7 +225,7 @@ namespace MegaKnowledge
                 attackModel.attackThroughWalls = true;
             }
 
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 projectileModel.ignoreBlockers = true;
                 if (projectileModel.pierce > 0)
@@ -530,7 +531,7 @@ namespace MegaKnowledge
 
         public static void GorillaGlue(TowerModel model)
         {
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 var amount = Math.Max(1, model.tier);
                 if (model.tier == 4)
@@ -568,7 +569,7 @@ namespace MegaKnowledge
 
         public static void BombVoyage(TowerModel model)
         {
-            foreach (var projectileModel in model.GetAllProjectiles())
+            foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 var damageModel = projectileModel.GetBehavior<DamageModel>();
                 if (damageModel != null)

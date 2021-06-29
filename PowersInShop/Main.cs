@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Main.Scenes;
 using Assets.Scripts.Models.Map;
 using Assets.Scripts.Models.Powers;
 using Assets.Scripts.Models.Profile;
@@ -20,7 +17,7 @@ using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Upgrade;
 using BTD_Mod_Helper;
-using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
@@ -29,7 +26,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.2.0", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.2.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace PowersInShop
@@ -249,25 +246,15 @@ namespace PowersInShop
             }
         }
 
-        [HarmonyPatch(typeof(ProfileModel), nameof(ProfileModel.Validate))]
-        public class ProfileModelPatch
+        public override void OnProfileLoaded(ProfileModel result)
         {
-            [HarmonyPostfix]
-            public static void Postfix(ProfileModel __instance)
+            var unlockedTowers = result.unlockedTowers;
+
+            foreach (var power in Powers.Keys.Where(power => Powers[power] < 0))
             {
-                var unlockedTowers = __instance.unlockedTowers;
-
-                foreach (var power in Powers.Keys)
+                if (!unlockedTowers.Contains(power))
                 {
-                    if (Powers[power] < 0)
-                    {
-                        continue;
-                    }
-
-                    if (!unlockedTowers.Contains(power))
-                    {
-                        unlockedTowers.Add(power);
-                    }
+                    unlockedTowers.Add(power);
                 }
             }
         }
@@ -303,37 +290,17 @@ namespace PowersInShop
             }
         }
 
-        [HarmonyPatch(typeof(TowerInventory), nameof(TowerInventory.Init))]
-        public class TowerInventoryPatch
+        public override void OnTowerInventoryInitialized(TowerInventory towerInventory, 
+            Il2CppSystem.Collections.Generic.List<TowerDetailsModel> allTowersInTheGame)
         {
-            public static Il2CppSystem.Collections.Generic.List<TowerDetailsModel> allTowers =
-                new Il2CppSystem.Collections.Generic.List<TowerDetailsModel>();
-
-            public static TowerInventory towerInventory;
-
-            [HarmonyPrefix]
-            public static bool Prefix(TowerInventory __instance,
-                ref Il2CppSystem.Collections.Generic.List<TowerDetailsModel> allTowersInTheGame)
+            var i = allTowersInTheGame.Count;
+            foreach (var power in Powers.Keys.Where(power => Powers[power] >= 0))
             {
-                var i = 22;
-                foreach (var power in Powers.Keys)
-                {
-                    if (Powers[power] < 0)
-                    {
-                        continue;
-                    }
-
-                    var powerDetails = new ShopTowerDetailsModel(power, i++, 0, 0, 0, -1, 0, null);
-                    allTowersInTheGame.Add(powerDetails);
-                }
-
-                allTowers = allTowersInTheGame;
-                towerInventory = __instance;
-
-                TSMThemeEnergisingTotem_Selected.lastOpened = false; //UI is reset, so we have to as well
-
-                return true;
+                var powerDetails = new ShopTowerDetailsModel(power, i++, 0, 0, 0, -1, 0, null);
+                allTowersInTheGame.Add(powerDetails);
             }
+
+            TSMThemeEnergisingTotem_Selected.lastOpened = false; //UI is reset, so we have to as well
         }
 
         [HarmonyPatch(typeof(UpgradeScreen), nameof(UpgradeScreen.UpdateUi))]
@@ -354,60 +321,30 @@ namespace PowersInShop
             }
         }
 
-        [HarmonyPatch(typeof(InGame), nameof(InGame.StartMatch))]
-        internal class InGame_StartMatch
+        private static void RestrictTowers()
         {
-            [HarmonyPostfix]
-            internal static void Postfix()
+            if (RestrictAsSupport && InGame.instance.SelectedMode.Contains("Only") ||
+                !AllowInChimps && InGame.instance.SelectedMode.Contains("Clicks"))
             {
-                var towerInventory = TowerInventoryPatch.towerInventory;
-                var allTowers = TowerInventoryPatch.allTowers;
-
-                if (RestrictAsSupport && InGame.instance.SelectedMode.Contains("Only") ||
-                    !AllowInChimps && InGame.instance.SelectedMode.Contains("Clicks"))
+                var towerInventory = InGame.instance.GetTowerInventory();
+                foreach (var tower in towerInventory.towerDisplayOrder)
                 {
-                    foreach (var tower in allTowers)
+                    if (Powers.ContainsKey(tower))
                     {
-                        foreach (var power in Powers.Keys)
-                        {
-                            if (tower.towerId == power)
-                            {
-                                tower.towerCount = 0;
-                            }
-                        }
+                        towerInventory.towerMaxes[tower] = 0;
                     }
                 }
-
-                towerInventory.SetTowerMaxes(allTowers);
             }
         }
-
-        [HarmonyPatch(typeof(InGame), nameof(InGame.Restart))]
-        internal class InGame_Restart
+        
+        public override void OnMatchStart()
         {
-            [HarmonyPostfix]
-            internal static void Postfix()
-            {
-                var towerInventory = TowerInventoryPatch.towerInventory;
-                var allTowers = TowerInventoryPatch.allTowers;
+            RestrictTowers();
+        }
 
-                if (RestrictAsSupport && InGame.instance.SelectedMode.Contains("Only") ||
-                    !AllowInChimps && InGame.instance.SelectedMode.Contains("Clicks"))
-                {
-                    foreach (var tower in allTowers)
-                    {
-                        foreach (var power in Powers.Keys)
-                        {
-                            if (tower.towerId == power)
-                            {
-                                tower.towerCount = 0;
-                            }
-                        }
-                    }
-                }
-
-                towerInventory.SetTowerMaxes(allTowers);
-            }
+        public override void OnRestart(bool removeSave)
+        {
+            RestrictTowers();
         }
     }
 }

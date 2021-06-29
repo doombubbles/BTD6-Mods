@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Simulation.Towers.Behaviors;
 using Assets.Scripts.Unity;
@@ -9,19 +10,24 @@ using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
 using Assets.Scripts.Unity.UI_New.Main;
+using Assets.Scripts.Unity.Utils;
 using Assets.Scripts.Utils;
 using BTD_Mod_Helper;
-using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Api;
+using BTD_Mod_Helper.Api.ModOptions;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
 using UnhollowerRuntimeLib;
 using UnityEngine;
+using UnityEngine.U2D;
 using Image = UnityEngine.UI.Image;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.3", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.4", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
+
 namespace TempleSacrificeHelper
 {
     public class Main : BloonsTD6Mod
@@ -31,22 +37,22 @@ namespace TempleSacrificeHelper
 
         public override string LatestURL =>
             "https://github.com/doombubbles/BTD6-Mods/blob/main/TempleSacrificeHelper/TempleSacrificeHelper.dll?raw=true";
-        
+
         public static readonly ModSettingInt TempleAlternateCost = new ModSettingInt(50000)
         {
-            displayName = "Alternate Sub Temple Cost",
+            displayName = "Alternate Sun Temple Cost",
             minValue = 0
         };
+
         public static readonly ModSettingInt GodAlternateCost = new ModSettingInt(100000)
         {
             displayName = "Alternate True Sun God Cost",
             minValue = 0
         };
-        
+
         public static bool SacrificesOff = false;
         public static Sprite leftSprite = null;
         public static Sprite rightSprite = null;
-        
 
         [HarmonyPatch(typeof(MonkeyTemple), nameof(MonkeyTemple.StartSacrifice))]
         public class MonkeyTemple_StartSacrifice
@@ -57,14 +63,15 @@ namespace TempleSacrificeHelper
                 return !SacrificesOff;
             }
         }
-        
+
         [HarmonyPatch(typeof(TowerSelectionMenu), nameof(TowerSelectionMenu.OnUpdate))]
         public class TowerSelectionMenu_OnUpdate
         {
             [HarmonyPostfix]
             public static void Postfix(TowerSelectionMenu __instance)
             {
-                if (__instance.upgradeButtons != null && __instance.selectedTower?.tower?.towerModel?.baseId == TowerType.SuperMonkey)
+                if (__instance.upgradeButtons != null &&
+                    __instance.selectedTower?.tower?.towerModel?.baseId == TowerType.SuperMonkey)
                 {
                     if (SacrificesOff)
                     {
@@ -75,10 +82,12 @@ namespace TempleSacrificeHelper
                             {
                                 continue;
                             }
+
                             if (upgradeModel.name == "Sun Temple")
                             {
                                 Utils.ModifyTemple(upgradeModel);
-                            } else if (upgradeModel.name == "True Sun God")
+                            }
+                            else if (upgradeModel.name == "True Sun God")
                             {
                                 Utils.ModifyGod(upgradeModel);
                             }
@@ -86,6 +95,7 @@ namespace TempleSacrificeHelper
                             {
                                 continue;
                             }
+
                             instanceUpgradeButton.UpdateCost();
                             instanceUpgradeButton.UpdateVisuals(0, false);
                         }
@@ -99,10 +109,12 @@ namespace TempleSacrificeHelper
                             {
                                 continue;
                             }
+
                             if (upgradeModel.name == "Sun Temple")
                             {
                                 Utils.DefaultTemple(upgradeModel);
-                            } else if (upgradeModel.name == "True Sun God")
+                            }
+                            else if (upgradeModel.name == "True Sun God")
                             {
                                 Utils.DefaultGod(upgradeModel);
                             }
@@ -110,6 +122,7 @@ namespace TempleSacrificeHelper
                             {
                                 continue;
                             }
+
                             instanceUpgradeButton.UpdateCost();
                             instanceUpgradeButton.UpdateVisuals(0, false);
                         }
@@ -127,15 +140,18 @@ namespace TempleSacrificeHelper
         }
 
 
-        [HarmonyPatch(typeof(TSMThemeAmbidextrousRangs), nameof(TSMThemeAmbidextrousRangs.TowerInfoChanged))]
-        public class TSMTheme_Patch {
+        [HarmonyPatch(typeof(TSMThemeDefault), nameof(TSMThemeAmbidextrousRangs.TowerInfoChanged))]
+        [HarmonyPatch]
+        public class TSMTheme_Patch
+        {
             private static SpriteReference magicSprite = null;
 
             public static Dictionary<String, NK_TextMeshProUGUI> text = null;
             public static Dictionary<String, GameObject> icons = null;
 
             [HarmonyPostfix]
-            public static void Postfix(TSMThemeAmbidextrousRangs __instance, TowerToSimulation tower) {
+            public static void Postfix(TSMThemeAmbidextrousRangs __instance, TowerToSimulation tower)
+            {
                 if (text != null)
                 {
                     foreach (var key in text.Keys)
@@ -145,25 +161,32 @@ namespace TempleSacrificeHelper
                     }
                 }
 
-                if (tower.Def.name.Contains(TowerType.SuperMonkey) && tower.Def.tiers[0] >= 3 && tower.Def.tiers[0] < 5) {
-                    if (__instance.towerBackgroundImage.sprite == null) {
-                        if (magicSprite == null) {
-                            foreach (BaseTSMTheme t in TowerSelectionMenu.instance.themeManager.themes) {
-                                if (t.GetIl2CppType().IsAssignableFrom(Il2CppType.Of<TSMThemeDefault>())) {
+                if (tower.Def.name.Contains(TowerType.SuperMonkey) && tower.Def.tiers[0] >= 3 && tower.Def.tiers[0] < 5)
+                {
+                    if (__instance.towerBackgroundImage.sprite == null)
+                    {
+                        if (magicSprite == null)
+                        {
+                            foreach (BaseTSMTheme t in TowerSelectionMenu.instance.themeManager.themes)
+                            {
+                                if (t.GetIl2CppType().IsAssignableFrom(Il2CppType.Of<TSMThemeDefault>()))
+                                {
                                     TSMThemeDefault td = t.Cast<TSMThemeDefault>();
                                     if (td.magicSprite != null)
                                         magicSprite = td.magicSprite;
                                 }
                             }
                         }
-                        if (magicSprite != null) {
+
+                        if (magicSprite != null)
+                        {
                             __instance.magicSprite = magicSprite;
-                            ResourceLoader.LoadSpriteFromSpriteReferenceAsync(magicSprite,
-                                __instance.towerBackgroundImage, false);
+                            __instance.towerBackgroundImage.SetSprite(magicSprite);
                         }
                     }
+
                     ;
-                    
+
 
                     if (__instance.isMonkeyPortraitFlipped)
                     {
@@ -176,15 +199,19 @@ namespace TempleSacrificeHelper
                         __instance.leftHandButton.gameObject.SetActive(true);
                     }
 
+                    var leftImage = __instance.leftHandButton.transform.Find("Icon").GetComponent<Image>();
+                    var rightImage = __instance.rightHandButton.transform.Find("Icon").GetComponent<Image>();
+
+
                     if (leftSprite == null && rightSprite == null)
                     {
-                        leftSprite = __instance.leftHandButton.transform.Find("Icon").GetComponent<Image>().sprite;
-                        rightSprite = __instance.rightHandButton.transform.Find("Icon").GetComponent<Image>().sprite;
+                        leftSprite = leftImage.sprite;
+                        rightSprite = rightImage.sprite;
                     }
-                    
-                    Utils.SetTexture(__instance.leftHandButton.transform.Find("Icon").GetComponent<Image>(), SacrificesOff ? "Off" : "On");
-                    Utils.SetTexture(__instance.rightHandButton.transform.Find("Icon").GetComponent<Image>(), SacrificesOff ? "Off" : "On");
 
+                    var spriteRef = ModContent.GetSpriteReference<Main>(SacrificesOff ? "Off" : "On");
+                    leftImage.SetSprite(spriteRef);
+                    rightImage.SetSprite(spriteRef);
 
                     if (text == null)
                     {
@@ -195,13 +222,24 @@ namespace TempleSacrificeHelper
                             ["Magic"] = Object.Instantiate(__instance.popCountText, __instance.transform, true),
                             ["Support"] = Object.Instantiate(__instance.popCountText, __instance.transform, true)
                         };
-                        
+
                         icons = new Dictionary<string, GameObject>
                         {
-                            ["Primary"] = Object.Instantiate(__instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage").gameObject, __instance.transform, true),
-                            ["Military"] = Object.Instantiate(__instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage").gameObject, __instance.transform, true),
-                            ["Magic"] = Object.Instantiate(__instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage").gameObject, __instance.transform, true),
-                            ["Support"] = Object.Instantiate(__instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage").gameObject, __instance.transform, true)
+                            ["Primary"] =
+                                Object.Instantiate(
+                                    __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage")
+                                        .gameObject, __instance.transform, true),
+                            ["Military"] =
+                                Object.Instantiate(
+                                    __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage")
+                                        .gameObject, __instance.transform, true),
+                            ["Magic"] = Object.Instantiate(
+                                __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage").gameObject,
+                                __instance.transform, true),
+                            ["Support"] =
+                                Object.Instantiate(
+                                    __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage")
+                                        .gameObject, __instance.transform, true)
                         };
 
                         float unit = __instance.popCountText.fontSize / 2;
@@ -209,10 +247,18 @@ namespace TempleSacrificeHelper
 
                         foreach (var key in icons.Keys)
                         {
-                            Utils.SetTexture(icons[key].transform.GetComponent<Image>(), key);
+                            var image = icons[key].transform.GetComponent<Image>();
+
+                            AtlasLateBinding.instance.OnAtlasRequested("MainMenuUiAtlas", new Action<SpriteAtlas>(
+                                atlas =>
+                                {
+                                    var sprite = atlas.GetSprite(key + "Btn");
+                                    sprite.texture.mipMapBias = -1;
+                                    sprite.texture.filterMode = FilterMode.Trilinear;
+                                    image.SetSprite(sprite);
+                                }));
                             text[key].transform.Translate(0, i * unit, 0);
                             icons[key].transform.Translate(0, i * unit, 0);
-
                             i--;
                         }
                     }
@@ -225,32 +271,40 @@ namespace TempleSacrificeHelper
                         {
                             text[key].gameObject.SetActiveRecursively(true);
                             icons[key].gameObject.SetActiveRecursively(true);
-                            text[key].SetText(
-                                "$" + worths[key]);
+                            text[key].SetText("$" + worths[key]);
                             text[key].color = colors[key];
                         }
                     }
-                    
-
-                } else if (tower.Def.baseId == TowerType.BoomerangMonkey && leftSprite != null && rightSprite != null)
+                }
+                else if (tower.Def.baseId == TowerType.BoomerangMonkey && leftSprite != null && rightSprite != null)
                 {
-                    Utils.SetTexture(__instance.leftHandButton.transform.Find("Icon").GetComponent<Image>(), null, leftSprite);
-                    Utils.SetTexture(__instance.rightHandButton.transform.Find("Icon").GetComponent<Image>(), null, rightSprite);
+                    var leftImage = __instance.leftHandButton.transform.Find("Icon").GetComponent<Image>();
+                    var rightImage = __instance.rightHandButton.transform.Find("Icon").GetComponent<Image>();
+
+                    leftImage.SetSprite(leftSprite);
+                    rightImage.SetSprite(rightSprite);
                 }
             }
         }
 
         [HarmonyPatch(typeof(TSMThemeAmbidextrousRangs), nameof(TSMThemeAmbidextrousRangs.OnButtonPress))]
-        public class Switch_Patch {
-
+        public class Switch_Patch
+        {
             [HarmonyPostfix]
-            public static void Postfix(TSMThemeAmbidextrousRangs __instance, TowerToSimulation tower, TSMButton button) {
+            public static void Postfix(TSMThemeAmbidextrousRangs __instance, TowerToSimulation tower, TSMButton button)
+            {
                 if (tower.Def.name.Contains(TowerType.SuperMonkey) && tower.Def.tiers[0] >= 3 && tower.Def.tiers[0] < 5
-                    && (button == __instance.leftHandButton || button == __instance.rightHandButton)) {
+                    && (button == __instance.leftHandButton || button == __instance.rightHandButton))
+                {
                     SacrificesOff = !SacrificesOff;
-                    Utils.SetTexture(__instance.leftHandButton.transform.Find("Icon").GetComponent<Image>(), SacrificesOff ? "Off" : "On");
-                    Utils.SetTexture(__instance.rightHandButton.transform.Find("Icon").GetComponent<Image>(), SacrificesOff ? "Off" : "On");
-                    
+
+                    var leftImage = __instance.leftHandButton.transform.Find("Icon").GetComponent<Image>();
+                    var rightImage = __instance.rightHandButton.transform.Find("Icon").GetComponent<Image>();
+
+                    var spriteRef = ModContent.GetSpriteReference<Main>(SacrificesOff ? "Off" : "On");
+                    leftImage.SetSprite(spriteRef);
+                    rightImage.SetSprite(spriteRef);
+
                     foreach (var key in TSMTheme_Patch.text.Keys)
                     {
                         TSMTheme_Patch.text[key].gameObject.SetActiveRecursively(!SacrificesOff);
@@ -260,17 +314,20 @@ namespace TempleSacrificeHelper
             }
         }
 
-        private static void AddSwitch(TowerModel towerModel) => towerModel.towerSelectionMenuThemeId = "AmbidextrousRangs";
+        private static void AddSwitch(TowerModel towerModel) =>
+            towerModel.towerSelectionMenuThemeId = "AmbidextrousRangs";
+
         public override void OnTitleScreen()
         {
             AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, 0));
-            AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0 ,0));
-            for(int t = 1; t <= 2; t++) {
+            AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0, 0));
+            for (int t = 1; t <= 2; t++)
+            {
                 AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, t, 0));
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, t ,0));
-                    
+                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, t, 0));
+
                 AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, t));
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0 ,t));
+                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0, t));
             }
         }
     }

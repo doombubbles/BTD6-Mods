@@ -35,7 +35,7 @@
         <Reference Include="Assembly-CSharp, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
-        <Reference Include="BloonsTD6 Mod Helper, Version=1.0.3.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="BloonsTD6 Mod Helper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\BloonsTD6 Mod Helper.dll</HintPath>
         </Reference>
         <Reference Include="Il2Cppmscorlib, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
@@ -101,14 +101,11 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Icons.Designer.cs" />
         <Compile Include="Main.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Include="Icons.resx" />
-    </ItemGroup>
-    <ItemGroup>
+      <EmbeddedResource Include="alt.png" />
       <Content Include="README.md" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

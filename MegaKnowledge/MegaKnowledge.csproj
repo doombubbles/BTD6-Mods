@@ -35,7 +35,7 @@
         <Reference Include="Assembly-CSharp, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
-        <Reference Include="BloonsTD6 Mod Helper, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="BloonsTD6 Mod Helper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\BloonsTD6 Mod Helper.dll</HintPath>
         </Reference>
         <Reference Include="Il2Cppmscorlib, Version=3.7.1.6, Culture=neutral, PublicKeyToken=null">
@@ -100,29 +100,29 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="icons\AcePrivateHangar.png" />
-      <Content Include="icons\AllPowerToThrusters.png" />
-      <Content Include="icons\AttackAndSupport.png" />
-      <Content Include="icons\BloonAreNotPrepared.png" />
-      <Content Include="icons\BombVoyage.png" />
-      <Content Include="icons\CrystalBall.png" />
-      <Content Include="icons\DartlingEmpowerment.png" />
-      <Content Include="icons\DigitalAmplification.png" />
-      <Content Include="icons\DoubleRanga.png" />
-      <Content Include="icons\Dreadnought.png" />
-      <Content Include="icons\GorillaGlue.png" />
-      <Content Include="icons\IceFortress.png" />
-      <Content Include="icons\MortarEmpowerment.png" />
-      <Content Include="icons\Oktoberfest.png" />
-      <Content Include="icons\Overtime.png" />
-      <Content Include="icons\RealHealthyBananas.png" />
-      <Content Include="icons\RifleRange.png" />
-      <Content Include="icons\ShadowDouble.png" />
-      <Content Include="icons\SpikeEmpowerment.png" />
-      <Content Include="icons\SplodeyDarts.png" />
-      <Content Include="icons\TackAttack.png" />
-      <Content Include="icons\XrayVision.png" />
-      <Content Include="README.md" />
+      <EmbeddedResource Include="icons\AcePrivateHangar.png" />
+      <EmbeddedResource Include="icons\AllPowerToThrusters.png" />
+      <EmbeddedResource Include="icons\AttackAndSupport.png" />
+      <EmbeddedResource Include="icons\BloonAreNotPrepared.png" />
+      <EmbeddedResource Include="icons\BombVoyage.png" />
+      <EmbeddedResource Include="icons\CrystalBall.png" />
+      <EmbeddedResource Include="icons\DartlingEmpowerment.png" />
+      <EmbeddedResource Include="icons\DigitalAmplification.png" />
+      <EmbeddedResource Include="icons\DoubleRanga.png" />
+      <EmbeddedResource Include="icons\Dreadnought.png" />
+      <EmbeddedResource Include="icons\GorillaGlue.png" />
+      <EmbeddedResource Include="icons\IceFortress.png" />
+      <EmbeddedResource Include="icons\MortarEmpowerment.png" />
+      <EmbeddedResource Include="icons\Oktoberfest.png" />
+      <EmbeddedResource Include="icons\Overtime.png" />
+      <EmbeddedResource Include="icons\RealHealthyBananas.png" />
+      <EmbeddedResource Include="icons\RifleRange.png" />
+      <EmbeddedResource Include="icons\ShadowDouble.png" />
+      <EmbeddedResource Include="icons\SpikeEmpowerment.png" />
+      <EmbeddedResource Include="icons\SplodeyDarts.png" />
+      <EmbeddedResource Include="icons\TackAttack.png" />
+      <EmbeddedResource Include="icons\XrayVision.png" />
+      <EmbeddedResource Include="README.md" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

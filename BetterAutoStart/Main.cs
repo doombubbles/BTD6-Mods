@@ -7,6 +7,7 @@ using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.ActionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
 using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
@@ -16,7 +17,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-[assembly: MelonInfo(typeof(BetterAutoStart.Main), "Better Autostart", "1.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterAutoStart.Main), "Better Autostart", "1.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace BetterAutoStart
@@ -29,26 +30,12 @@ namespace BetterAutoStart
         public override string LatestURL =>
             "https://github.com/doombubbles/BTD6-Mods/blob/main/BetterAutoStart/BetterAutoStart.dll?raw=true";
     
-        public static Il2CppStructArray<byte> Alt;
-
-        public static Dictionary<string, Image> Images = new Dictionary<string, Image>()
+        public static Dictionary<string, Image> Images = new Dictionary<string, Image>
         {
             {"FastForwardOff", null},
             {"FastForwardOn", null},
             {"Go!", null}
         };
-
-        public override void OnApplicationStart()
-        {
-            var bitmap = Icons.ResourceManager.GetObject("Alt");
-            if (bitmap != null)
-            {
-                MemoryStream memory = new MemoryStream();
-                (bitmap as Bitmap)?.Save(memory, ImageFormat.Png);
-                Alt = memory.ToArray();
-                memory.Close();
-            }
-        }
         
         public static void UpdateTextures()
         {
@@ -64,8 +51,9 @@ namespace BetterAutoStart
                     if (img != null)
                     {
                         Images[imageName] = Object.Instantiate(img, img.transform.parent, true);
-                        Images[imageName].canvasRenderer.SetTexture(GetAltTexture());
-                        Images[imageName].sprite = Sprite.Create(GetAltTexture(), img.sprite.textureRect, img.sprite.pivot);
+                        var texture = ModContent.GetTexture<Main>("alt");
+                        Images[imageName].canvasRenderer.SetTexture(texture);
+                        Images[imageName].sprite = Sprite.Create(texture, img.sprite.textureRect, img.sprite.pivot);
                         Images[imageName].enabled = false;
                     }
                 }
@@ -116,29 +104,5 @@ namespace BetterAutoStart
                 }
             }
         }
-
-        public static Texture2D GetAltTexture()
-        {
-            Texture2D texture = new Texture2D(1024, 1024);
-            ImageConversion.LoadImage(texture, Alt);
-            return texture;
-        }
-
-
-        /*RenderTexture tmp = RenderTexture.GetTemporary(image.mainTexture.width, image.mainTexture.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
-        Graphics.Blit(image.mainTexture, tmp);
-        RenderTexture previous = RenderTexture.active;
-        RenderTexture.active = tmp;
-        Texture2D myTexture2D = new Texture2D(image.mainTexture.width, image.mainTexture.height);
-        myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
-        myTexture2D.Apply();
-        RenderTexture.active = previous;
-        RenderTexture.ReleaseTemporary(tmp);
-        var bytes = ImageConversion.EncodeToPNG(myTexture2D);
-        if (bytes == null)
-        {
-            MelonLogger.Log("The bytes are null!");
-        }
-        File.WriteAllBytes("C:\\Users\\James\\Pictures\\go.png", bytes);*/
     }
 }

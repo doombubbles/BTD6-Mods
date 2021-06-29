@@ -8,4 +8,6 @@ Also configurable is a setting for improving the x/2/4+ Heat-tipped Darts cross-
 
 **Changelog**
 
+v1.2.1 Updated for new Mod Helper
+
 v1.2.0 Updated for Bloons TD Mod Helper Official Release

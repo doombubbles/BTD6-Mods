@@ -122,4 +122,6 @@ Overtime - Engineers and their Sentries are permanently Overclocked.
 
 **Changelog**
 
+v1.0.2 Updated for new Mod Helper
+
 v1.0.1 Updated for BTD Mod Helper official release and BloonsTD6 v25.0

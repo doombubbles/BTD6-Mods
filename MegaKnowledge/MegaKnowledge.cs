@@ -6,17 +6,15 @@
         public string description;
         public string set;
         public string cloneFrom;
-        public string URL;
         public int offsetX;
         public int offsetY;
         public int required;
-        public string GUID;
         public bool enabled = false;
         public string tower;
         public bool targetChanging;
 
         public MegaKnowledge(string name, string description, string set, string cloneFrom, int offsetX, int offsetY,
-            int required, string tower, string url, bool targetChanging = false)
+            int required, string tower, bool targetChanging = false)
         {
             this.name = name;
             this.description = description;
@@ -25,7 +23,6 @@
             this.offsetX = offsetX;
             this.offsetY = offsetY;
             this.required = required;
-            URL = url;
             this.targetChanging = targetChanging;
             this.tower = tower;
         }

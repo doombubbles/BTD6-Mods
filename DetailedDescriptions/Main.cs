@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Assets.Scripts.Models;
 using Assets.Scripts.Unity.Menu;
 using Assets.Scripts.Unity.UI_New.Upgrade;
+using Assets.Scripts.Utils;
 using BTD_Mod_Helper;
 using Harmony;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.4", "doombubbles")]
+[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.5", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace DetailedDescriptions
 {
@@ -54,8 +57,20 @@ namespace DetailedDescriptions
                 OnModifierUp();
             }
         }
-        
-        
+
+        /*public override void OnGameModelLoaded(GameModel model)
+        {
+            foreach (var modelTower in model.towers)
+            {
+                try
+                {
+                    FileIOUtil.SaveObject($"Towers\\{modelTower.name}.json", modelTower);
+                }
+                catch (Exception )
+                {
+                }
+            }
+        }*/
 
         public static void OnModifierDown()
         {
@@ -186,7 +201,7 @@ namespace DetailedDescriptions
         private static readonly Dictionary<string, string> TOWER_DESCRIPTIONS = new Dictionary<string, string>
         {
             {"DartMonkey", "<u>Dart</u> attack (1d, 2p, 0.95s, 32r, <i>Sharp</i>)  "},
-            {"BoomerangMonkey", "<u>Boomerang</u> attack (1d, 4p, 43r, 1.42s, <i>Sharp</i>)"},
+            {"BoomerangMonkey", "<u>Boomerang</u> attack (1d, 4p, 43r, 1.2s, <i>Sharp</i>)"},
             {"BombShooter", "<u>Bomb</u> attack (1.5s, 40r), creates on-hit <u>Explosion</u> (1d, 14p, <i>Explosion</i>)"},
             {"TackShooter", "<u>Tacks</u> attack (1d, 1p, 1.4s, 23r, 8j, <i>Sharp</i>)"},
             {"IceMonkey", "<u>Freeze</u> attack (1d, 40p, 2.4s, 20r, <i>Cold</i>) that applies <u>Frozen</u> status for 1.5s"},
@@ -239,24 +254,24 @@ namespace DetailedDescriptions
             
             #region Boomerang Monkey
             {"Improved Rangs", "+4p (8)"},
-            {"Glaives", "+5p (13), 85%s (1.207)"},
+            {"Glaives", "+5p (13)"},
             {"Glaive Ricochet", "<u>Boomerang</u> replaced by <u>Glaive</u> (1d, 50p, 1.2s, 43r, <i>Sharp</i>)"},
             {"M.O.A.R Glaives", "+50p (100), 50%s (0.6)"},
-            {"Glaive Lord", "Gains <u>Orbital Glaive</u> attack (2d, 5cd (7), 5md (7), 2fd (4), ∞p, 0.1s, 40r zone, <i>Normal</i>, camo). <u>Glaive</u> buffed: first hit applies shred effect (10d/1.0s, 15s duration, stackable)."},
+            {"Glaive Lord", "Gains <u>Orbital Glaive</u> attack (2d, 5cd (7), 5md (7), 2fd (4), ∞p, 0.1s, 40r zone, camo). <u>Glaive</u> buffed: first hit applies shred effect (10d/1.0s, 15s duration, stackable)."},
             
-            {"Faster Throwing", "75%s (1.065)"},
-            {"Faster Rangs", "75%s (0.8), faster projectile speed"},
+            {"Faster Throwing", "75%s (.9)"},
+            {"Faster Rangs", "75%s (0.675), faster projectile speed"},
             {"Bionc Boomerang", "+1md (2), 0.28s"},
             {"Turbo Charge", "<b>Ability</b> (45s cooldown): +1d and 7× faster (0.04s) for 10s."},
             {"Perma Charge", "+3d (4, 5md) (8, 9md w/ 052), 0.04s\n<b>Ability</b> (40s cooldown): +8d (12) for 15s."},
             
             {"Long Range Rangs", "+6.5r (49.5)"},
             {"Red Hot Rangs", "+1d, <i>Normal</i>"},
-            {"Kylie Boomerang", "<u>Boomerang</u> replaced by <u>Kylie</u> (2d, 18p, 1.42s, 49.5r, <i>Normal</i>) that travels in a straight line and can re-hit Bloons every .3s"},
+            {"Kylie Boomerang", "<u>Boomerang</u> replaced by <u>Kylie</u> (2d, 18p, 1.2s, 49.5r, <i>Normal</i>) that travels in a straight line and can re-hit Bloons every .3s"},
             {"MOAB Press", "Gains <u>Heavy Kylie</u> attack (1d, 4md (5), 200p (300p w/ 104, 320p w/ 204), 10.0s, <i>Normal</i>) that targets and knocks back Blimps below BAD and can re-hit every 0.1s."},
             {"MOAB Domination", "<u>Kylie</u> buffed: +10d (12), 50%s (0.71). " +
                                 "<u>Heavy Kylie</u> buffed: +15md (20), 50%s (5.0s), 100r, 0.25s stun, can target BADs, creates explosion effect instead of returning: " +
-                                "100d, 20p, <i>Normal</i>, 50 blast radius, applies burn status (50d/1s, 4s duration)"},
+                                "100d, 40p, <i>Normal</i>, 50 blast radius, applies burn status (50d/1s, 4s duration)"},
             #endregion
             
             #region Bomb Shooter
@@ -372,7 +387,7 @@ namespace DetailedDescriptions
             
             {"Barbed Darts", "+3p (5)"},
             {"Heat-tipped Darts", "<u>Dart</u>: <i>Normal</i>"},
-            {"Ballistic Missile", "+8r (50), gains <u>Missile</u> attack (1d, 5cd (6), 5md (6), 100p, 1.3s (1.14s w/ 031, 0.85s w/ 032), <i>Explosion</i>). Infinite range with 230 crosspath."},
+            {"Ballistic Missile", "+8r (50), gains <u>Missile</u> attack (1d, 5cd (6), 5md (6), 100p, 1.105s (.967s w/ 031, 0.87s w/ 032), <i>Explosion</i>). Infinite range with 230 crosspath."},
             {"First Strike Capability", "<b>Ability</b> (60s cooldown): 10000 <i>Normal</i> damage to strongest Bloon, which can pierce blimp layers; additionally creates a (350d, ∞p, 75r, <i>Normal</i>) explosion."},
             {"Pre-emptive Strike", "<u>Missile</u> buffed: +6cd (11), +6md (11), 33.33%s (0.5s). <b>Ability</b> cooldown is now 45s. <b>Passive</b>: Sends an assassin (up to 750d) at any Blimp that enters the map."},
             
@@ -410,7 +425,7 @@ namespace DetailedDescriptions
             {"Rapid Fire", "75%s (1.26)"},
             {"Lots More Darts", "<u>Radial Darts</u> buffed: +4j (12)"},
             {"Fighter Plane", "Flies 20% faster, gains <u>Moab Missile</u> attack (18md, 3p, 4.0s, 2j, <i>Explosion</i>, homing, Blimps only)"},
-            {"Operation: Dart Storm", "<u>Radial Darts</u> buffed: 50%s (0.63), +4j (16). <u>Moab Missile</u> buffed: 50%s (2.0), +1p (4). All crosspath attacks twice as fast."},
+            {"Operation: Dart Storm", "<u>Radial Darts</u> buffed: 50%s (0.63), +4j (16). <u>Moab Missile</u> buffed: 50%s (2.0), +1p (4), +6md (24). All crosspath attacks twice as fast."},
             {"Sky Shredder", "<u>Radial Dart</u> buffed: +2d (3), +2cd (5), +3p (8), 50%s (0.315), +16j (32), <i>Normal</i>. <u>Moab Missile</u> buffed: 150md, +1p (5), <i>Normal</i>."},
             
             {"Exploding Pineapple", "Gains <u>Pineapple</u> attack (1d, 20p (32p w/ 011), 2s, <i>Explosion</i>)"},
@@ -437,7 +452,7 @@ namespace DetailedDescriptions
             {"IFR", "Camo."},
             {"Downdraft", "Gains <u>Downdraft</u> attack (0d, 0.15s (.12s w/ 032)1p, ) that sends Bloon 50-300 units back."},
             {"Support Chinook", "<b>Ability</b> (60s cooldown): Move a tower, except for: Aces, Helis, Farms, Villages, Aircraft Carriers, and Temples.) <b>Ability</b> (60s cooldown): Alternates between dropping $1000-$2000 and 50-75 lives."},
-            {"Special Poperations", "<b>Ability</b> (60s cooldown): Alternates between dropping $2000-$4000 and 100-150 lives. <b>Ability</b> (40s cooldown): deploy a Marine (30s lifetime) with a <u>Bullet</u> attack (6d, 30p, 0.05s, 50r, <i>Normal</i>)."},
+            {"Special Poperations", "<b>Ability</b> (60s cooldown): Alternates between dropping $2000-$4000 and 100-150 lives. <b>Ability</b> (25s cooldown): deploy a Marine (30s lifetime) with a <u>Bullet</u> attack (6d, 20p, 0.05s, 50r, <i>Normal</i>)."},
             
             {"Faster Darts", "Darts travel faster."},
             {"Faster Firing", "<u>Darts</u> buffed: 80%s."},
@@ -479,7 +494,7 @@ namespace DetailedDescriptions
             {"Advanced Targeting", "Camo."},
             {"Faster Barrel Spin", "0.66%s (.132)"},
             {"Hydra Rocket Pods", "<u>Dart</u> attack replaced with <u>Rocket</u> (0d, 6p (2 used up per Bloon), .132s, ∞r) that create <u>Blasts</u> on each hit (1d, 6p, 8r, <i>Normal</i>)."},
-            {"Rocket Storm", "<u>Rockets</u> and <u>Blasts</u> buffed: +2p. <b>Ability</b> (30s): Produces 19 waves of 9 <u>Missiles</u> (6d, 8p, ∞r, <i>Normal</i>, 120°) that briefly stun Bloons."},
+            {"Rocket Storm", "<u>Rockets</u> and <u>Blasts</u> buffed: +2p. <b>Ability</b> (40s): Produces 19 waves of 9 <u>Missiles</u> (6d, 8p, ∞r, <i>Normal</i>, 120°) that briefly stun Bloons."},
             {"M.A.D", "<u>Rockets</u> now have (3d +750md, 8p, .4s). <b>Ability</b> <u>Missiles</u> are larger and have +8p (16)."},
             
             {"Faster Swivel", "2x faster turn speed."},
@@ -624,7 +639,7 @@ namespace DetailedDescriptions
             #region Spike Factory
             {"Bigger Stacks", "+5p (10)"},
             {"White Hot Spikes", "Spikes become <i>Normal</i>."},
-            {"Spiked Balls", "+1d (2), +3cd (5), +1fd, +7p (17)."},
+            {"Spiked Balls", "+1d (2), +3cd (5), +1fd, +4p (14)."},
             {"Spiked Mines", "+3cd (8). Creates an <u>Explosion</u> (10d, 2cd (12), 1fd, 40p, <i>Explosion</i>) that applies <u>Burn</u> status (1d/2s, <i>Fire</i>, 6s duration) when spikes expire."},
             {"Super Mines", "Speed becomes 4.4s. <u>Explosion</u> buffed: +990d (1000), +20p (60), <i>Normal</i>. " +
                             "Each Spike of each mine makes a smaller <u>Explosion</u> (10d, 10p, 20r, <i>Explosion</i>)."},
@@ -659,7 +674,7 @@ namespace DetailedDescriptions
             {"Monkey Business", "<u>Buff</u> improved: +10% discount to base towers and upgrades up to tier 3."},
             {"Monkey Commerce", "<i>Buff</i> improved: +5% discount to base towers and upgrades up to tier 3, stackable (additively) up to 3 times total."},
             {"Monkey Town", "<u>Buff</u> improved: +50% cash modifier (additive with other cash modifiers)."},
-            {"Monkey City", "+10r (50). Provides a free Dart Monkey each round. Gains <u>Support Buff</u> (targets: income towers; grants: +10% income)."},
+            {"Monkey City", "+10r (50). Provides a free Dart Monkey each round. Gains <u>Support Buff</u> (targets: income towers; grants: +15% income)."},
             {"Monkeyopolis", "Actual cost is $5000 * number of non-tier-5 Farms in range. Sacrifices those Farms to gain income of $300 * floor(sacrifice $ / 2000)."},
             #endregion
             
@@ -667,10 +682,10 @@ namespace DetailedDescriptions
             {"Sentry Gun", "Every 10s, place a <u>Sentry</u> that lasts 25s and has <u>Sentry Nail</u> attack (1d, 2p (3p w/ 101), 0.95s, 45r (49r w/ 110), <i>Sharp</i> (<i>Shatter</i> w/ 101))."},
             {"Faster Engineering", "Sentries built every 6s."},
             {"Sprockets", "<u>Nail</u> and <u>Sentry Nail</u> buffed: 60%s (0.42 and 0.57)."},
-            {"Sentry Expert", "<u>Crushing Sentry</u> has <u>Spiked-ball</u> attack (1d, 1cd (2), 22p, 50r, 1.0s, <i>Shatter</i>). " +
-                              "<u>Boom Sentry</u> has a <u>Bomb</u> attack (2d, 30p, 50r, 1.3s, 18 blast radius, <i>Explosion</i>). " +
+            {"Sentry Expert", "<u>Crushing Sentry</u> has <u>Spiked-ball</u> attack (2d, 1cd (3), 22p, 50r, 1.1s, <i>Shatter</i>). " +
+                              "<u>Boom Sentry</u> has a <u>Bomb</u> attack (2d, 30p, 50r, 0.9s, 18 blast radius, <i>Explosion</i>). " +
                               "<u>Cold Sentry</u> has a <u>Ice-ball</u> attack (1d, 15p, 50r, 1.5s, <i>Cold</i>) that applies Frozen/Permafrost status for 1.5s. " +
-                              "<u>Energy Sentry</u> has a <u>Laser</u> attack (2d, 4p, 50r, 0.57s, <i>Energy</i>)."},
+                              "<u>Energy Sentry</u> has a <u>Laser</u> attack (2d, 8p, 50r, 0.57s, <i>Energy</i>)."},
             {"Sentry Paragon", "Places <u>Paragon Sentries</u> with <u>Plasma</u> attack (2d, 5p, 50r, 0.06s, <i>Plasma</i>) that self-destruct for (100d, 50p, <i>Plasma</i>)."},
             
             {"Larger Service Area", "+20r (60)"},
@@ -681,9 +696,9 @@ namespace DetailedDescriptions
             {"Ultraboost", "<u>Nail</u> buffed: +15p (30). <b>Ability</b> (35s cooldown): When Overclock is applied, the tower gains an additional permanent 4% reload (2.5%r for Villages) buff, which stacks additively up to 10 times."},
             
             {"Oversize Nails", "<u>Nail</u> buffed: +5p (8), <i>Shatter</i>. Sentry pierce +25%."},
-            {"Pin", "<u>Nail</u> buffed: Applies <u>Pinned</u> status (0.95s duration, 100% slow, Ceramic and higher are immune)."},
+            {"Pin", "<u>Nail</u> buffed: Applies <u>Pinned</u> status (0.95s duration, 100% slow, Ceramic and higher are immune). 302 Sentries can Pin."},
             {"Double Gun", "50%s (0.35)."},
-            {"Bloon Trap", "Places <u>Traps</u> (500p, +1 cash modifier, 100r collection for extra money). Places new <u>Traps</u> 2.9s after collection of previous, 15s (9s with 204) cooldown."},
+            {"Bloon Trap", "Places <u>Traps</u> (500p, +1 cash modifier, 100r collection for extra money). Places new <u>Traps</u> 2.9s after collection of previous, 12s (9s with 204) cooldown."},
             {"XXXL Trap", "<u>Trap</u> buffed: 10000p, can trap blimps below BAD, and cools-down at 1/6th rate."},
             #endregion
             

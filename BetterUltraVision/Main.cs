@@ -1,16 +1,12 @@
-﻿using System.IO;
-using Assets.Scripts.Models;
-using Assets.Scripts.Models.Towers.Behaviors.Attack;
+﻿using Assets.Scripts.Models;
 using Assets.Scripts.Models.Towers.Mods;
-using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
-using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
-using Harmony;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(BetterUltraVision.Main), "Better UltraVision", "1.1.2", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterUltraVision.Main), "Better UltraVision", "1.1.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace BetterUltraVision
 {

@@ -8,6 +8,8 @@ All this is changeable in a config (you'll need to change the config for seeing 
 
 **Changelog**
 
+v1.1.3 Updated for new Mod Helper
+
 v1.1.2 Fixed v25.0 oversight
 
 v1.1.1 Updated for Bloons TD Mod Helper Official Release

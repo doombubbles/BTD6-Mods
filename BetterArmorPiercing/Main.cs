@@ -2,14 +2,13 @@
 using Assets.Scripts.Models;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Mods;
-using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
-using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(BetterArmorPiercing.Main), "Better Armor Piercing", "1.2.0", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterArmorPiercing.Main), "Better Armor Piercing", "1.2.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace BetterArmorPiercing
 {
@@ -35,7 +34,6 @@ namespace BetterArmorPiercing
             maxValue = 10,
             isSlider = true
         };
-
 
         public override void OnNewGameModel(GameModel gameModel, List<ModModel> mods)
         {

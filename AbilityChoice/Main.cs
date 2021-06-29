@@ -16,7 +16,7 @@ using BTD_Mod_Helper;
 using MelonLoader;
 using NinjaKiwi.NKMulti;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.9", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.10", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
@@ -261,7 +261,7 @@ namespace AbilityChoice
                     {
                         removeAbility = false;
                     }
-
+                    
                     break;
                 }
             }

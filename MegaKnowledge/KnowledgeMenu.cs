@@ -5,6 +5,7 @@ using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Menu;
 using Assets.Scripts.Unity.UI_New.Knowledge;
 using Assets.Scripts.Utils;
+using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
@@ -100,8 +101,7 @@ namespace MegaKnowledge
                     var image = btn.GetComponentsInChildren<Component>().First(component => component.name == "Icon")
                         .GetComponent<Image>();
 
-                    ResourceLoader.LoadSpriteFromSpriteReferenceAsync(new SpriteReference(megaKnowledge.GUID), image,
-                        false);
+                    image.SetSprite(ModContent.GetSpriteReference<Main>(megaKnowledgeKey));
                     image.mainTexture.filterMode = FilterMode.Trilinear;
                 }
 
@@ -154,7 +154,7 @@ namespace MegaKnowledge
 
                     var image = button.transform.FindChild("MKIcon").GetComponentInChildren<Image>().gameObject;
                     var i = 25;
-                    foreach (var megaKnowledge in Main.MegaKnowledges.Values)
+                    foreach (var (megaKnowledgeKey, megaKnowledge) in Main.MegaKnowledges)
                     {
                         if (!megaKnowledge.enabled || megaKnowledge.set != set) continue;
 
@@ -165,9 +165,8 @@ namespace MegaKnowledge
                         newImage.name = set;
 
                         var realImage = newImage.GetComponent<Image>();
-
-                        ResourceLoader.LoadSpriteFromSpriteReferenceAsync(new SpriteReference(megaKnowledge.GUID),
-                            realImage, false);
+                        
+                        realImage.SetSprite(ModContent.GetSpriteReference<Main>(megaKnowledgeKey));
                         realImage.mainTexture.filterMode = FilterMode.Trilinear;
                         i += 160;
                     }

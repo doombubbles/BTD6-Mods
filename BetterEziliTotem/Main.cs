@@ -1,13 +1,11 @@
 ﻿using System.Linq;
 using Assets.Scripts.Models;
-using Assets.Scripts.Models.Towers.Behaviors.Abilities;
-using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
-using BTD_Mod_Helper.Api.InGame_Mod_Options;
+using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(BetterEziliTotem.Main), "Better Ezili Totem", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterEziliTotem.Main), "Better Ezili Totem", "1.0.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace BetterEziliTotem
 {
@@ -24,7 +22,6 @@ namespace BetterEziliTotem
             displayName = "Totem Ability Cooldown",
             minValue = 0
         };
-
 
         public override void OnNewGameModel(GameModel gameModel)
         {
