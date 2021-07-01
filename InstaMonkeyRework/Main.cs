@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Models.Powers;
 using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers;
+using Assets.Scripts.Simulation;
 using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Player;
@@ -21,7 +22,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.3", "doombubbles")]
+[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.4", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace InstaMonkeyRework
@@ -243,21 +244,21 @@ namespace InstaMonkeyRework
             }
         }
 
-        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
+        [HarmonyPatch(typeof(TowerManager.TowerCreateDef), nameof(TowerManager.TowerCreateDef.Invoke))]
         internal class TowerManager_CreateTower
         {
             [HarmonyPostfix]
-            internal static void Postfix(Tower __result, TowerModel def, bool isInstaTower)
+            internal static void Postfix(Tower tower, TowerModel def, bool isInsta)
             {
-                if (isInstaTower && (!InGame.instance.IsCoop || __result.owner == Game.instance.GetNkGI().PeerID))
+                if (isInsta && (!InGame.instance.IsCoop || tower.owner == Game.instance.GetNkGI().PeerID))
                 {
                     var cost = GetCostForThing(def);
                     if (InGame.instance.GetCash() >= cost)
                     {
-                        cost = GetCostForThing(__result);
-                        InGame.instance.AddCash(-cost);
-                        __result.worth = cost;
-                        SavedPlacedInstas[__result.Id] = def.name;
+                        cost = GetCostForThing(tower);
+                        InGame.instance.GetSimulation().RemoveCash(cost, Simulation.CashType.Normal, tower.owner, Simulation.CashSource.TowerBrought);
+                        tower.worth = cost;
+                        SavedPlacedInstas[tower.Id] = def.name;
                     }
                     else
                     {

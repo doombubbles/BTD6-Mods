@@ -15,6 +15,8 @@ With this mod, there's a new layer of decision making involved about whether you
 
 **Changelog**
 
+v1.0.4 Fixed a bug where Tower Placement wouldn't fully resolve
+
 v1.0.3 Updated for BloonsTD6 v25.0 and new mod helper
 
 v1.0.2 Fixed a bug related to Insta quantities when loading games
