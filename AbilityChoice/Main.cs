@@ -15,6 +15,7 @@ using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
 using MelonLoader;
 using NinjaKiwi.NKMulti;
+using InputManager = Assets.Scripts.Simulation.Input.InputManager;
 
 [assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.10", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -176,26 +177,24 @@ namespace AbilityChoice
             }
         }
 
-        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
+        [HarmonyPatch(typeof(Tower), nameof(Tower.OnPlace))]
         internal class TowerManager_CreateTower
         {
             [HarmonyPostfix]
-            internal static void Postfix(Tower __result, TowerModel def, bool isInstaTower)
+            internal static void Postfix(Tower __instance)
             {
-                if (isInstaTower)
+                var towerModel = __instance.towerModel;
+                string upgradeName = null;
+                foreach (var upgrade in AllUpgrades.Keys)
                 {
-                    string upgradeName = null;
-                    foreach (var upgrade in AllUpgrades.Keys)
+                    if (towerModel.appliedUpgrades.Contains(upgrade))
                     {
-                        if (def.appliedUpgrades.Contains(upgrade))
-                        {
-                            upgradeName = upgrade;
-                        }
+                        upgradeName = upgrade;
                     }
-                    if (upgradeName == null) return;
-                    
-                    AskApplyToTower(__result, upgradeName, def);
                 }
+                if (upgradeName == null) return;
+                    
+                AskApplyToTower(__instance, upgradeName, towerModel);
             }
         }
 
@@ -286,8 +285,7 @@ namespace AbilityChoice
                 CurrentBoostIDs.Remove(tower.Id);
             }
         }
-        
-        
+
         [HarmonyPatch(typeof(Tower), nameof(Tower.SetSaveData))]
         public class Tower_SetSaveData
         {

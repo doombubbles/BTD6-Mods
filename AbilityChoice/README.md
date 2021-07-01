@@ -19,6 +19,8 @@ For a full list of possiblities and their exact effects, look [here](https://tin
 
 **Changelog**
 
+v1.0.11 Fixed a bug where Tower Placement wouldn't fully resolve
+
 v1.0.10 Stopped the Jungle's Bounty buff from stacking
 
 v1.0.9 Updated for BTD Mod Helper official release and BloonsTD6 v25.0
