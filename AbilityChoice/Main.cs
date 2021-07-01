@@ -17,7 +17,7 @@ using MelonLoader;
 using NinjaKiwi.NKMulti;
 using InputManager = Assets.Scripts.Simulation.Input.InputManager;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.10", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.11", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
