@@ -8,6 +8,8 @@ By default, it also substantially reduces the price of these upgrades when not s
 
 **Changelog**
 
+v1.0.5 Fixed for BloonsTD6 Version 27.0
+
 v1.0.4 Updated for new Mod Helper
 
 v1.0.3 Updated for Bloons TD Mod Helper Official Release

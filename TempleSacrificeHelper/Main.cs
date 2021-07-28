@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Simulation.Towers.Behaviors;
 using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.Bridge;
-using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
-using Assets.Scripts.Unity.UI_New.Main;
 using Assets.Scripts.Unity.Utils;
 using Assets.Scripts.Utils;
 using BTD_Mod_Helper;
@@ -25,7 +21,7 @@ using Image = UnityEngine.UI.Image;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.4", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.5", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace TempleSacrificeHelper
@@ -249,7 +245,7 @@ namespace TempleSacrificeHelper
                         {
                             var image = icons[key].transform.GetComponent<Image>();
 
-                            AtlasLateBinding.instance.OnAtlasRequested("MainMenuUiAtlas", new Action<SpriteAtlas>(
+                            AtlasLateBinding.Instance.OnAtlasRequested("MainMenuUiAtlas", new Action<SpriteAtlas>(
                                 atlas =>
                                 {
                                     var sprite = atlas.GetSprite(key + "Btn");
