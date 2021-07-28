@@ -8,6 +8,8 @@ with other info from the Bloons Wiki and my own investigation of the source code
 
 **Changelog**
 
+v1.0.6 Up to date with BloonsTD6 v27.0
+
 v1.0.5 Up to date with BloonsTD6 v26.0
 
 v1.0.4 Fixed and up to date with BloonsTD6 v25.0
