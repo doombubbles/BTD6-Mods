@@ -1,4 +1,6 @@
-﻿# Insta Monkey Rework
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/InstaMonkeyRework/InstaMonkeyRework.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
+# Insta Monkey Rework
 
 This mod adds a new way for you to use insta monkeys. 
 Instead of them just being a cheaty, one-time-use bonus, now they can be an actual strategic investment.
