@@ -11,7 +11,7 @@
 
 <table style="table-layout:fixed">
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Card Monkey</h2>
         </td>
         <td>
@@ -25,7 +25,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Mega Knowledge</h2>
         </td>
         <td>
@@ -39,7 +39,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Ability Choice</h2>
         </td>
         <td>
@@ -53,7 +53,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Powers in Shop</h2>
         </td>
         <td>
@@ -67,7 +67,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Insta-Monkey Rework</h2>
         </td>
         <td>
@@ -81,7 +81,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>In-Game Hero Switch</h2>
         </td>
         <td>
@@ -101,7 +101,7 @@
 
 <table style="table-layout:fixed">
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Faster Forward</h2>
         </td>
         <td>
@@ -115,7 +115,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Auto Escape</h2>
         </td>
         <td>
@@ -129,7 +129,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Temple Sacrifice Helper</h2>
         </td>
         <td>
@@ -143,7 +143,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Better Auto-Start</h2>
         </td>
         <td>
@@ -157,7 +157,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Detailed Descriptions</h2>
         </td>
         <td>
@@ -176,7 +176,7 @@
 
 <table style="table-layout:fixed">
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Better Armor Piercing</h2>
         </td>
         <td>
@@ -190,7 +190,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Better Ezili Totem</h2>
         </td>
         <td>
@@ -204,7 +204,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Better Ultravision</h2>
         </td>
         <td>
@@ -218,7 +218,7 @@
         </td>
     </tr>
     <tr>
-        <td width="30%">
+        <td width="30%" align="center">
             <h2>Coordinates Display</h2>
         </td>
         <td>
