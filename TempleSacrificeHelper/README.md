@@ -1,3 +1,5 @@
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/TempleSacrificeHelper/TempleSacrificeHelper.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
 # Temple Sacrifice Helper
 
 This mod adds displays for Sun Avatars and Sun Temples that show what the current sacrifice amounts would be for each tower type.
