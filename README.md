@@ -18,7 +18,7 @@
             A WIP mod that adds the Card Monkey to the game, a Tower with 3 full upgrade paths, custom visuals, and full crosspathing and integration within the game.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/card-monkey#card-monkey"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/card-monkey#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/card-monkey/raw/main/CardMonkey.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -32,7 +32,7 @@
             Adds in new extra powerful Monkey Knowledge effects. Many are inspired from old Deluxe Upgrades and Specialty Buildings
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/MegaKnowledge#mega-knowledge"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/MegaKnowledge#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/MegaKnowledge/MegaKnowledge.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -46,7 +46,7 @@
             Gives you the choice to forego using Towers' Abilties in exchange for powerful, permanant effects.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/AbilityChoice#ability-choice"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/AbilityChoice#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/AbilityChoice/AbilityChoice.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -60,7 +60,7 @@
             Adds all the Tower and Track Powers into the in-game shop, purchaseable for normal cash.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/PowersInShop#powers-in-shop"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/PowersInShop#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/PowersInShop/PowersInShop.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -74,7 +74,7 @@
             Reworks Insta-Monkeys so that you can pay a (discounted) cash price for them in-game without removing them from your collection.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/InstaMonkeyRework#insta-monkey-rework"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/InstaMonkeyRework#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/InstaMonkeyRework/InstaMonkeyRework.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -88,7 +88,7 @@
             Let's you use the PageUp and PageDown keys to switch which hero you've chosen from in-game.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/InGameHeroSwitch#in-game-hero-switch"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/InGameHeroSwitch#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/InGameHeroSwitch/InGameHeroSwitch.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -108,7 +108,7 @@
             Let's you use the F1-F5 keys to change the Fast Forward speed from the default 3x to 5x, 10x, 25x or Custom speed.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/FasterForward#faster-forward"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/FasterForward#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/FasterForward/FasterForward.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -122,7 +122,7 @@
             Automatically exits to the Main Menu when you would leak enough damage to lose you the game. (Highly reccomended with Faster Forward!
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/AutoEscape#auto-escape"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/AutoEscape#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/AutoEscape/AutoEscape.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -136,7 +136,7 @@
             Displays the total cash value for each Tower Type in range for Super Monkey sacrifices to help you make the best Temples.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/TempleSacrificeHelper#temple-sacrifice-helper"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/TempleSacrificeHelper#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/TempleSacrificeHelper/TempleSacrificeHelper.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -150,7 +150,7 @@
             Let's you right-click the Fast Forward button to toggle Auto-Start in a similar fashion to Bloons Monkey City.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterAutoStart#better-auto-start"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterAutoStart#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/BetterAutoStart/BetterAutoStart.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -164,7 +164,7 @@
             Let's you hold Shift while looking at descriptions in the Upgrade Screen to see a precise version of what the Upgrade does, like you'd find on the Wiki.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/DetailedDescriptions#detailed-descriptions"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/DetailedDescriptions#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/DetailedDescriptions/DetailedDescriptions.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -183,7 +183,7 @@
             Makes the Armor Piercing Darts upgrade for the Monkey Sub actually live up to its name by allowing the Tower to pop Lead Bloons.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterArmorPiercing#better-armor-piercing"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterArmorPiercing#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/BetterArmorPiercing/BetterArmorPiercing.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -197,7 +197,7 @@
             Makes Ezili's Sacrifical Totem ability not actually sacrifice any lives, so it can be used more freely and also in CHIMPS.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterEziliTotem#better-ezili-totem"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterEziliTotem#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/BetterEziliTotem/BetterEziliTotem.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -211,7 +211,7 @@
             Makes the Ultravision upgrade for the Super Monkey give a less pitiful and more "ultra" range bonus.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterUltraVision#better-ultravision"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/BetterUltraVision#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/BetterUltraVision/BetterUltraVision.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
@@ -225,7 +225,7 @@
             An admittedly niche mod for if you want to know the exact coordinate for where you're placing a Tower in-game, and to place towers in extremely precise locations.
         </td>
         <td width="10%">
-            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/CoordinatesDisplay#coordinates-display"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/CoordinatesDisplay#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/CoordinatesDisplay/CoordinatesDisplay.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
