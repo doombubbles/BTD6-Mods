@@ -1,3 +1,5 @@
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/PowersInShop/PowersInShop.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
 # Powers in Shop
 
 This mod adds many of the Monkey Money Powers to the in-game shop for purchase with normal currency.
