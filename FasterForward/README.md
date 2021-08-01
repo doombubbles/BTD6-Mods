@@ -1,6 +1,6 @@
 <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/FasterForward/FasterForward.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
 
-#Faster Forward
+# Faster Forward
 
 This is a simple and personalized speedhack mod that I'm not advertising too hard
 
