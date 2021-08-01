@@ -1,4 +1,6 @@
-﻿# Ability Choice
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/AbilityChoice/AbilityChoice.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
+# Ability Choice
 
 BTD6 Abilities are fun and interactive, definitely, but sometimes you just don't feel like using them. 
 This mod gives you a choice: use the ability of a tower like normal, or give it up to instead give the base tower new effects.
