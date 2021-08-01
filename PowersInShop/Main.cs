@@ -26,7 +26,7 @@ using UnityEngine.UI;
 using InputManager = Assets.Scripts.Unity.UI_New.InGame.InputManager;
 using Vector2 = Assets.Scripts.Simulation.SMath.Vector2;
 
-[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.2.1", "doombubbles")]
+[assembly: MelonInfo(typeof(PowersInShop.Main), "Powers In Shop", "1.2.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace PowersInShop
@@ -250,7 +250,7 @@ namespace PowersInShop
         {
             var unlockedTowers = result.unlockedTowers;
 
-            foreach (var power in Powers.Keys.Where(power => Powers[power] < 0))
+            foreach (var power in Powers.Keys.Where(power => Powers[power] > 0))
             {
                 if (!unlockedTowers.Contains(power))
                 {
