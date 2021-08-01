@@ -1,3 +1,5 @@
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/BetterUltraVision/BetterUltraVision.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
 # Better Ultravision
 
 This mod makes the x/x/2 Ultravision upgrade for the Super Monkey not give such a pitiful range bonus, and/or make the Supe be able to attack through walls.
