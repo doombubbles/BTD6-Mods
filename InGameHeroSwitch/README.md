@@ -1,3 +1,5 @@
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/InGameHeroSwitch/InGameHeroSwitch.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
 # In-Game Hero Switch
 
 Ever forget to switch your hero before starting up a game? 
