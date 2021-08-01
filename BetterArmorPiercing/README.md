@@ -1,3 +1,5 @@
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/BetterArmorPiercing/BetterArmorPiercing.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
 # Better Armor Piercing
 
 This mod makes the x/x/4 Armor Piercing Darts upgrade for the Monkey Sub actually live up to its name by allowing the tower to pop Lead Bloons.
