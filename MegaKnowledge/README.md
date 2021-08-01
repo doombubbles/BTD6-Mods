@@ -1,4 +1,8 @@
-﻿# Mega Knowledge
+<h1 align="center">Mega Knowledge</h1>
+
+<p align="center">
+    <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/MegaKnowledge/MegaKnowledge.dll"><img alt="Download" height=150 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+</p>
 
 This mod adds in new extra powerful monkey knowledge effects.
 You can find them at the bottom of the Primary, Military, Magic and Support trees.
