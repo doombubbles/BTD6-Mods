@@ -1,3 +1,5 @@
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/BetterEziliTotem/BetterEziliTotem.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
 # Better Ezili Totem
 
 This mod makes Ezili's Sacrifical Totem ability live up to its name... less. But for the purposes of fun, the ability no longer drains lives in order to use, so it's no longer unusable on Impoppable and CHIMPS.
