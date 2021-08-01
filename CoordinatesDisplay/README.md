@@ -1,3 +1,5 @@
+<a href="https://github.com/doombubbles/BTD6-Mods/raw/main/CoordinatesDisplay/CoordinatesDisplay.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
+
 # Coordinates Display
 
 This mod adds a display of the in-world coordinates of your mouse during the game.
