@@ -2,11 +2,11 @@
 using Assets.Scripts.Unity.Menu;
 using Assets.Scripts.Unity.UI_New.Upgrade;
 using BTD_Mod_Helper;
-using Harmony;
+using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.6", "doombubbles")]
+[assembly: MelonInfo(typeof(DetailedDescriptions.Main), "Detailed Descriptions", "1.0.7", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 namespace DetailedDescriptions
 {
@@ -83,6 +83,10 @@ namespace DetailedDescriptions
                 {
                     baseDescription = upgradeScreen.towerDescription.text;
                     upgradeScreen.towerDescription.SetText(GetDescription(currentTower));
+                    if (upgradeScreen.towerDescriptionParagon.text != null)
+                    {
+                        upgradeScreen.towerDescriptionParagon.SetText(GetDescription(currentTower));
+                    }
                 }
             }
         }
@@ -100,6 +104,10 @@ namespace DetailedDescriptions
                 if (upgradeScreen != null && upgradeScreen.towerDescription != null)
                 {
                     upgradeScreen.towerDescription.SetText(baseDescription);
+                    if (upgradeScreen.towerDescriptionParagon.text != null)
+                    {
+                        upgradeScreen.towerDescriptionParagon.SetText(baseDescription);
+                    }
                 }
             }
         }
@@ -247,6 +255,8 @@ namespace DetailedDescriptions
                               "50d Crit every 8-12 shots"},
             {"Crossbow Master", "+7p (10) (16p w/ 105, 23p w/ 205), +20r (76), 0.16s, <i>Normal</i>\n" +
                                 "Crit now occurs every 4-8 shots"},
+            
+            {"DartMonkey Paragon", "Detailed Info Coming Soon"},
             #endregion
             
             #region Boomerang Monkey
@@ -269,6 +279,8 @@ namespace DetailedDescriptions
             {"MOAB Domination", "<u>Kylie</u> buffed: +10d (12), 50%s (0.71). " +
                                 "<u>Heavy Kylie</u> buffed: +15md (20), 50%s (5.0s), 100r, 0.25s stun, can target BADs, creates explosion effect instead of returning: " +
                                 "100d, 40p, <i>Normal</i>, 50 blast radius, applies burn status (50d/1s, 4s duration)"},
+            
+            {"BoomerangMonkey Paragon", "Detailed Info Coming Soon"},
             #endregion
             
             #region Bomb Shooter

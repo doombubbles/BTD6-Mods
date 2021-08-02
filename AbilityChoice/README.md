@@ -21,6 +21,8 @@ For a full list of possiblities and their exact effects, look [here](https://tin
 
 **Changelog**
 
+v1.0.12 Fixed for better compatibility with Latest MelonLoader version(s)
+
 v1.0.11 Fixed a bug where Tower Placement wouldn't fully resolve
 
 v1.0.10 Stopped the Jungle's Bounty buff from stacking

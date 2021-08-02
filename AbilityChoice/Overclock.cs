@@ -10,7 +10,7 @@ using Assets.Scripts.Unity.Bridge;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Utils;
 using BTD_Mod_Helper.Extensions;
-using Harmony;
+using HarmonyLib;
 using NinjaKiwi.LiNK.Lobbies;
 using NinjaKiwi.NKMulti;
 using NKMultiConnection = NinjaKiwi.LiNK.Lobbies.NKMultiConnection;

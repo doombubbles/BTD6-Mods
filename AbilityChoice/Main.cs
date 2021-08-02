@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Models;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities;
@@ -7,7 +8,7 @@ using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.Popups;
 using BTD_Mod_Helper.Extensions;
-using Harmony;
+using HarmonyLib;
 using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
@@ -177,24 +178,21 @@ namespace AbilityChoice
             }
         }
 
-        [HarmonyPatch(typeof(Tower), nameof(Tower.OnPlace))]
+        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
         internal class TowerManager_CreateTower
         {
             [HarmonyPostfix]
-            internal static void Postfix(Tower __instance)
+            internal static void Postfix(Tower __result, bool isInstaTower)
             {
-                var towerModel = __instance.towerModel;
-                string upgradeName = null;
-                foreach (var upgrade in AllUpgrades.Keys)
+                if (!isInstaTower)
                 {
-                    if (towerModel.appliedUpgrades.Contains(upgrade))
-                    {
-                        upgradeName = upgrade;
-                    }
+                    return;
                 }
-                if (upgradeName == null) return;
+                var towerModel = __result.towerModel;
+                var upgradeName = AllUpgrades.Keys.FirstOrDefault(s => towerModel.appliedUpgrades.Contains(s));
+                if (upgradeName == default) return;
                     
-                AskApplyToTower(__instance, upgradeName, towerModel);
+                AskApplyToTower(__result, upgradeName, towerModel);
             }
         }
 
