@@ -16,9 +16,8 @@ using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
 using MelonLoader;
 using NinjaKiwi.NKMulti;
-using InputManager = Assets.Scripts.Simulation.Input.InputManager;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.11", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.12", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
@@ -87,6 +86,28 @@ namespace AbilityChoice
 
         private static Dictionary<int, TowerModel> CoOpTowerModelCache = new Dictionary<int, TowerModel>();
 
+        public override void OnApplicationStart()
+        {
+            if (MelonHandler.Mods.OfType<BloonsTD6Mod>().Any(mod => mod.GetModName() == "InstaMonkeyRework"))
+            {
+                HarmonyInstance.Patch(typeof(TowerManager).GetMethod(nameof(TowerManager.CreateTower)),
+                    postfix: new HarmonyMethod(AccessTools.Method(GetType(), nameof(TowerManagerCreateTowerPostfix))));
+            }
+        }
+        
+        internal static void TowerManagerCreateTowerPostfix(Tower __result, bool isInstaTower)
+        {
+            if (!isInstaTower)
+            {
+                return;
+            }
+            var towerModel = __result.towerModel;
+            var upgradeName = AllUpgrades.Keys.FirstOrDefault(s => towerModel.appliedUpgrades.Contains(s));
+            if (upgradeName == default) return;
+                    
+            AskApplyToTower(__result, upgradeName, towerModel);
+        }
+        
         public override void OnMainMenu()
         {
             ResetCaches();
@@ -177,24 +198,7 @@ namespace AbilityChoice
                 EnableForTower(tower, newBaseTowerModel);
             }
         }
-
-        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
-        internal class TowerManager_CreateTower
-        {
-            [HarmonyPostfix]
-            internal static void Postfix(Tower __result, bool isInstaTower)
-            {
-                if (!isInstaTower)
-                {
-                    return;
-                }
-                var towerModel = __result.towerModel;
-                var upgradeName = AllUpgrades.Keys.FirstOrDefault(s => towerModel.appliedUpgrades.Contains(s));
-                if (upgradeName == default) return;
-                    
-                AskApplyToTower(__result, upgradeName, towerModel);
-            }
-        }
+        
 
         public static void EnableForTower(Tower tower, TowerModel towerModel)
         {
