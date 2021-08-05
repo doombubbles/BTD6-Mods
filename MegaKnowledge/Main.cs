@@ -6,17 +6,16 @@ using Assets.Scripts.Models;
 using Assets.Scripts.Models.Map;
 using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Mods;
-using Assets.Scripts.Simulation.Towers.Projectiles;
 using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Extensions;
-using Harmony;
+using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
 using static Assets.Scripts.Models.Towers.TowerType;
 using static MegaKnowledge.MegaKnowledge;
 
-[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace MegaKnowledge

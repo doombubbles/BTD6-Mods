@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Assets.Scripts.Models.Towers;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
-using Assets.Scripts.Models.Towers.Behaviors.Attack.Behaviors;
-using Assets.Scripts.Simulation.Towers;
-using Assets.Scripts.Simulation.Towers.Behaviors;
-using Assets.Scripts.Simulation.Towers.Behaviors.Attack;
 using Assets.Scripts.Simulation.Towers.Behaviors.Attack.Behaviors;
 using Assets.Scripts.Simulation.Towers.Projectiles;
 using Assets.Scripts.Simulation.Towers.Projectiles.Behaviors;
 using Assets.Scripts.Simulation.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
-using Assets.Scripts.Unity.JsonConverters;
 using Assets.Scripts.Unity.UI_New.InGame;
-using Assets.Scripts.Utils;
 using BTD_Mod_Helper.Extensions;
-using Harmony;
-using MelonLoader;
-using Newtonsoft.Json;
-using UnhollowerBaseLib;
+using HarmonyLib;
 using static Assets.Scripts.Models.Towers.TowerType;
 
 namespace MegaKnowledge

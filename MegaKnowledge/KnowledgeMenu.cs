@@ -7,7 +7,7 @@ using Assets.Scripts.Unity.UI_New.Knowledge;
 using Assets.Scripts.Utils;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
-using Harmony;
+using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;

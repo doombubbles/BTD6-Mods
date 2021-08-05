@@ -10,8 +10,8 @@ using Assets.Scripts.Models.Towers.Projectiles;
 using Assets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
+using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
-using Harmony;
 using UnhollowerBaseLib;
 using static Assets.Scripts.Models.Towers.TowerType;
 
@@ -251,7 +251,7 @@ namespace MegaKnowledge
             var attackModel = towerModel.GetAttackModel();
             foreach (var sniperTargetType in sniper.targetTypes)
             {
-                towerModel.targetTypes.Add(sniperTargetType);
+                towerModel.targetTypes = towerModel.targetTypes.AddTo(sniperTargetType);
             }
 
 
@@ -287,7 +287,7 @@ namespace MegaKnowledge
 
             foreach (var sniperTargetType in sniper.targetTypes)
             {
-                towerModel.targetTypes.Add(sniperTargetType);
+                towerModel.targetTypes = towerModel.targetTypes.AddTo(sniperTargetType);
             }
 
             attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<RotateToTargetModel>().Duplicate());
@@ -481,6 +481,7 @@ namespace MegaKnowledge
             var attackModel = model.GetAttackModel();
             var weapon = attackModel.weapons[0];
             var newWeapon = weapon.Duplicate();
+            newWeapon.projectile.display = ModContent.GetDisplayGUID<ShadowShuriken>();
             weapon.AddBehavior(new FireAlternateWeaponModel("FireAlternateWeaponModel_", 1));
 
             newWeapon.AddBehavior(new FireWhenAlternateWeaponIsReadyModel("FireWhenAlternateWeaponIsReadyModel_", 1));
