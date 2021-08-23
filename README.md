@@ -12,6 +12,20 @@
 <table style="table-layout:fixed">
     <tr>
         <td width="30%" align="center">
+            <h2>Ultimate Crosspathing</h2>
+        </td>
+        <td>
+            A WIP mod that lets you take your 7 Upgrades for a Tower in any combination, allowing 430s, 331s, 322s, 511s, etc.
+        </td>
+        <td width="10%">
+            <a href="https://github.com/doombubbles/ultimate-crosspathing#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+        </td>
+        <td width="11%">
+            <a href="https://github.com/doombubbles/ultimate-crosspathing/raw/main/UltimateCrosspathing.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td width="30%" align="center">
             <h2>Card Monkey</h2>
         </td>
         <td>
