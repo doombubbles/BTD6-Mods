@@ -1,14 +1,24 @@
 <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/TempleSacrificeHelper/TempleSacrificeHelper.dll"><img align="right" alt="Download" height="75" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download.png?raw=true"></a>
 
-# Temple Sacrifice Helper
+# Sacrifice Helper
+
+## NEW 2.0 VERSION
+
+Now also adds a display for upgrading to a Paragon Tower for what degree it will be.
+
+Also includes mod settings for allowing Paragons in Sandbox mode, allowing Unlimited 5th tiers in Sandbox mode, alongside making the Paragon sacrifice weights fully configurable.
+
+## Original
 
 This mod adds displays for Sun Avatars and Sun Temples that show what the current sacrifice amounts would be for each tower type.
 
-Additionally, this mod  adds an option for the Sacrifices to not happen. You'll see a button in the place where the Ambidextrous Rangs buttons are to let you turn the sacrificing on or off.
+Additionally, this mod adds an option for the Sacrifices to not happen. You'll see a button in the place where the Ambidextrous Rangs buttons are to let you turn the sacrificing on or off.
 
 By default, it also substantially reduces the price of these upgrades when not sacrificing, since un-sacrificed temples and gods aren't actually all that impressive. The prices $50,000 for Sun Temple and $100,000 for True Sun God by default, but those are configurable. (From some basic testing, those might even be a bit high, actually).
 
 **Changelog**
+
+v2.0.0 Updated to "Sacrifice Helper", 
 
 v1.0.5 Fixed for BloonsTD6 Version 27.0
 

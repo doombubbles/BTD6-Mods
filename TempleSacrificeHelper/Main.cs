@@ -1,33 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts.Models.Towers;
+﻿using Assets.Scripts.Models;
+using Assets.Scripts.Simulation.Input;
+using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Simulation.Towers.Behaviors;
-using Assets.Scripts.Unity;
-using Assets.Scripts.Unity.Bridge;
-using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu;
-using Assets.Scripts.Unity.UI_New.InGame.TowerSelectionMenu.TowerSelectionMenuThemes;
-using Assets.Scripts.Unity.Utils;
-using Assets.Scripts.Utils;
+using Assets.Scripts.Unity.UI_New.InGame;
 using BTD_Mod_Helper;
-using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.ModOptions;
-using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
-using UnhollowerRuntimeLib;
-using UnityEngine;
-using UnityEngine.U2D;
-using Image = UnityEngine.UI.Image;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Temple Sacrifice Helper", "1.0.5", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Sacrifice Helper", "2.0.0", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace TempleSacrificeHelper
 {
     public class Main : BloonsTD6Mod
     {
+        public const string SunTemple = "Sun Temple";
+        public const string TrueSunGod = "True Sun God";
+
         public override string MelonInfoCsURL =>
             "https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/TempleSacrificeHelper/Main.cs";
 
@@ -46,9 +38,153 @@ namespace TempleSacrificeHelper
             minValue = 0
         };
 
-        public static bool SacrificesOff = false;
-        public static Sprite leftSprite = null;
-        public static Sprite rightSprite = null;
+        private static readonly ModSettingBool SandboxParagons = new ModSettingBool(true)
+        {
+            displayName = "Allow Paragons in Sandbox"
+        };
+        
+        private static readonly ModSettingBool Unlimited5thTiersInSandbox = new ModSettingBool(true)
+        {
+            displayName = "Unlimited Tier 5 Towers In Sandbox Mode"
+        };
+
+        private static readonly ModSettingInt MaxFromPops = new ModSettingInt(90000)
+        {
+            displayName = "Max Paragon Power From Pops\n(-1 for unlimited)",
+            minValue = -1
+        };
+
+        private static readonly ModSettingInt MaxFromCash = new ModSettingInt(10000)
+        {
+            displayName = "Max Paragon Power From Cash (-1 for unlimited)",
+            minValue = -1
+        };
+
+        private static readonly ModSettingInt MaxFromNonTier5s = new ModSettingInt(10000)
+        {
+            displayName = "Max Paragon Power From Non Tier 5s (-1 for unlimited)",
+            minValue = -1
+        };
+
+        private static readonly ModSettingInt MaxFromTier5s = new ModSettingInt(90000)
+        {
+            displayName = "Max Paragon Power From Tier 5s (-1 for unlimited)",
+            minValue = -1
+        };
+
+        private static readonly ModSettingInt PopsPerPoint = new ModSettingInt(180)
+        {
+            displayName = "Pops per Point of Paragon Power",
+            minValue = 0
+        };
+
+        private static readonly ModSettingInt CashPerPoint = new ModSettingInt(25)
+        {
+            displayName = "Cash per Point of Paragon Power",
+            minValue = 0
+        };
+
+        private static readonly ModSettingInt NonTier5sScaleFactor = new ModSettingInt(100)
+        {
+            displayName = "Paragon Power Scale Factor for Non Tier 5s",
+            minValue = 0
+        };
+
+        private static readonly ModSettingInt Tier5sScaleFactor = new ModSettingInt(10000)
+        {
+            displayName = "Paragon Power Scale Factor for Tier 5s",
+            minValue = 0
+        };
+
+        public static bool templeSacrificesOff = false;
+
+        public override void OnNewGameModel(GameModel result)
+        {
+            result.paragonDegreeDataModel.maxPowerFromPops = MaxFromPops;
+            if (result.paragonDegreeDataModel.maxPowerFromPops < 0)
+            {
+                result.paragonDegreeDataModel.maxPowerFromPops = int.MaxValue;
+            }
+
+            result.paragonDegreeDataModel.maxPowerFromMoneySpent = MaxFromCash;
+            if (result.paragonDegreeDataModel.maxPowerFromMoneySpent < 0)
+            {
+                result.paragonDegreeDataModel.maxPowerFromMoneySpent = int.MaxValue;
+            }
+
+            result.paragonDegreeDataModel.maxPowerFromNonTier5Count = MaxFromNonTier5s;
+            if (result.paragonDegreeDataModel.maxPowerFromNonTier5Count < 0)
+            {
+                result.paragonDegreeDataModel.maxPowerFromNonTier5Count = int.MaxValue;
+            }
+
+            result.paragonDegreeDataModel.maxPowerFromTier5Count = MaxFromTier5s;
+            if (result.paragonDegreeDataModel.maxPowerFromTier5Count < 0)
+            {
+                result.paragonDegreeDataModel.maxPowerFromTier5Count = int.MaxValue;
+            }
+
+            result.paragonDegreeDataModel.popsOverX = PopsPerPoint;
+            result.paragonDegreeDataModel.moneySpentOverX = CashPerPoint;
+            result.paragonDegreeDataModel.nonTier5TowersMultByX = NonTier5sScaleFactor;
+            result.paragonDegreeDataModel.tier5TowersMultByX = Tier5sScaleFactor;
+        }
+
+        public override void OnGameObjectsReset()
+        {
+            if (TSMThemeDefault_TowerInfoChanged.templeText != null)
+            {
+                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.templeText)
+                {
+                    Object.Destroy(text);
+                }
+
+                TSMThemeDefault_TowerInfoChanged.templeText = null;
+            }
+
+
+            if (TSMThemeDefault_TowerInfoChanged.templeIcons != null)
+            {
+                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.templeIcons)
+                {
+                    Object.Destroy(icon);
+                }
+
+                TSMThemeDefault_TowerInfoChanged.templeIcons = null;
+            }
+
+            if (TSMThemeDefault_TowerInfoChanged.templeInfoButton != null)
+            {
+                Object.Destroy(TSMThemeDefault_TowerInfoChanged.templeInfoButton);
+                TSMThemeDefault_TowerInfoChanged.templeInfoButton = null;
+            }
+
+            if (TSMThemeDefault_TowerInfoChanged.paragonButton != null)
+            {
+                Object.Destroy(TSMThemeDefault_TowerInfoChanged.paragonButton);
+                TSMThemeDefault_TowerInfoChanged.paragonButton = null;
+            }
+            
+            if (TSMThemeDefault_TowerInfoChanged.paragonButtonText != null)
+            {
+                Object.Destroy(TSMThemeDefault_TowerInfoChanged.paragonButtonText);
+                TSMThemeDefault_TowerInfoChanged.paragonButtonText = null;
+            }
+        }
+
+
+        [HarmonyPatch(typeof(TowerInventory), nameof(TowerInventory.IsPathTierLocked))]
+        internal class TowerInventory_IsPathTierLocked
+        {
+            [HarmonyPostfix]
+            internal static void Postfix(TowerInventory __instance, ref bool __result)
+            {
+                if (Unlimited5thTiersInSandbox && InGame.instance.IsSandbox)
+                {
+                    __result = false;
+                }
+            }
+        }
 
         [HarmonyPatch(typeof(MonkeyTemple), nameof(MonkeyTemple.StartSacrifice))]
         public class MonkeyTemple_StartSacrifice
@@ -56,274 +192,29 @@ namespace TempleSacrificeHelper
             [HarmonyPrefix]
             public static bool Prefix()
             {
-                return !SacrificesOff;
+                return !templeSacrificesOff;
             }
         }
 
-        [HarmonyPatch(typeof(TowerSelectionMenu), nameof(TowerSelectionMenu.OnUpdate))]
-        public class TowerSelectionMenu_OnUpdate
+        [HarmonyPatch(typeof(Tower), nameof(Tower.CanUpgradeToParagon))]
+        internal class Tower_CanUpgradeToParagon
         {
-            [HarmonyPostfix]
-            public static void Postfix(TowerSelectionMenu __instance)
+            private static bool sandbox;
+
+            [HarmonyPrefix]
+            internal static void Prefix(Tower __instance)
             {
-                if (__instance.upgradeButtons != null &&
-                    __instance.selectedTower?.tower?.towerModel?.baseId == TowerType.SuperMonkey)
+                sandbox = __instance.Sim.sandbox;
+                if (SandboxParagons)
                 {
-                    if (SacrificesOff)
-                    {
-                        foreach (var instanceUpgradeButton in __instance.upgradeButtons)
-                        {
-                            var upgradeModel = instanceUpgradeButton.upgradeButton.GetUpgradeModel();
-                            if (upgradeModel == null)
-                            {
-                                continue;
-                            }
-
-                            if (upgradeModel.name == "Sun Temple")
-                            {
-                                Utils.ModifyTemple(upgradeModel);
-                            }
-                            else if (upgradeModel.name == "True Sun God")
-                            {
-                                Utils.ModifyGod(upgradeModel);
-                            }
-                            else
-                            {
-                                continue;
-                            }
-
-                            instanceUpgradeButton.UpdateCost();
-                            instanceUpgradeButton.UpdateVisuals(0, false);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var instanceUpgradeButton in __instance.upgradeButtons)
-                        {
-                            var upgradeModel = instanceUpgradeButton.upgradeButton.GetUpgradeModel();
-                            if (upgradeModel == null)
-                            {
-                                continue;
-                            }
-
-                            if (upgradeModel.name == "Sun Temple")
-                            {
-                                Utils.DefaultTemple(upgradeModel);
-                            }
-                            else if (upgradeModel.name == "True Sun God")
-                            {
-                                Utils.DefaultGod(upgradeModel);
-                            }
-                            else
-                            {
-                                continue;
-                            }
-
-                            instanceUpgradeButton.UpdateCost();
-                            instanceUpgradeButton.UpdateVisuals(0, false);
-                        }
-                    }
+                    __instance.Sim.sandbox = false;
                 }
             }
-        }
-
-        public override void OnMainMenu()
-        {
-            SacrificesOff = false;
-
-            TSMTheme_Patch.text = null;
-            TSMTheme_Patch.icons = null;
-        }
-
-
-        [HarmonyPatch(typeof(TSMThemeDefault), nameof(TSMThemeAmbidextrousRangs.TowerInfoChanged))]
-        [HarmonyPatch]
-        public class TSMTheme_Patch
-        {
-            private static SpriteReference magicSprite = null;
-
-            public static Dictionary<String, NK_TextMeshProUGUI> text = null;
-            public static Dictionary<String, GameObject> icons = null;
 
             [HarmonyPostfix]
-            public static void Postfix(TSMThemeAmbidextrousRangs __instance, TowerToSimulation tower)
+            internal static void Postfix(Tower __instance)
             {
-                if (text != null)
-                {
-                    foreach (var key in text.Keys)
-                    {
-                        text[key].gameObject.SetActiveRecursively(false);
-                        icons[key].gameObject.SetActiveRecursively(false);
-                    }
-                }
-
-                if (tower.Def.name.Contains(TowerType.SuperMonkey) && tower.Def.tiers[0] >= 3 && tower.Def.tiers[0] < 5)
-                {
-                    if (__instance.towerBackgroundImage.sprite == null)
-                    {
-                        if (magicSprite == null)
-                        {
-                            foreach (BaseTSMTheme t in TowerSelectionMenu.instance.themeManager.themes)
-                            {
-                                if (t.GetIl2CppType().IsAssignableFrom(Il2CppType.Of<TSMThemeDefault>()))
-                                {
-                                    TSMThemeDefault td = t.Cast<TSMThemeDefault>();
-                                    if (td.magicSprite != null)
-                                        magicSprite = td.magicSprite;
-                                }
-                            }
-                        }
-
-                        if (magicSprite != null)
-                        {
-                            __instance.magicSprite = magicSprite;
-                            __instance.towerBackgroundImage.SetSprite(magicSprite);
-                        }
-                    }
-
-                    ;
-
-
-                    if (__instance.isMonkeyPortraitFlipped)
-                    {
-                        __instance.leftHandButton.gameObject.SetActive(false);
-                        __instance.rightHandButton.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        __instance.rightHandButton.gameObject.SetActive(false);
-                        __instance.leftHandButton.gameObject.SetActive(true);
-                    }
-
-                    var leftImage = __instance.leftHandButton.transform.Find("Icon").GetComponent<Image>();
-                    var rightImage = __instance.rightHandButton.transform.Find("Icon").GetComponent<Image>();
-
-
-                    if (leftSprite == null && rightSprite == null)
-                    {
-                        leftSprite = leftImage.sprite;
-                        rightSprite = rightImage.sprite;
-                    }
-
-                    var spriteRef = ModContent.GetSpriteReference<Main>(SacrificesOff ? "Off" : "On");
-                    leftImage.SetSprite(spriteRef);
-                    rightImage.SetSprite(spriteRef);
-
-                    if (text == null)
-                    {
-                        text = new Dictionary<string, NK_TextMeshProUGUI>
-                        {
-                            ["Primary"] = Object.Instantiate(__instance.popCountText, __instance.transform, true),
-                            ["Military"] = Object.Instantiate(__instance.popCountText, __instance.transform, true),
-                            ["Magic"] = Object.Instantiate(__instance.popCountText, __instance.transform, true),
-                            ["Support"] = Object.Instantiate(__instance.popCountText, __instance.transform, true)
-                        };
-
-                        icons = new Dictionary<string, GameObject>
-                        {
-                            ["Primary"] =
-                                Object.Instantiate(
-                                    __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage")
-                                        .gameObject, __instance.transform, true),
-                            ["Military"] =
-                                Object.Instantiate(
-                                    __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage")
-                                        .gameObject, __instance.transform, true),
-                            ["Magic"] = Object.Instantiate(
-                                __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage").gameObject,
-                                __instance.transform, true),
-                            ["Support"] =
-                                Object.Instantiate(
-                                    __instance.gameObject.transform.Find("TSMPopInfoDefault").Find("PopImage")
-                                        .gameObject, __instance.transform, true)
-                        };
-
-                        float unit = __instance.popCountText.fontSize / 2;
-                        int i = -1;
-
-                        foreach (var key in icons.Keys)
-                        {
-                            var image = icons[key].transform.GetComponent<Image>();
-
-                            AtlasLateBinding.Instance.OnAtlasRequested("MainMenuUiAtlas", new Action<SpriteAtlas>(
-                                atlas =>
-                                {
-                                    var sprite = atlas.GetSprite(key + "Btn");
-                                    sprite.texture.mipMapBias = -1;
-                                    sprite.texture.filterMode = FilterMode.Trilinear;
-                                    image.SetSprite(sprite);
-                                }));
-                            text[key].transform.Translate(0, i * unit, 0);
-                            icons[key].transform.Translate(0, i * unit, 0);
-                            i--;
-                        }
-                    }
-
-                    if (!SacrificesOff)
-                    {
-                        var worths = Utils.GetTowerWorths(tower.tower);
-                        var colors = Utils.GetColors(worths, tower.Def.tiers[0] == 4);
-                        foreach (var key in text.Keys)
-                        {
-                            text[key].gameObject.SetActiveRecursively(true);
-                            icons[key].gameObject.SetActiveRecursively(true);
-                            text[key].SetText("$" + worths[key]);
-                            text[key].color = colors[key];
-                        }
-                    }
-                }
-                else if (tower.Def.baseId == TowerType.BoomerangMonkey && leftSprite != null && rightSprite != null)
-                {
-                    var leftImage = __instance.leftHandButton.transform.Find("Icon").GetComponent<Image>();
-                    var rightImage = __instance.rightHandButton.transform.Find("Icon").GetComponent<Image>();
-
-                    leftImage.SetSprite(leftSprite);
-                    rightImage.SetSprite(rightSprite);
-                }
-            }
-        }
-
-        [HarmonyPatch(typeof(TSMThemeAmbidextrousRangs), nameof(TSMThemeAmbidextrousRangs.OnButtonPress))]
-        public class Switch_Patch
-        {
-            [HarmonyPostfix]
-            public static void Postfix(TSMThemeAmbidextrousRangs __instance, TowerToSimulation tower, TSMButton button)
-            {
-                if (tower.Def.name.Contains(TowerType.SuperMonkey) && tower.Def.tiers[0] >= 3 && tower.Def.tiers[0] < 5
-                    && (button == __instance.leftHandButton || button == __instance.rightHandButton))
-                {
-                    SacrificesOff = !SacrificesOff;
-
-                    var leftImage = __instance.leftHandButton.transform.Find("Icon").GetComponent<Image>();
-                    var rightImage = __instance.rightHandButton.transform.Find("Icon").GetComponent<Image>();
-
-                    var spriteRef = ModContent.GetSpriteReference<Main>(SacrificesOff ? "Off" : "On");
-                    leftImage.SetSprite(spriteRef);
-                    rightImage.SetSprite(spriteRef);
-
-                    foreach (var key in TSMTheme_Patch.text.Keys)
-                    {
-                        TSMTheme_Patch.text[key].gameObject.SetActiveRecursively(!SacrificesOff);
-                        TSMTheme_Patch.icons[key].gameObject.SetActiveRecursively(!SacrificesOff);
-                    }
-                }
-            }
-        }
-
-        private static void AddSwitch(TowerModel towerModel) =>
-            towerModel.towerSelectionMenuThemeId = "AmbidextrousRangs";
-
-        public override void OnTitleScreen()
-        {
-            AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, 0));
-            AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0, 0));
-            for (int t = 1; t <= 2; t++)
-            {
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, t, 0));
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, t, 0));
-
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 3, 0, t));
-                AddSwitch(Game.instance.model.GetTower(TowerType.SuperMonkey, 4, 0, t));
+                __instance.Sim.sandbox = sandbox;
             }
         }
     }
