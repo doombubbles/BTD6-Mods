@@ -1,16 +1,23 @@
-﻿using Assets.Scripts.Models;
+﻿using System.Linq;
+using Assets.Scripts.Models;
+using Assets.Scripts.Models.Towers;
+using Assets.Scripts.Models.Towers.Behaviors;
+using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Simulation.Input;
 using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Simulation.Towers.Behaviors;
+using Assets.Scripts.Simulation.Towers.Mutators.Conditions.Behaviors;
 using Assets.Scripts.Unity.UI_New.InGame;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api.ModOptions;
+using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
+using UnityEngine;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Sacrifice Helper", "2.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Sacrifice Helper", "2.1.0", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace TempleSacrificeHelper
@@ -38,35 +45,45 @@ namespace TempleSacrificeHelper
             minValue = 0
         };
 
+        private static readonly ModSettingBool SandboxTCBOO = new ModSettingBool(true)
+        {
+            displayName = "Allow Vengeful Temple in Sandbox"
+        };
+
+        private static readonly ModSettingBool NonMaxTCBOO = new ModSettingBool(true)
+        {
+            displayName = "Allow non-fully Sacrificed Vengeful Temples"
+        };
+
         private static readonly ModSettingBool SandboxParagons = new ModSettingBool(true)
         {
             displayName = "Allow Paragons in Sandbox"
         };
-        
+
         private static readonly ModSettingBool Unlimited5thTiersInSandbox = new ModSettingBool(true)
         {
             displayName = "Unlimited Tier 5 Towers In Sandbox Mode"
         };
 
-        private static readonly ModSettingInt MaxFromPops = new ModSettingInt(90000)
+        public static readonly ModSettingInt MaxFromPops = new ModSettingInt(90000)
         {
             displayName = "Max Paragon Power From Pops\n(-1 for unlimited)",
             minValue = -1
         };
 
-        private static readonly ModSettingInt MaxFromCash = new ModSettingInt(10000)
+        public static readonly ModSettingInt MaxFromCash = new ModSettingInt(10000)
         {
             displayName = "Max Paragon Power From Cash (-1 for unlimited)",
             minValue = -1
         };
 
-        private static readonly ModSettingInt MaxFromNonTier5s = new ModSettingInt(10000)
+        public static readonly ModSettingInt MaxFromNonTier5s = new ModSettingInt(10000)
         {
             displayName = "Max Paragon Power From Non Tier 5s (-1 for unlimited)",
             minValue = -1
         };
 
-        private static readonly ModSettingInt MaxFromTier5s = new ModSettingInt(90000)
+        public static readonly ModSettingInt MaxFromTier5s = new ModSettingInt(90000)
         {
             displayName = "Max Paragon Power From Tier 5s (-1 for unlimited)",
             minValue = -1
@@ -164,11 +181,32 @@ namespace TempleSacrificeHelper
                 Object.Destroy(TSMThemeDefault_TowerInfoChanged.paragonButton);
                 TSMThemeDefault_TowerInfoChanged.paragonButton = null;
             }
-            
+
             if (TSMThemeDefault_TowerInfoChanged.paragonButtonText != null)
             {
                 Object.Destroy(TSMThemeDefault_TowerInfoChanged.paragonButtonText);
                 TSMThemeDefault_TowerInfoChanged.paragonButtonText = null;
+            }
+            
+            if (TSMThemeDefault_TowerInfoChanged.paragonText != null)
+            {
+                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.paragonText)
+                {
+                    Object.Destroy(text);
+                }
+
+                TSMThemeDefault_TowerInfoChanged.paragonText = null;
+            }
+
+
+            if (TSMThemeDefault_TowerInfoChanged.paragonIcons != null)
+            {
+                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.paragonIcons)
+                {
+                    Object.Destroy(icon);
+                }
+
+                TSMThemeDefault_TowerInfoChanged.paragonIcons = null;
             }
         }
 
@@ -193,6 +231,21 @@ namespace TempleSacrificeHelper
             public static bool Prefix()
             {
                 return !templeSacrificesOff;
+            }
+
+            [HarmonyPostfix]
+            public static void Postfix(MonkeyTemple __instance)
+            {
+                if (__instance.monkeyTempleModel.checkForThereCanOnlyBeOne && !__instance.checkTCBOO)
+                {
+                    var totalPaths = __instance.templeTowers.GetValues().ToList().Count(f => f > 50000)
+                                     + __instance.trueTempleTowers.GetValues().ToList().Count(f => f > 50000);
+
+                    if (__instance.Sim.sandbox ? SandboxTCBOO && (totalPaths >= 7 || NonMaxTCBOO) : (bool)NonMaxTCBOO)
+                    {
+                        __instance.checkTCBOO = true;
+                    }
+                }
             }
         }
 

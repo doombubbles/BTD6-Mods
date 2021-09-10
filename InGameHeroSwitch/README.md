@@ -11,6 +11,8 @@ Keys can be changed in the config, look [here](https://docs.unity3d.com/ScriptRe
 
 **Changelog**
 
+v1.0.6 Fixed bug where switching could fail while playing Boss mode
+
 v1.0.5 Fixed for BloonsTD6 v26.0
 
 v1.0.4 Fixed for BloonsTD6 v25.0

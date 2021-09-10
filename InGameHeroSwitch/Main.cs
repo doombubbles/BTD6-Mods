@@ -11,7 +11,7 @@ using BTD_Mod_Helper.Extensions;
 using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.5", "doombubbles")]
+[assembly: MelonInfo(typeof(InGameHeroSwitch.Main), "In-Game Hero Switch", "1.0.6", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace InGameHeroSwitch
@@ -94,7 +94,8 @@ namespace InGameHeroSwitch
         {
             var hero = realSelectedHero ?? InGame.instance.SelectedHero;
 
-            if (!CycleIfPlaced && ShopMenu.instance.GetTowerButtonFromBaseId(hero).GetLockedState() ==
+            var purchaseButton = ShopMenu.instance.GetTowerButtonFromBaseId(hero);
+            if (!CycleIfPlaced && purchaseButton != null && purchaseButton.GetLockedState() ==
                 TowerPurchaseLockState.TowerInventoryLocked)
             {
                 return;

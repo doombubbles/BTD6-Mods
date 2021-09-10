@@ -6,7 +6,7 @@
 
 Now also adds a display for upgrading to a Paragon Tower for what degree it will be.
 
-Also includes mod settings for allowing Paragons in Sandbox mode, allowing Unlimited 5th tiers in Sandbox mode, alongside making the Paragon sacrifice weights fully configurable.
+Also includes mod settings for allowing Paragons in Sandbox mode, Unlimited 5th tiers in Sandbox mode, Vengeful Temples in sandbox mode, and non-fully sacrificed Vengeful Temples, alongside making the Paragon sacrifice weights fully configurable.
 
 ## Original
 
@@ -17,6 +17,8 @@ Additionally, this mod adds an option for the Sacrifices to not happen. You'll s
 By default, it also substantially reduces the price of these upgrades when not sacrificing, since un-sacrificed temples and gods aren't actually all that impressive. The prices $50,000 for Sun Temple and $100,000 for True Sun God by default, but those are configurable. (From some basic testing, those might even be a bit high, actually).
 
 **Changelog**
+
+v2.1.0 Can now show paragon power amounts, new settings
 
 v2.0.0 Updated to "Sacrifice Helper", 
 

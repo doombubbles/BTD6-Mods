@@ -22,7 +22,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.5", "doombubbles")]
+[assembly: MelonInfo(typeof(InstaMonkeyRework.Main), "Insta Monkey Rework", "1.0.6", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace InstaMonkeyRework
@@ -244,23 +244,24 @@ namespace InstaMonkeyRework
             }
         }
 
-        //[HarmonyPatch(typeof(TowerManager.TowerCreateDef), nameof(TowerManager.TowerCreateDef.Invoke))]
-        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
+        [HarmonyPatch(typeof(TowerManager.TowerCreateDef), nameof(TowerManager.TowerCreateDef.Invoke))]
+        //[HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
         internal class TowerManager_CreateTower
         {
             [HarmonyPostfix]
-            //internal static void Postfix(Tower tower, TowerModel def, bool isInsta)
-            internal static void Postfix(Tower __result, TowerModel def, bool isInstaTower)
+            //internal static void Postfix(TowerManager __instance, Tower __result, TowerModel def, bool isInstaTower)
+            internal static void Postfix(Tower tower, TowerModel def, bool isInsta, bool isFromSave)
             {
-                var isInsta = isInstaTower;
-                var tower = __result;
+                //var isInsta = isInstaTower;
+                //var tower = __result;
                 if (isInsta && (!InGame.instance.IsCoop || tower.owner == Game.instance.GetNkGI().PeerID))
                 {
                     var cost = GetCostForThing(def);
                     if (InGame.instance.GetCash() >= cost)
                     {
                         cost = GetCostForThing(tower);
-                        InGame.instance.GetSimulation().RemoveCash(cost, Simulation.CashType.Normal, tower.owner, Simulation.CashSource.TowerBrought);
+                        InGame.instance.AddCash(-cost);
+                        //tower.Sim.RemoveCash(cost, Simulation.CashType.Normal, tower.owner, Simulation.CashSource.TowerBrought);
                         tower.worth = cost;
                         SavedPlacedInstas[tower.Id] = def.name;
                     }
