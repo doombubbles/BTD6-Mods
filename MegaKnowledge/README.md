@@ -125,6 +125,8 @@ Overtime - Engineers and their Sentries are permanently Overclocked.
 
 **Changelog**
 
+v1.0.4 Fix for BloonsTD6 v28.0
+
 v1.0.3 Internal MelonLoader Update and make Shadow Double Shuriken Shadowy
 
 v1.0.2 Updated for new Mod Helper

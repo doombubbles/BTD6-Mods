@@ -12,6 +12,7 @@ using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
+using Il2CppSystem.Collections.Generic;
 using UnhollowerBaseLib;
 using static Assets.Scripts.Models.Towers.TowerType;
 
@@ -32,7 +33,8 @@ namespace MegaKnowledge
 
                 if (model.appliedUpgrades.Contains("Enhanced Eyesight"))
                 {
-                    pb.projectile.GetBehavior<ProjectileFilterModel>().filters.GetItemOfType<FilterModel, FilterInvisibleModel>().isActive = false;
+                    pb.projectile.GetBehavior<ProjectileFilterModel>().filters
+                        .GetItemOfType<FilterModel, FilterInvisibleModel>().isActive = false;
                 }
 
                 /*pb.name = "CreateProjectileOnContactModel_SplodeyDarts";
@@ -63,7 +65,7 @@ namespace MegaKnowledge
         {
             var weaponModel = model.GetAttackModel().weapons[0];
             var random = new RandomArcEmissionModel("RandomArcEmissionModel_", 2, 0, 0, 30, 1, null);
-            var eM = new ArcEmissionModel("ArcEmissionModel_", 2, 0, 30, null, false, false);
+            var eM = new ArcEmissionModel("ArcEmissionModel_", 2, 0, 30, null, false);
             weaponModel.emission = eM;
         }
 
@@ -198,7 +200,7 @@ namespace MegaKnowledge
         public static void IceFortress(TowerModel model)
         {
             var behavior = new RemoveBloonModifiersModel("RemoveBloonModifiersModel_", false, true, false, false, false,
-                new Il2CppStringArray(new string[0]));
+                new List<string>());
             foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 projectileModel.AddBehavior(behavior.Duplicate());
@@ -403,21 +405,21 @@ namespace MegaKnowledge
             var brew = model.GetDescendant<AddBerserkerBrewToProjectileModel>();
             if (brew != null)
             {
-                brew.cap = (int) (brew.cap * 1.5);
+                brew.cap = (int)(brew.cap * 1.5);
                 //brew.rebuffBlockTime = 0;
                 //brew.rebuffBlockTimeFrames = 0;
                 var brewCheck = brew.towerBehaviors[0].Cast<BerserkerBrewCheckModel>();
-                brewCheck.maxCount = (int) (brewCheck.maxCount * 1.5);
+                brewCheck.maxCount = (int)(brewCheck.maxCount * 1.5);
             }
-            
+
             var dip = model.GetDescendant<AddAcidicMixtureToProjectileModel>();
             if (dip != null)
             {
-                dip.cap = (int) (dip.cap * 1.5);
+                dip.cap = (int)(dip.cap * 1.5);
                 //brew.rebuffBlockTime = 0;
                 //brew.rebuffBlockTimeFrames = 0;
                 var dipCheck = dip.towerBehaviors[0].Cast<AcidicMixtureCheckModel>();
-                dipCheck.maxCount = (int) (dipCheck.maxCount * 1.5);
+                dipCheck.maxCount = (int)(dipCheck.maxCount * 1.5);
             }
         }
 
@@ -527,6 +529,7 @@ namespace MegaKnowledge
             {
                 weapon.projectile.filters.GetItemOfType<FilterModel, FilterInvisibleModel>().isActive = false;
             }
+
             model.AddBehavior(attack);
         }
 
@@ -560,7 +563,8 @@ namespace MegaKnowledge
                 if (model.appliedUpgrades.Contains("MOAB Glue"))
                 {
                     var damageModifierForTagModel =
-                        new DamageModifierForTagModel("DamageModifierForTagModel_", "Moabs", 1.0f, amount * 9, false, true);
+                        new DamageModifierForTagModel("DamageModifierForTagModel_", "Moabs", 1.0f, amount * 9, false,
+                            true);
                     projectileModel.AddBehavior(damageModifierForTagModel);
 
                     projectileModel.hasDamageModifiers = true;

@@ -17,7 +17,7 @@ using UnityEngine;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Sacrifice Helper", "2.1.0", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Sacrifice Helper", "2.1.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace TempleSacrificeHelper
@@ -119,27 +119,19 @@ namespace TempleSacrificeHelper
         {
             result.paragonDegreeDataModel.maxPowerFromPops = MaxFromPops;
             if (result.paragonDegreeDataModel.maxPowerFromPops < 0)
-            {
                 result.paragonDegreeDataModel.maxPowerFromPops = int.MaxValue;
-            }
 
             result.paragonDegreeDataModel.maxPowerFromMoneySpent = MaxFromCash;
             if (result.paragonDegreeDataModel.maxPowerFromMoneySpent < 0)
-            {
                 result.paragonDegreeDataModel.maxPowerFromMoneySpent = int.MaxValue;
-            }
 
             result.paragonDegreeDataModel.maxPowerFromNonTier5Count = MaxFromNonTier5s;
             if (result.paragonDegreeDataModel.maxPowerFromNonTier5Count < 0)
-            {
                 result.paragonDegreeDataModel.maxPowerFromNonTier5Count = int.MaxValue;
-            }
 
             result.paragonDegreeDataModel.maxPowerFromTier5Count = MaxFromTier5s;
             if (result.paragonDegreeDataModel.maxPowerFromTier5Count < 0)
-            {
                 result.paragonDegreeDataModel.maxPowerFromTier5Count = int.MaxValue;
-            }
 
             result.paragonDegreeDataModel.popsOverX = PopsPerPoint;
             result.paragonDegreeDataModel.moneySpentOverX = CashPerPoint;
@@ -151,10 +143,7 @@ namespace TempleSacrificeHelper
         {
             if (TSMThemeDefault_TowerInfoChanged.templeText != null)
             {
-                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.templeText)
-                {
-                    Object.Destroy(text);
-                }
+                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.templeText) Object.Destroy(text);
 
                 TSMThemeDefault_TowerInfoChanged.templeText = null;
             }
@@ -162,10 +151,7 @@ namespace TempleSacrificeHelper
 
             if (TSMThemeDefault_TowerInfoChanged.templeIcons != null)
             {
-                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.templeIcons)
-                {
-                    Object.Destroy(icon);
-                }
+                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.templeIcons) Object.Destroy(icon);
 
                 TSMThemeDefault_TowerInfoChanged.templeIcons = null;
             }
@@ -187,13 +173,10 @@ namespace TempleSacrificeHelper
                 Object.Destroy(TSMThemeDefault_TowerInfoChanged.paragonButtonText);
                 TSMThemeDefault_TowerInfoChanged.paragonButtonText = null;
             }
-            
+
             if (TSMThemeDefault_TowerInfoChanged.paragonText != null)
             {
-                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.paragonText)
-                {
-                    Object.Destroy(text);
-                }
+                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.paragonText) Object.Destroy(text);
 
                 TSMThemeDefault_TowerInfoChanged.paragonText = null;
             }
@@ -201,10 +184,7 @@ namespace TempleSacrificeHelper
 
             if (TSMThemeDefault_TowerInfoChanged.paragonIcons != null)
             {
-                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.paragonIcons)
-                {
-                    Object.Destroy(icon);
-                }
+                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.paragonIcons) Object.Destroy(icon);
 
                 TSMThemeDefault_TowerInfoChanged.paragonIcons = null;
             }
@@ -217,10 +197,7 @@ namespace TempleSacrificeHelper
             [HarmonyPostfix]
             internal static void Postfix(TowerInventory __instance, ref bool __result)
             {
-                if (Unlimited5thTiersInSandbox && InGame.instance.IsSandbox)
-                {
-                    __result = false;
-                }
+                if (Unlimited5thTiersInSandbox && InGame.instance.IsSandbox) __result = false;
             }
         }
 
@@ -242,9 +219,7 @@ namespace TempleSacrificeHelper
                                      + __instance.trueTempleTowers.GetValues().ToList().Count(f => f > 50000);
 
                     if (__instance.Sim.sandbox ? SandboxTCBOO && (totalPaths >= 7 || NonMaxTCBOO) : (bool)NonMaxTCBOO)
-                    {
                         __instance.checkTCBOO = true;
-                    }
                 }
             }
         }
@@ -258,10 +233,7 @@ namespace TempleSacrificeHelper
             internal static void Prefix(Tower __instance)
             {
                 sandbox = __instance.Sim.sandbox;
-                if (SandboxParagons)
-                {
-                    __instance.Sim.sandbox = false;
-                }
+                if (SandboxParagons) __instance.Sim.sandbox = false;
             }
 
             [HarmonyPostfix]

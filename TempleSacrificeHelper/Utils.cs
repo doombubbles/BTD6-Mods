@@ -116,9 +116,11 @@ namespace TempleSacrificeHelper
 
         private static ParagonTower FakeParagonTower(Tower tower)
         {
-            var paragonTower = new ParagonTower();
+            var paragonTower = new ParagonTower
+            {
+                Sim = tower.Sim
+            };
             paragonTower.Initialise(tower.entity, tower.model);
-            paragonTower.Sim = tower.Sim;
             return paragonTower;
         }
 

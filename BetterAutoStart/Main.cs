@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using Assets.Scripts.Unity;
 using Assets.Scripts.Unity.UI_New.InGame;
 using Assets.Scripts.Unity.UI_New.InGame.ActionMenu;
 using Assets.Scripts.Unity.UI_New.InGame.RightMenu;
@@ -17,7 +18,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-[assembly: MelonInfo(typeof(BetterAutoStart.Main), "Better Autostart", "1.0.2", "doombubbles")]
+[assembly: MelonInfo(typeof(BetterAutoStart.Main), "Better Autostart", "1.0.3", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace BetterAutoStart
@@ -41,7 +42,7 @@ namespace BetterAutoStart
         {
             if (ShopMenu.instance == null) return;
 
-            var images = ShopMenu.instance.goButtonBtn.GetComponentsInChildren<Image>();
+            var images = ShopMenu.instance.goButton.GetComponentsInChildren<Image>();
 
             foreach (var imageName in Images.Keys.Duplicate())
             {
@@ -64,9 +65,9 @@ namespace BetterAutoStart
                 image.enabled = false;
             }
             
-            if (InGame.instance.autoPlay)
+            if (InGame.instance.UnityToSimulation.simulation.autoPlay)
             {
-                images = ShopMenu.instance.goButtonBtn.GetComponentsInChildren<Image>();
+                images = ShopMenu.instance.goButton.GetComponentsInChildren<Image>();
                 foreach (var image in images)
                 {
                     var auto = images.FirstOrDefault(i => i.name == image.name + "(Clone)");
@@ -80,7 +81,7 @@ namespace BetterAutoStart
         }
 
 
-        [HarmonyPatch(typeof(GoFastForwardToggle), nameof(GoFastForwardToggle.LateUpdate))]
+        [HarmonyPatch(typeof(GoFastForwardToggle), nameof(GoFastForwardToggle.Update))]
         internal class GoFastForwardToggle_LateUpdate
         {
             [HarmonyPostfix]
@@ -100,7 +101,7 @@ namespace BetterAutoStart
                 if (InGame.instance != null && eventData.button == PointerEventData.InputButton.Right
                                             && __instance.name == "FastFoward-Go") //yes this is a real typo in the name
                 {
-                    InGame.instance.ToggleAutoPlay(!InGame.instance.autoPlay);
+                    InGame.instance.bridge.ToggleAutoPlay(!InGame.instance.UnityToSimulation.simulation.autoPlay);
                 }
             }
         }
