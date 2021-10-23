@@ -1,23 +1,17 @@
 ﻿using System.Linq;
 using Assets.Scripts.Models;
-using Assets.Scripts.Models.Towers;
-using Assets.Scripts.Models.Towers.Behaviors;
-using Assets.Scripts.Models.Towers.Mods;
-using Assets.Scripts.Simulation.Input;
 using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Simulation.Towers.Behaviors;
-using Assets.Scripts.Simulation.Towers.Mutators.Conditions.Behaviors;
 using Assets.Scripts.Unity.UI_New.InGame;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
 using Harmony;
 using MelonLoader;
-using UnityEngine;
 using Main = TempleSacrificeHelper.Main;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(Main), "Sacrifice Helper", "2.1.1", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Sacrifice Helper", "2.1.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace TempleSacrificeHelper
@@ -141,61 +135,61 @@ namespace TempleSacrificeHelper
 
         public override void OnGameObjectsReset()
         {
-            if (TSMThemeDefault_TowerInfoChanged.templeText != null)
+            if (TSMThemeChanges.templeText != null)
             {
-                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.templeText) Object.Destroy(text);
+                foreach (var (_, text) in TSMThemeChanges.templeText) Object.Destroy(text);
 
-                TSMThemeDefault_TowerInfoChanged.templeText = null;
+                TSMThemeChanges.templeText = null;
             }
 
 
-            if (TSMThemeDefault_TowerInfoChanged.templeIcons != null)
+            if (TSMThemeChanges.templeIcons != null)
             {
-                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.templeIcons) Object.Destroy(icon);
+                foreach (var (_, icon) in TSMThemeChanges.templeIcons) Object.Destroy(icon);
 
-                TSMThemeDefault_TowerInfoChanged.templeIcons = null;
+                TSMThemeChanges.templeIcons = null;
             }
 
-            if (TSMThemeDefault_TowerInfoChanged.templeInfoButton != null)
+            if (TSMThemeChanges.templeInfoButton != null)
             {
-                Object.Destroy(TSMThemeDefault_TowerInfoChanged.templeInfoButton);
-                TSMThemeDefault_TowerInfoChanged.templeInfoButton = null;
+                Object.Destroy(TSMThemeChanges.templeInfoButton);
+                TSMThemeChanges.templeInfoButton = null;
             }
 
-            if (TSMThemeDefault_TowerInfoChanged.paragonButton != null)
+            if (TSMThemeChanges.paragonButton != null)
             {
-                Object.Destroy(TSMThemeDefault_TowerInfoChanged.paragonButton);
-                TSMThemeDefault_TowerInfoChanged.paragonButton = null;
+                Object.Destroy(TSMThemeChanges.paragonButton);
+                TSMThemeChanges.paragonButton = null;
             }
 
-            if (TSMThemeDefault_TowerInfoChanged.paragonButtonText != null)
+            if (TSMThemeChanges.paragonButtonText != null)
             {
-                Object.Destroy(TSMThemeDefault_TowerInfoChanged.paragonButtonText);
-                TSMThemeDefault_TowerInfoChanged.paragonButtonText = null;
+                Object.Destroy(TSMThemeChanges.paragonButtonText);
+                TSMThemeChanges.paragonButtonText = null;
             }
 
-            if (TSMThemeDefault_TowerInfoChanged.paragonText != null)
+            if (TSMThemeChanges.paragonText != null)
             {
-                foreach (var (_, text) in TSMThemeDefault_TowerInfoChanged.paragonText) Object.Destroy(text);
+                foreach (var (_, text) in TSMThemeChanges.paragonText) Object.Destroy(text);
 
-                TSMThemeDefault_TowerInfoChanged.paragonText = null;
+                TSMThemeChanges.paragonText = null;
             }
 
 
-            if (TSMThemeDefault_TowerInfoChanged.paragonIcons != null)
+            if (TSMThemeChanges.paragonIcons != null)
             {
-                foreach (var (_, icon) in TSMThemeDefault_TowerInfoChanged.paragonIcons) Object.Destroy(icon);
+                foreach (var (_, icon) in TSMThemeChanges.paragonIcons) Object.Destroy(icon);
 
-                TSMThemeDefault_TowerInfoChanged.paragonIcons = null;
+                TSMThemeChanges.paragonIcons = null;
             }
         }
 
 
-        [HarmonyPatch(typeof(TowerInventory), nameof(TowerInventory.IsPathTierLocked))]
-        internal class TowerInventory_IsPathTierLocked
+        [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.IsTowerPathTierLocked))]
+        internal class TowerManager_IsTowerPathTierLocked
         {
             [HarmonyPostfix]
-            internal static void Postfix(TowerInventory __instance, ref bool __result)
+            internal static void Postfix(TowerManager __instance, ref bool __result)
             {
                 if (Unlimited5thTiersInSandbox && InGame.instance.IsSandbox) __result = false;
             }

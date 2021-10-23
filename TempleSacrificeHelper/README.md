@@ -18,6 +18,8 @@ By default, it also substantially reduces the price of these upgrades when not s
 
 **Changelog**
 
+v2.1.2 Fixed Unlimited Sandbox Tier 5s and Camo Priority issues
+
 v2.1.1 Fixed for BloonsTD6 v28.0
 
 v2.1.0 Can now show paragon power amounts, new settings

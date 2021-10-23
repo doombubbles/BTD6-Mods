@@ -249,11 +249,11 @@ namespace MegaKnowledge
 
         public static void MortarEmpowerment(TowerModel towerModel)
         {
-            var sniper = Game.instance.model.GetTowerFromId(SniperMonkey);
+            var boomer = Game.instance.model.GetTowerFromId(BoomerangMonkey);
             var attackModel = towerModel.GetAttackModel();
-            foreach (var sniperTargetType in sniper.targetTypes)
+            foreach (var boomerTargetType in boomer.targetTypes)
             {
-                towerModel.targetTypes = towerModel.targetTypes.AddTo(sniperTargetType);
+                towerModel.targetTypes = towerModel.targetTypes.AddTo(boomerTargetType);
             }
 
 
@@ -261,10 +261,10 @@ namespace MegaKnowledge
             attackModel.RemoveBehavior<TargetSelectedPointModel>();
             attackModel.targetProvider = null;
 
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
 
             attackModel.AddBehavior(targetSelectedPointModel);
 
@@ -284,15 +284,15 @@ namespace MegaKnowledge
                 return;
             }
 
-            var sniper = Game.instance.model.GetTowerFromId(SniperMonkey);
+            var boomer = Game.instance.model.GetTowerFromId(BoomerangMonkey);
             var attackModel = towerModel.GetAttackModel();
 
-            foreach (var sniperTargetType in sniper.targetTypes)
+            foreach (var boomerTargetType in boomer.targetTypes)
             {
-                towerModel.targetTypes = towerModel.targetTypes.AddTo(sniperTargetType);
+                towerModel.targetTypes = towerModel.targetTypes.AddTo(boomerTargetType);
             }
 
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<RotateToTargetModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<RotateToTargetModel>().Duplicate());
 
             var targetPointerModel = attackModel.GetBehavior<TargetPointerModel>();
             var targetSelectedPointModel = attackModel.GetBehavior<TargetSelectedPointModel>();
@@ -300,10 +300,10 @@ namespace MegaKnowledge
             attackModel.RemoveBehavior<TargetPointerModel>();
             attackModel.RemoveBehavior<TargetSelectedPointModel>();
 
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
 
             attackModel.AddBehavior(targetPointerModel);
             attackModel.AddBehavior(targetSelectedPointModel);
