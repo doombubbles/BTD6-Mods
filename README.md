@@ -116,6 +116,20 @@
 <table style="table-layout:fixed">
     <tr>
         <td width="30%" align="center">
+            <h2>Unlimited 5th Tiers +</h2>
+        </td>
+        <td>
+            Let's you use unlimited amounts of 5th Tiers, Paragons and VTSGs (even in Sandbox mode).
+        </td>
+        <td width="10%">
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/Unlimited5thTiers#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+        </td>
+        <td width="11%">
+            <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/Unlimited5thTiers/Unlimited5thTiers.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td width="30%" align="center">
             <h2>Faster Forward</h2>
         </td>
         <td>
