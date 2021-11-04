@@ -13,8 +13,10 @@ Moving and expanding some settings I had in Sacrifice Helper into their own mod.
 - Unlimited amount of Vengeful True Sun Gods allowed
 - All of the above naturally usable  in Sandbox mode
 - True Sun Gods can still become Vengeful even if not fully sacrificed
-
+- 1/1/1/1 and 2/2/2/2 Sacrifices are allowed
 
 #### Changelog
+
+v1.0.1 Added 1/1/1/1 and 2/2/2/2 Sacrifices, fixed Ultimate Crosspathing self-sacrifice interaction
 
 v1.0.0 Release

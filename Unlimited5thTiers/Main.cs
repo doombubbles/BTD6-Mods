@@ -1,14 +1,18 @@
 ﻿using System.Linq;
+using Assets.Scripts.Models;
 using Assets.Scripts.Models.Towers;
+using Assets.Scripts.Models.Towers.Behaviors;
+using Assets.Scripts.Models.Towers.Mods;
 using Assets.Scripts.Simulation.Towers;
 using Assets.Scripts.Simulation.Towers.Behaviors;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
+using Il2CppSystem.Collections.Generic;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(Unlimited5thTiers.Main), "Unlimited 5th Tiers +", "1.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(Unlimited5thTiers.Main), "Unlimited 5th Tiers +", "1.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace Unlimited5thTiers
@@ -24,6 +28,19 @@ namespace Unlimited5thTiers
 
         public override string LatestURL =>
             "https://github.com/doombubbles/BTD6-Mods/blob/main/Unlimited5thTiers/Unlimited5thTiers.dll?raw=true";
+
+
+        public override void OnNewGameModel(GameModel gameModel, List<ModModel> mods)
+        {
+            foreach (var superMonkey in gameModel.GetTowersWithBaseId(TowerType.SuperMonkey))
+            {
+                if (superMonkey.GetDescendant<MonkeyTempleModel>() is MonkeyTempleModel monkeyTempleModel &&
+                    monkeyTempleModel.towerGroupCount < 4)
+                {
+                    monkeyTempleModel.towerGroupCount = 4;
+                }
+            }
+        }
 
 
         [HarmonyPatch(typeof(TowerManager), nameof(TowerManager.IsTowerPathTierLocked))]
@@ -50,7 +67,8 @@ namespace Unlimited5thTiers
                     __instance.Sim.time.elapsed && __instance.monkeyTempleModel.checkForThereCanOnlyBeOne
                     && __instance.lastSacrificed != __instance.Sim.time.elapsed)
                 {
-                    var superMonkeys = __instance.Sim.towerManager.GetTowersByBaseId(TowerType.SuperMonkey).ToList();
+                    var superMonkeys = __instance.Sim.towerManager.GetTowersByBaseId(TowerType.SuperMonkey).ToList()
+                        .Where(tower => tower != __instance.tower).ToList();
                     var robocop = superMonkeys.FirstOrDefault(tower => tower.towerModel.tiers[1] == 5);
                     var batman = superMonkeys.FirstOrDefault(tower => tower.towerModel.tiers[2] == 5);
                     if (batman != default && robocop != default)
