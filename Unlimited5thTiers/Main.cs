@@ -113,7 +113,7 @@ namespace Unlimited5thTiers
                 var towers = __instance.Sim.towerManager.GetTowersByBaseId(__instance.towerModel.baseId).ToList();
                 for (var i = 0; i < 3; i++)
                 {
-                    if (towers.All(tower => tower.towerModel.tiers[i] != 5))
+                    if (towers.All(tower => tower.towerModel.tiers[i] != 66666))
                     {
                         return;
                     }
