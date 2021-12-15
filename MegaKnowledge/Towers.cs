@@ -124,30 +124,30 @@ namespace MegaKnowledge
             var guidedMagic = model.GetWeapon().projectile.GetBehavior<TrackTargetModel>();
             foreach (var attackModel in model.GetAttackModels())
             {
-                if (attackModel.GetBehavior<TargetFirstModel>() != null)
+                if (attackModel.GetBehavior<TargetFirstPrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetFirstModel>();
+                    attackModel.RemoveBehavior<TargetFirstPrioCamoModel>();
                     attackModel.AddBehavior(new TargetFirstSharedRangeModel("TargetFirstSharedRangeModel_",
                         true, true, false, false));
                 }
 
-                if (attackModel.GetBehavior<TargetLastModel>() != null)
+                if (attackModel.GetBehavior<TargetLastPrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetLastModel>();
+                    attackModel.RemoveBehavior<TargetLastPrioCamoModel>();
                     attackModel.AddBehavior(new TargetLastSharedRangeModel("TargetLastSharedRangeModel_",
                         true, true, false, false));
                 }
 
-                if (attackModel.GetBehavior<TargetCloseModel>() != null)
+                if (attackModel.GetBehavior<TargetClosePrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetCloseModel>();
+                    attackModel.RemoveBehavior<TargetClosePrioCamoModel>();
                     attackModel.AddBehavior(new TargetCloseSharedRangeModel("TargetCloseSharedRangeModel_",
                         true, true, false, false));
                 }
 
-                if (attackModel.GetBehavior<TargetStrongModel>() != null)
+                if (attackModel.GetBehavior<TargetStrongPrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetStrongModel>();
+                    attackModel.RemoveBehavior<TargetStrongPrioCamoModel>();
                     attackModel.AddBehavior(new TargetStrongSharedRangeModel("TargetStrongSharedRangeModel_",
                         true, true, false, false));
                 }
@@ -349,13 +349,12 @@ namespace MegaKnowledge
             if (targetSelectedPointModel == null)
             {
                 var tspm = new TargetSelectedPointModel("TargetSelectedPointModel_", true,
-                    false, "4e88dd78c6e800d41a6df5b02d592082", .5f, "");
+                    false, "4e88dd78c6e800d41a6df5b02d592082", .5f, "",
+                    false, false, "", true);
                 towerModel.GetAttackModel().AddBehavior(tspm);
             }
 
             towerModel.UpdateTargetProviders();
-
-
             towerModel.GetDescendant<ArriveAtTargetModel>().filterCollisionWhileMoving = false;
         }
 
@@ -405,21 +404,21 @@ namespace MegaKnowledge
             var brew = model.GetDescendant<AddBerserkerBrewToProjectileModel>();
             if (brew != null)
             {
-                brew.cap = (int)(brew.cap * 1.5);
+                brew.cap = (int) (brew.cap * 1.5);
                 //brew.rebuffBlockTime = 0;
                 //brew.rebuffBlockTimeFrames = 0;
                 var brewCheck = brew.towerBehaviors[0].Cast<BerserkerBrewCheckModel>();
-                brewCheck.maxCount = (int)(brewCheck.maxCount * 1.5);
+                brewCheck.maxCount = (int) (brewCheck.maxCount * 1.5);
             }
 
             var dip = model.GetDescendant<AddAcidicMixtureToProjectileModel>();
             if (dip != null)
             {
-                dip.cap = (int)(dip.cap * 1.5);
+                dip.cap = (int) (dip.cap * 1.5);
                 //brew.rebuffBlockTime = 0;
                 //brew.rebuffBlockTimeFrames = 0;
                 var dipCheck = dip.towerBehaviors[0].Cast<AcidicMixtureCheckModel>();
-                dipCheck.maxCount = (int)(dipCheck.maxCount * 1.5);
+                dipCheck.maxCount = (int) (dipCheck.maxCount * 1.5);
             }
         }
 

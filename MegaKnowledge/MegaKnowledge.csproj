@@ -128,15 +128,13 @@
     <ItemGroup>
       <EmbeddedResource Include="ShadowShuriken.png" />
     </ItemGroup>
+    <ItemGroup>
+      <Content Include="MegaKnowledge.dll" />
+    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    -->
-    <Target Name="AfterBuild">
-        <Exec Command="copy /Y &quot;C:\Users\James\RiderProjects\$(MSBuildProjectName)\obj\Debug\$(MSBuildProjectName).dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods\$(MSBuildProjectName).dll&quot;" />
-        <Exec Command="copy /Y &quot;C:\Users\James\RiderProjects\$(MSBuildProjectName)\obj\Debug\$(MSBuildProjectName).dll&quot; &quot;C:\Users\James\RiderProjects\$(MSBuildProjectName)\$(MSBuildProjectName).dll&quot;" />
-    </Target>
+    <PropertyGroup>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
+        <PostBuildEvent>copy "$(TargetDir)$(TargetFileName)" "C:\Program Files (x86)\Steam\steamapps\common\BloonsTD6\Mods" /y &amp;&amp; copy "$(TargetDir)$(TargetFileName)" "$(SolutionDir)" /y</PostBuildEvent>
+    </PropertyGroup>
 
 </Project>

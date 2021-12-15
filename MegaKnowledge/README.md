@@ -125,6 +125,8 @@ Overtime - Engineers and their Sentries are permanently Overclocked.
 
 **Changelog**
 
+v1.0.6 Fix for BloonsTD6 v29
+
 v1.0.5 Fix for Dartling / Mortar Knowledges, Half-Cash mode
 
 v1.0.4 Fix for BloonsTD6 v28.0
