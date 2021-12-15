@@ -4,7 +4,7 @@
 
 This mod adds many of the Monkey Money Powers to the in-game shop for purchase with normal currency.
 
-<img src="https://media.discordapp.net/attachments/800115046134186026/920510434749054977/unknown.png">
+<img src="https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/PowersInShop/image.png">
 
 This includes all Tower-based Powers: Monkey Farmer ($500), Tech Bot ($500), Portable Lake ($750), Pontoon ($750) and
 Energising Totem ($1000); as well as the Track-based Powers: Road Spikes ($50), Glue Trap ($100), Camo Trap ($100), and
