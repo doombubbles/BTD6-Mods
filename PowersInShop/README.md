@@ -4,6 +4,8 @@
 
 This mod adds many of the Monkey Money Powers to the in-game shop for purchase with normal currency.
 
+<img src="https://media.discordapp.net/attachments/800115046134186026/920510434749054977/unknown.png">
+
 This includes all Tower-based Powers: Monkey Farmer ($500), Tech Bot ($500), Portable Lake ($750), Pontoon ($750) and
 Energising Totem ($1000); as well as the Track-based Powers: Road Spikes ($50), Glue Trap ($100), Camo Trap ($100), and
 Moab Mine ($500).
@@ -12,13 +14,8 @@ The costs of all these towers are configurable, with the defaults shown above. P
 remove them from the shop. The pierces for the Track-based powers (all normal by default except for Moab Mine--changed
 to 1), as is the Recharge Cost and Attack Speed of the Energising Totem ($500 and 15% down from 25%, by default).
 
-Also configurable are allowing the Power Towers in CHIMPS mode (defaults to false) and restricting them as Support
+Also configurable are allowing the Power Towers in CHIMPS mode (defaults to false) and restricting them in Primary/Military/Magic Only mode
 towers (defaults to true).
-
-Very special thanks to kenx00x for the idea and starter code.
-
-As far as the future of this mod, I'm probably not going to add any of the other powers; they'd seem very out of place
-to be purchasable with cash.
 
 **Changelog**
 
