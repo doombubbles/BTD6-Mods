@@ -12,7 +12,7 @@ using MelonLoader;
 using PowersInShop.Towers;
 using Main = PowersInShop.Main;
 
-[assembly: MelonInfo(typeof(Main), "Powers In Shop", "2.0.0", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Powers In Shop", "2.0.1", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace PowersInShop
@@ -61,7 +61,7 @@ namespace PowersInShop
                 if (chimps != null)
                 {
                     var chimpsMutators = chimps.mutatorMods.ToList();
-                    var existingLocks = ModContent.GetInstances<ModPowerTower>()
+                    var existingLocks = ModContent.GetContent<ModPowerTower>()
                         .ToDictionary(tower => tower.Id, tower => chimpsMutators.OfType<LockTowerModModel>()
                                 .FirstOrDefault(model => model.towerToLock != tower.Id));
                     

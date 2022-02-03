@@ -19,6 +19,8 @@ towers (defaults to true).
 
 **Changelog**
 
+v2.0.1 Fixed issue with CHIMPS mode
+
 v2.0.0 Overhauled to use new Mod Helper features and fixed for BTD6 v29
 
 v1.2.2 Fixed Power Tower unlock bug
