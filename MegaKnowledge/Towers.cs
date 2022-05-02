@@ -14,7 +14,7 @@ using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
 using UnhollowerBaseLib;
 using static Assets.Scripts.Models.Towers.TowerType;
-
+using MelonLoader;
 namespace MegaKnowledge
 {
     public class Towers
@@ -63,7 +63,7 @@ namespace MegaKnowledge
         {
             var weaponModel = model.GetAttackModel().weapons[0];
             var random = new RandomArcEmissionModel("RandomArcEmissionModel_", 2, 0, 0, 30, 1, null);
-            var eM = new ArcEmissionModel("ArcEmissionModel_", 2, 0, 30, null, false, false);
+            var eM = new ArcEmissionModel("ArcEmissionModel_", 2, 0, 30, null, false);
             weaponModel.emission = eM;
         }
 
@@ -198,7 +198,7 @@ namespace MegaKnowledge
         public static void IceFortress(TowerModel model)
         {
             var behavior = new RemoveBloonModifiersModel("RemoveBloonModifiersModel_", false, true, false, false, false,
-                new Il2CppStringArray(new string[0]));
+                new Il2CppSystem.Collections.Generic.List<string>());
             foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 projectileModel.AddBehavior(behavior.Duplicate());
@@ -253,17 +253,13 @@ namespace MegaKnowledge
             {
                 towerModel.targetTypes = towerModel.targetTypes.AddTo(sniperTargetType);
             }
-
-
             var targetSelectedPointModel = attackModel.GetBehavior<TargetSelectedPointModel>();
             attackModel.RemoveBehavior<TargetSelectedPointModel>();
             attackModel.targetProvider = null;
-
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
-
+            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetFirstPrioCamoModel>().Duplicate());
+            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetLastPrioCamoModel>().Duplicate());
+            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetClosePrioCamoModel>().Duplicate());
+            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetStrongPrioCamoModel>().Duplicate());
             attackModel.AddBehavior(targetSelectedPointModel);
 
             towerModel.towerSelectionMenuThemeId = "ActionButton";
@@ -273,6 +269,7 @@ namespace MegaKnowledge
             {
                 ageModel.Lifespan /= 2;
             }*/
+            MelonLogger.Msg(8);
         }
 
         public static void DartlingEmpowerment(TowerModel towerModel)
@@ -346,8 +343,7 @@ namespace MegaKnowledge
             var targetSelectedPointModel = towerModel.GetAttackModel().GetBehavior<TargetSelectedPointModel>();
             if (targetSelectedPointModel == null)
             {
-                var tspm = new TargetSelectedPointModel("TargetSelectedPointModel_", true,
-                    false, "4e88dd78c6e800d41a6df5b02d592082", .5f, "");
+                var tspm = new TargetSelectedPointModel("TargetSelectedPointModel_", true,false, "4e88dd78c6e800d41a6df5b02d592082", .5f, "",true,true,"",true,null);
                 towerModel.GetAttackModel().AddBehavior(tspm);
             }
 
@@ -549,7 +545,7 @@ namespace MegaKnowledge
                 if (damageModel == null)
                 {
                     damageModel = new DamageModel("DamageModel_", amount, 0f,
-                        true, false, true, BloonProperties.None);
+                        true, false, true, BloonProperties.None,BloonProperties.None);
                     projectileModel.AddBehavior(damageModel);
                 }
                 else

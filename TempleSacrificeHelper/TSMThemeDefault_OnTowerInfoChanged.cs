@@ -18,12 +18,12 @@ namespace TempleSacrificeHelper
     [HarmonyPatch(typeof(TSMThemeDefault), nameof(TSMThemeDefault.TowerInfoChanged))]
     public class TSMThemeDefault_TowerInfoChanged
     {
-        public static Dictionary<string, NK_TextMeshProUGUI> templeText;
+        public static Dictionary<string, TextMeshProUGUI> templeText;
         public static Dictionary<string, GameObject> templeIcons;
         public static GameObject templeInfoButton;
 
         public static GameObject paragonButton;
-        public static NK_TextMeshProUGUI paragonButtonText;
+        public static TextMeshProUGUI paragonButtonText;
 
         [HarmonyPostfix]
         public static void Postfix(TSMThemeDefault __instance, TowerToSimulation tower)

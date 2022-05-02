@@ -15,7 +15,7 @@ using UnityEngine;
 using static Assets.Scripts.Models.Towers.TowerType;
 using static MegaKnowledge.MegaKnowledge;
 
-[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.3", "doombubbles")]
+[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.7", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace MegaKnowledge
