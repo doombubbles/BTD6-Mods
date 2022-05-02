@@ -4,19 +4,24 @@
 
 This mod adds many of the Monkey Money Powers to the in-game shop for purchase with normal currency.
 
-This includes all Tower-based Powers: Monkey Farmer ($500), Tech Bot ($500), Portable Lake ($750), Pontoon ($750) and Energising Totem ($1000); as well as the Track-based Powers: Road Spikes ($50), Glue Trap ($100), Camo Trap ($100), and Moab Mine ($500).
+<img src="https://raw.githubusercontent.com/doombubbles/BTD6-Mods/main/PowersInShop/image.png">
 
-The costs of all these towers are configurable, with the defaults shown above. Prices can be set to a negative number to remove them from the shop.
-The pierces for the Track-based powers (all normal by default except for Moab Mine--changed to 1), as is the Recharge Cost and Attack Speed of the Energising Totem ($500 and 15% down from 25%, by default).
+This includes all Tower-based Powers: Monkey Farmer ($500), Tech Bot ($500), Portable Lake ($750), Pontoon ($750) and
+Energising Totem ($1000); as well as the Track-based Powers: Road Spikes ($50), Glue Trap ($100), Camo Trap ($100), and
+Moab Mine ($500).
 
-Also configurable are allowing the Power Towers in CHIMPS mode (defaults to false) and restricting them as Support towers (defaults to true).
+The costs of all these towers are configurable, with the defaults shown above. Prices can be set to a negative number to
+remove them from the shop. The pierces for the Track-based powers (all normal by default except for Moab Mine--changed
+to 1), as is the Recharge Cost and Attack Speed of the Energising Totem ($500 and 15% down from 25%, by default).
 
-Very special thanks to kenx00x for the idea and starter code.
-
-
-As far as the future of this mod, I'm probably not going to add any of the other powers; they'd seem very out of place to be purchasable with cash.
+Also configurable are allowing the Power Towers in CHIMPS mode (defaults to false) and restricting them in Primary/Military/Magic Only mode
+towers (defaults to true).
 
 **Changelog**
+
+v2.0.1 Fixed issue with CHIMPS mode
+
+v2.0.0 Overhauled to use new Mod Helper features and fixed for BTD6 v29
 
 v1.2.2 Fixed Power Tower unlock bug
 

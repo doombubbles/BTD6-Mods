@@ -1,32 +1,41 @@
 # Prerequisites
+
 # Compiled Object files
 *.slo
 *.lo
 *.o
 *.obj
+
 # Precompiled Headers
 *.gch
 *.pch
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
+
 # Fortran module files
 *.mod
 *.smod
+
 # Compiled Static libraries
 *.lai
 *.la
 *.a
 *.lib
+
 # Executables
 *.exe
 *.out
 *.app
+
+
 .idea/
 obj/
-bin/
 AbilityChoice/bin/Debug/BloonsTD6 Mod Helper.xml
 CardMonkey/
 UltimateCrosspathing/
 *.xml
-.vs/
+IndustrialFarmer/
+
+bin/

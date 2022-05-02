@@ -12,9 +12,10 @@ using Assets.Scripts.Models.Towers.Weapons.Behaviors;
 using Assets.Scripts.Unity;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
+using Il2CppSystem.Collections.Generic;
 using UnhollowerBaseLib;
 using static Assets.Scripts.Models.Towers.TowerType;
-using MelonLoader;
+
 namespace MegaKnowledge
 {
     public class Towers
@@ -32,7 +33,8 @@ namespace MegaKnowledge
 
                 if (model.appliedUpgrades.Contains("Enhanced Eyesight"))
                 {
-                    pb.projectile.GetBehavior<ProjectileFilterModel>().filters.GetItemOfType<FilterModel, FilterInvisibleModel>().isActive = false;
+                    pb.projectile.GetBehavior<ProjectileFilterModel>().filters
+                        .GetItemOfType<FilterModel, FilterInvisibleModel>().isActive = false;
                 }
 
                 /*pb.name = "CreateProjectileOnContactModel_SplodeyDarts";
@@ -122,30 +124,30 @@ namespace MegaKnowledge
             var guidedMagic = model.GetWeapon().projectile.GetBehavior<TrackTargetModel>();
             foreach (var attackModel in model.GetAttackModels())
             {
-                if (attackModel.GetBehavior<TargetFirstModel>() != null)
+                if (attackModel.GetBehavior<TargetFirstPrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetFirstModel>();
+                    attackModel.RemoveBehavior<TargetFirstPrioCamoModel>();
                     attackModel.AddBehavior(new TargetFirstSharedRangeModel("TargetFirstSharedRangeModel_",
                         true, true, false, false));
                 }
 
-                if (attackModel.GetBehavior<TargetLastModel>() != null)
+                if (attackModel.GetBehavior<TargetLastPrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetLastModel>();
+                    attackModel.RemoveBehavior<TargetLastPrioCamoModel>();
                     attackModel.AddBehavior(new TargetLastSharedRangeModel("TargetLastSharedRangeModel_",
                         true, true, false, false));
                 }
 
-                if (attackModel.GetBehavior<TargetCloseModel>() != null)
+                if (attackModel.GetBehavior<TargetClosePrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetCloseModel>();
+                    attackModel.RemoveBehavior<TargetClosePrioCamoModel>();
                     attackModel.AddBehavior(new TargetCloseSharedRangeModel("TargetCloseSharedRangeModel_",
                         true, true, false, false));
                 }
 
-                if (attackModel.GetBehavior<TargetStrongModel>() != null)
+                if (attackModel.GetBehavior<TargetStrongPrioCamoModel>() != null)
                 {
-                    attackModel.RemoveBehavior<TargetStrongModel>();
+                    attackModel.RemoveBehavior<TargetStrongPrioCamoModel>();
                     attackModel.AddBehavior(new TargetStrongSharedRangeModel("TargetStrongSharedRangeModel_",
                         true, true, false, false));
                 }
@@ -198,7 +200,7 @@ namespace MegaKnowledge
         public static void IceFortress(TowerModel model)
         {
             var behavior = new RemoveBloonModifiersModel("RemoveBloonModifiersModel_", false, true, false, false, false,
-                new Il2CppSystem.Collections.Generic.List<string>());
+                new List<string>());
             foreach (var projectileModel in model.GetDescendants<ProjectileModel>().ToList())
             {
                 projectileModel.AddBehavior(behavior.Duplicate());
@@ -247,19 +249,23 @@ namespace MegaKnowledge
 
         public static void MortarEmpowerment(TowerModel towerModel)
         {
-            var sniper = Game.instance.model.GetTowerFromId(SniperMonkey);
+            var boomer = Game.instance.model.GetTowerFromId(BoomerangMonkey);
             var attackModel = towerModel.GetAttackModel();
-            foreach (var sniperTargetType in sniper.targetTypes)
+            foreach (var boomerTargetType in boomer.targetTypes)
             {
-                towerModel.targetTypes = towerModel.targetTypes.AddTo(sniperTargetType);
+                towerModel.targetTypes = towerModel.targetTypes.AddTo(boomerTargetType);
             }
+
+
             var targetSelectedPointModel = attackModel.GetBehavior<TargetSelectedPointModel>();
             attackModel.RemoveBehavior<TargetSelectedPointModel>();
             attackModel.targetProvider = null;
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetFirstPrioCamoModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetLastPrioCamoModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetClosePrioCamoModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetStrongPrioCamoModel>().Duplicate());
+
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
+
             attackModel.AddBehavior(targetSelectedPointModel);
 
             towerModel.towerSelectionMenuThemeId = "ActionButton";
@@ -269,7 +275,6 @@ namespace MegaKnowledge
             {
                 ageModel.Lifespan /= 2;
             }*/
-            MelonLogger.Msg(8);
         }
 
         public static void DartlingEmpowerment(TowerModel towerModel)
@@ -279,15 +284,15 @@ namespace MegaKnowledge
                 return;
             }
 
-            var sniper = Game.instance.model.GetTowerFromId(SniperMonkey);
+            var boomer = Game.instance.model.GetTowerFromId(BoomerangMonkey);
             var attackModel = towerModel.GetAttackModel();
 
-            foreach (var sniperTargetType in sniper.targetTypes)
+            foreach (var boomerTargetType in boomer.targetTypes)
             {
-                towerModel.targetTypes = towerModel.targetTypes.AddTo(sniperTargetType);
+                towerModel.targetTypes = towerModel.targetTypes.AddTo(boomerTargetType);
             }
 
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<RotateToTargetModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<RotateToTargetModel>().Duplicate());
 
             var targetPointerModel = attackModel.GetBehavior<TargetPointerModel>();
             var targetSelectedPointModel = attackModel.GetBehavior<TargetSelectedPointModel>();
@@ -295,10 +300,10 @@ namespace MegaKnowledge
             attackModel.RemoveBehavior<TargetPointerModel>();
             attackModel.RemoveBehavior<TargetSelectedPointModel>();
 
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
-            attackModel.AddBehavior(sniper.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
 
             attackModel.AddBehavior(targetPointerModel);
             attackModel.AddBehavior(targetSelectedPointModel);
@@ -343,13 +348,13 @@ namespace MegaKnowledge
             var targetSelectedPointModel = towerModel.GetAttackModel().GetBehavior<TargetSelectedPointModel>();
             if (targetSelectedPointModel == null)
             {
-                var tspm = new TargetSelectedPointModel("TargetSelectedPointModel_", true,false, "4e88dd78c6e800d41a6df5b02d592082", .5f, "",true,true,"",true,null);
+                var tspm = new TargetSelectedPointModel("TargetSelectedPointModel_", true,
+                    false, "4e88dd78c6e800d41a6df5b02d592082", .5f, "",
+                    false, false, "", true);
                 towerModel.GetAttackModel().AddBehavior(tspm);
             }
 
             towerModel.UpdateTargetProviders();
-
-
             towerModel.GetDescendant<ArriveAtTargetModel>().filterCollisionWhileMoving = false;
         }
 
@@ -405,7 +410,7 @@ namespace MegaKnowledge
                 var brewCheck = brew.towerBehaviors[0].Cast<BerserkerBrewCheckModel>();
                 brewCheck.maxCount = (int) (brewCheck.maxCount * 1.5);
             }
-            
+
             var dip = model.GetDescendant<AddAcidicMixtureToProjectileModel>();
             if (dip != null)
             {
@@ -523,6 +528,7 @@ namespace MegaKnowledge
             {
                 weapon.projectile.filters.GetItemOfType<FilterModel, FilterInvisibleModel>().isActive = false;
             }
+
             model.AddBehavior(attack);
         }
 
@@ -545,7 +551,7 @@ namespace MegaKnowledge
                 if (damageModel == null)
                 {
                     damageModel = new DamageModel("DamageModel_", amount, 0f,
-                        true, false, true, BloonProperties.None,BloonProperties.None);
+                        true, false, true, BloonProperties.None);
                     projectileModel.AddBehavior(damageModel);
                 }
                 else
@@ -556,7 +562,8 @@ namespace MegaKnowledge
                 if (model.appliedUpgrades.Contains("MOAB Glue"))
                 {
                     var damageModifierForTagModel =
-                        new DamageModifierForTagModel("DamageModifierForTagModel_", "Moabs", 1.0f, amount * 9, false, true);
+                        new DamageModifierForTagModel("DamageModifierForTagModel_", "Moabs", 1.0f, amount * 9, false,
+                            true);
                     projectileModel.AddBehavior(damageModifierForTagModel);
 
                     projectileModel.hasDamageModifiers = true;

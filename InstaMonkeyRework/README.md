@@ -17,6 +17,8 @@ With this mod, there's a new layer of decision making involved about whether you
 
 **Changelog**
 
+v1.0.6 Small Bug Fixes
+
 v1.0.5 Fixed an error message when used with Powers in Shop
 
 v1.0.4 Fixed a bug where Tower Placement wouldn't fully resolve

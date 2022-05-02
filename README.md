@@ -15,7 +15,7 @@
             <h2>Ultimate Crosspathing</h2>
         </td>
         <td>
-            A WIP mod that lets you take your 7 Upgrades for a Tower in any combination, allowing 430s, 331s, 322s, 511s, etc.
+            An experimental mod that allows for full crosspathing capability, 111s and 555s as well as everything in between.
         </td>
         <td width="10%">
             <a href="https://github.com/doombubbles/ultimate-crosspathing#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
@@ -29,13 +29,27 @@
             <h2>Card Monkey</h2>
         </td>
         <td>
-            A WIP mod that adds the Card Monkey to the game, a Tower with 3 full upgrade paths, custom visuals, and full crosspathing and integration within the game.
+            An example mod that adds the Card Monkey to the game, a Tower with 3 full upgrade paths, custom visuals, and full crosspathing and integration within the game.
         </td>
         <td width="10%">
             <a href="https://github.com/doombubbles/card-monkey#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
             <a href="https://github.com/doombubbles/card-monkey/raw/main/CardMonkey.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td width="30%" align="center">
+            <h2>Unlimited 5th Tiers +</h2>
+        </td>
+        <td>
+            Let's you use unlimited amounts of 5th Tiers, Paragons and VTSGs (even in Sandbox mode).
+        </td>
+        <td width="10%">
+            <a href="https://github.com/doombubbles/BTD6-Mods/tree/main/Unlimited5thTiers#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+        </td>
+        <td width="11%">
+            <a href="https://github.com/doombubbles/BTD6-Mods/raw/main/Unlimited5thTiers/Unlimited5thTiers.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
         </td>
     </tr>
     <tr>

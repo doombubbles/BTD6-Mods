@@ -31,7 +31,7 @@ namespace TempleSacrificeHelper
 
         public static void ModifyTemple(UpgradeModel upgradeModel)
         {
-            upgradeModel.confirmation = "Test";
+            upgradeModel.confirmation = "";
             upgradeModel.cost = BloonsTD6Mod.CostForDifficulty(Main.TempleAlternateCost, InGame.instance);
         }
 
@@ -116,17 +116,19 @@ namespace TempleSacrificeHelper
 
         private static ParagonTower FakeParagonTower(Tower tower)
         {
-            var paragonTower = new ParagonTower();
+            var paragonTower = new ParagonTower
+            {
+                Sim = tower.Sim
+            };
             paragonTower.Initialise(tower.entity, tower.model);
-            paragonTower.Sim = tower.Sim;
             return paragonTower;
         }
 
-        public static int GetParagonDegree(TowerToSimulation tower)
+        public static int GetParagonDegree(TowerToSimulation tower, out InvestmentInfo investmentInfo)
         {
             var index = 0;
             var paragonTower = FakeParagonTower(tower.tower);
-            var investmentInfo = InGame.instance.GetAllTowerToSim()
+            investmentInfo = InGame.instance.GetAllTowerToSim()
                 .Where(tts => tts.Def.baseId == tower.Def.baseId)
                 .Select(tts => paragonTower.GetTowerInvestment(tts.tower, tts.Def.tier >= 5 ? index++ : index))
                 .Aggregate(paragonTower.CombineInvestments);
@@ -137,6 +139,10 @@ namespace TempleSacrificeHelper
             while (investmentInfo.totalInvestment >= requirements[degree])
             {
                 degree++;
+                if (degree == 100)
+                {
+                    break;
+                }
             }
 
             paragonTower.Destroy();

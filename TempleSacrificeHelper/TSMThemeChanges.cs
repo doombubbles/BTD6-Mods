@@ -16,17 +16,33 @@ using Object = UnityEngine.Object;
 namespace TempleSacrificeHelper
 {
     [HarmonyPatch(typeof(TSMThemeDefault), nameof(TSMThemeDefault.TowerInfoChanged))]
-    public class TSMThemeDefault_TowerInfoChanged
+    public class TSMThemeChanges
     {
-        public static Dictionary<string, TextMeshProUGUI> templeText;
+        public static Dictionary<string, NK_TextMeshProUGUI> templeText;
         public static Dictionary<string, GameObject> templeIcons;
         public static GameObject templeInfoButton;
 
         public static GameObject paragonButton;
-        public static TextMeshProUGUI paragonButtonText;
+        public static NK_TextMeshProUGUI paragonButtonText;
+        public static Dictionary<string, NK_TextMeshProUGUI> paragonText;
+        public static Dictionary<string, GameObject> paragonIcons;
 
-        [HarmonyPostfix]
-        public static void Postfix(TSMThemeDefault __instance, TowerToSimulation tower)
+        public static bool showingCategories;
+
+        public static Il2CppSystem.Type lastTheme;
+
+        [HarmonyPatch(typeof(TSMThemeDefault), nameof(TSMThemeDefault.TowerInfoChanged))]
+        internal class TSMThemeDefault_TowerInfoChanged
+        {
+            [HarmonyPostfix]
+            public static void Postfix(TSMThemeDefault __instance, TowerToSimulation tower)
+            {
+                TowerInfoChanged(__instance, tower);
+                lastTheme = __instance.GetIl2CppType();
+            }
+        }
+
+        private static void SetAllToInactive()
         {
             if (templeText != null && templeIcons != null)
             {
@@ -39,10 +55,29 @@ namespace TempleSacrificeHelper
                 templeInfoButton.SetActiveRecursively(false);
             }
 
+            if (paragonText != null && paragonIcons != null)
+            {
+                foreach (var key in paragonText.Keys)
+                {
+                    paragonText[key].gameObject.SetActiveRecursively(false);
+                    paragonIcons[key].SetActiveRecursively(false);
+                }
+            }
+
             if (paragonButton != null && paragonButtonText != null)
             {
                 paragonButton.SetActiveRecursively(false);
                 paragonButtonText.gameObject.SetActiveRecursively(false);
+            }
+        }
+
+        private static void TowerInfoChanged(TSMThemeDefault __instance, TowerToSimulation tower)
+        {
+            SetAllToInactive();
+
+            if (__instance.GetIl2CppType() != lastTheme)
+            {
+                ModContent.GetInstance<Main>().OnGameObjectsReset();
             }
 
             if (tower.Def.upgrades.Any(model =>
@@ -75,12 +110,34 @@ namespace TempleSacrificeHelper
                     SetUpParagonUI(__instance);
                 }
 
-                var i = Utils.GetParagonDegree(tower);
+                var i = Utils.GetParagonDegree(tower, out var investmentInfo);
+
+                if (paragonText != null && paragonIcons != null && showingCategories)
+                {
+                    foreach (var key in paragonText.Keys)
+                    {
+                        paragonText[key].gameObject.SetActiveRecursively(true);
+                        paragonIcons[key].SetActiveRecursively(true);
+                    }
+
+                    paragonText["Pops"].SetText(((int)investmentInfo.powerFromPops).ToString());
+                    paragonText["Cash"].SetText(((int)investmentInfo.powerFromMoneySpent).ToString());
+                    paragonText["NonTier5s"].SetText(((int)investmentInfo.powerFromNonTier5Tiers).ToString());
+                    paragonText["Tier5s"].SetText(((int)investmentInfo.powerFromTier5Count).ToString());
+
+                    paragonText["Pops"].color = investmentInfo.powerFromPops >= MaxFromPops ? Color.green : Color.white;
+                    paragonText["Cash"].color =
+                        investmentInfo.powerFromMoneySpent >= MaxFromCash ? Color.green : Color.white;
+                    paragonText["NonTier5s"].color = investmentInfo.powerFromNonTier5Tiers >= MaxFromNonTier5s
+                        ? Color.green
+                        : Color.white;
+                    paragonText["Tier5s"].color =
+                        investmentInfo.powerFromTier5Count >= MaxFromTier5s ? Color.green : Color.white;
+                }
 
                 paragonButtonText.SetText(i.ToString());
                 paragonButtonText.gameObject.SetActiveRecursively(true);
                 paragonButton.SetActiveRecursively(true);
-                
             }
         }
 
@@ -96,16 +153,14 @@ namespace TempleSacrificeHelper
             transformPosition.x = rightButtonPosition.x;
             paragonButton.transform.position = transformPosition;
 
-            var image = paragonButton.GetComponent<Image>();
-            AtlasLateBinding.Instance.OnAtlasRequested("Ui", new Action<SpriteAtlas>(atlas =>
-            {
-                var sprite = atlas.GetSprite("UpgradeContainerParagon");
-                //sprite.texture.filterMode = FilterMode.Bilinear;
-                image.SetSprite(sprite);
-            }));
             paragonButton.GetComponent<Button>().SetOnClick(() =>
             {
-                // eventually toggle buttons to see individual power sources
+                showingCategories = !showingCategories;
+                foreach (var key in paragonText.Keys)
+                {
+                    paragonText[key].gameObject.SetActiveRecursively(showingCategories);
+                    paragonIcons[key].SetActiveRecursively(showingCategories);
+                }
             });
 
             paragonButtonText = Object.Instantiate(__instance.popCountText, paragonButton.transform, false);
@@ -113,8 +168,40 @@ namespace TempleSacrificeHelper
             transformPosition = paragonButtonText.transform.position;
             transformPosition.x = rightButtonPosition.x * .96f;
             paragonButtonText.transform.position = transformPosition;
-            
-            
+
+            paragonText = new Dictionary<string, NK_TextMeshProUGUI>
+            {
+                ["Cash"] = Object.Instantiate(__instance.popCountText, __instance.transform, true),
+                ["Pops"] = Object.Instantiate(__instance.popCountText, __instance.transform, true),
+                ["NonTier5s"] = Object.Instantiate(__instance.popCountText, __instance.transform, true),
+                ["Tier5s"] = Object.Instantiate(__instance.popCountText, __instance.transform, true)
+            };
+
+            paragonIcons = new Dictionary<string, GameObject>
+            {
+                ["Cash"] = Object.Instantiate(popImage.gameObject, __instance.transform, true),
+                ["Pops"] = Object.Instantiate(popImage.gameObject, __instance.transform, true),
+                ["NonTier5s"] = Object.Instantiate(popImage.gameObject, __instance.transform, true),
+                ["Tier5s"] = Object.Instantiate(popImage.gameObject, __instance.transform, true)
+            };
+
+            var i = -1;
+            var unit = __instance.popCountText.fontSize / 2f;
+            foreach (var key in paragonIcons.Keys)
+            {
+                paragonText[key].transform.Translate(0, i * unit, 0);
+                paragonIcons[key].transform.Translate(0, i * unit, 0);
+                i--;
+            }
+
+            AtlasLateBinding.Instance.OnAtlasRequested("Ui", new Action<SpriteAtlas>(atlas =>
+            {
+                paragonIcons["NonTier5s"].GetComponent<Image>().SetSprite(atlas.GetSprite("UpgradeContainerBlue"));
+                paragonIcons["Tier5s"].GetComponent<Image>().SetSprite(atlas.GetSprite("UpgradeContainerTier5"));
+                paragonIcons["Cash"].GetComponent<Image>().SetSprite(atlas.GetSprite("CoinIcon"));
+
+                paragonButton.GetComponent<Image>().SetSprite(atlas.GetSprite("UpgradeContainerParagon"));
+            }));
         }
 
         private static void SetUpTempleUI(TSMThemeDefault __instance)
@@ -140,8 +227,9 @@ namespace TempleSacrificeHelper
                 {
                     templeText[key].gameObject.SetActiveRecursively(!templeSacrificesOff);
                     templeIcons[key].SetActiveRecursively(!templeSacrificesOff);
-                    image.SetSprite(ModContent.GetSprite<Main>(templeSacrificesOff ? "Off" : "On"));
                 }
+
+                image.SetSprite(ModContent.GetSprite<Main>(templeSacrificesOff ? "Off" : "On"));
             });
 
             templeText = new Dictionary<string, NK_TextMeshProUGUI>
@@ -165,7 +253,7 @@ namespace TempleSacrificeHelper
             var unit = __instance.popCountText.fontSize / 2f;
             foreach (var key in templeIcons.Keys)
             {
-                var icon = templeIcons[key].transform.GetComponent<Image>();
+                var icon = templeIcons[key].GetComponent<Image>();
                 AtlasLateBinding.Instance.OnAtlasRequested("MainMenuUiAtlas", new Action<SpriteAtlas>(
                     atlas =>
                     {

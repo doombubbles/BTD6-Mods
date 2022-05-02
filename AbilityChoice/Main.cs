@@ -12,12 +12,13 @@ using HarmonyLib;
 using Assets.Scripts.Models.Profile;
 using Assets.Scripts.Models.Towers.Behaviors;
 using Assets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
+using Assets.Scripts.Simulation.Utils;
 using Assets.Scripts.Unity;
 using BTD_Mod_Helper;
 using MelonLoader;
 using NinjaKiwi.NKMulti;
 
-[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.12", "doombubbles")]
+[assembly: MelonInfo(typeof(AbilityChoice.Main), "Ability Choice", "1.0.13", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace AbilityChoice
@@ -86,28 +87,6 @@ namespace AbilityChoice
 
         private static Dictionary<int, TowerModel> CoOpTowerModelCache = new Dictionary<int, TowerModel>();
 
-        public override void OnApplicationStart()
-        {
-            if (MelonHandler.Mods.OfType<BloonsTD6Mod>().Any(mod => mod.GetModName() == "InstaMonkeyRework"))
-            {
-                HarmonyInstance.Patch(typeof(TowerManager).GetMethod(nameof(TowerManager.CreateTower)),
-                    postfix: new HarmonyMethod(AccessTools.Method(GetType(), nameof(TowerManagerCreateTowerPostfix))));
-            }
-        }
-        
-        internal static void TowerManagerCreateTowerPostfix(Tower __result, bool isInstaTower)
-        {
-            if (!isInstaTower)
-            {
-                return;
-            }
-            var towerModel = __result.towerModel;
-            var upgradeName = AllUpgrades.Keys.FirstOrDefault(s => towerModel.appliedUpgrades.Contains(s));
-            if (upgradeName == default) return;
-                    
-            AskApplyToTower(__result, upgradeName, towerModel);
-        }
-        
         public override void OnMainMenu()
         {
             ResetCaches();
@@ -198,7 +177,50 @@ namespace AbilityChoice
                 EnableForTower(tower, newBaseTowerModel);
             }
         }
+
+        //[HarmonyPatch(typeof(TowerManager), nameof(TowerManager.CreateTower))]
+        [HarmonyPatch(typeof(TowerManager.TowerCreateDef), nameof(TowerManager.TowerCreateDef.Invoke))]
+        internal class TowerManager_CreateTower
+        {
+            [HarmonyPostfix]
+            //internal static void Postfix(Tower __result, bool isInstaTower)
+            internal static void Postfix(Tower tower, TowerModel def, bool isInsta, bool isFromSave)
+            {
+                if (!isInsta || blockLoading)
+                {
+                    return;
+                }
+                var towerModel = def;
+                var upgradeName = AllUpgrades.Keys.FirstOrDefault(s => towerModel.appliedUpgrades.Contains(s));
+                if (upgradeName == default) return;
+                    
+                AskApplyToTower(tower, upgradeName, towerModel);
+            }
+        }
+
+        private static bool blockLoading = false;
         
+        [HarmonyPatch(typeof(MapSaveLoader), nameof(MapSaveLoader.LoadMapSaveData))]
+        internal class MapSaveLoader_LoadMapSaveData
+        {
+            [HarmonyPrefix]
+            internal static void Prefix()
+            {
+                blockLoading = true;
+            }
+
+            [HarmonyPostfix]
+            internal static void Postfix()
+            {
+                blockLoading = false;
+            }
+        }
+
+
+
+
+
+
 
         public static void EnableForTower(Tower tower, TowerModel towerModel)
         {
