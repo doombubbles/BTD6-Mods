@@ -47,8 +47,8 @@ namespace PowersInShop
             var createSoundOnTowerPlaceModel = towerModel.GetBehavior<CreateSoundOnTowerPlaceModel>();
             createSoundOnTowerPlaceModel.sound1.assetId = assetId;
             createSoundOnTowerPlaceModel.sound2.assetId = assetId;
-            createSoundOnTowerPlaceModel.heroSound1 = SoundModel.blank;
-            createSoundOnTowerPlaceModel.heroSound2 = SoundModel.blank;
+            createSoundOnTowerPlaceModel.heroSound1 = new SoundModel("","");
+            createSoundOnTowerPlaceModel.heroSound2 = new SoundModel("","");
 
             //tiny little caltrops
             towerModel.display = towerModel.GetBehavior<DisplayModel>().display = "8ab0e3fbb093a554d84a85e18fe2acac";
