@@ -300,10 +300,10 @@ namespace MegaKnowledge
             attackModel.RemoveBehavior<TargetPointerModel>();
             attackModel.RemoveBehavior<TargetSelectedPointModel>();
 
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstPrioCamoModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastPrioCamoModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetClosePrioCamoModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongPrioCamoModel>().Duplicate());
 
             attackModel.AddBehavior(targetPointerModel);
             attackModel.AddBehavior(targetSelectedPointModel);
@@ -348,9 +348,7 @@ namespace MegaKnowledge
             var targetSelectedPointModel = towerModel.GetAttackModel().GetBehavior<TargetSelectedPointModel>();
             if (targetSelectedPointModel == null)
             {
-                var tspm = new TargetSelectedPointModel("TargetSelectedPointModel_", true,
-                    false, "4e88dd78c6e800d41a6df5b02d592082", .5f, "",
-                    false, false, "", true);
+                var tspm =new TargetSelectedPointModel("TargetSelectedPointModel_",true,false,"4e88dd78c6e800d41a6df5b02d592082",0.5f,"",false,false,"",true,null);
                 towerModel.GetAttackModel().AddBehavior(tspm);
             }
 
@@ -551,7 +549,7 @@ namespace MegaKnowledge
                 if (damageModel == null)
                 {
                     damageModel = new DamageModel("DamageModel_", amount, 0f,
-                        true, false, true, BloonProperties.None);
+                        true, false, true, BloonProperties.None,BloonProperties.None);
                     projectileModel.AddBehavior(damageModel);
                 }
                 else

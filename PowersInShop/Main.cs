@@ -12,7 +12,7 @@ using MelonLoader;
 using PowersInShop.Towers;
 using Main = PowersInShop.Main;
 
-[assembly: MelonInfo(typeof(Main), "Powers In Shop", "2.0.1", "doombubbles")]
+[assembly: MelonInfo(typeof(Main), "Powers In Shop", "2.0.2", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace PowersInShop

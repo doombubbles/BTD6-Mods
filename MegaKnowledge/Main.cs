@@ -15,7 +15,7 @@ using UnityEngine;
 using static Assets.Scripts.Models.Towers.TowerType;
 using static MegaKnowledge.MegaKnowledge;
 
-[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.6", "doombubbles")]
+[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.7", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace MegaKnowledge
@@ -323,6 +323,32 @@ namespace MegaKnowledge
                         }
                     }
                 }
+            }
+        }
+
+        public static void RecursivelyLog(GameObject gameObject, int depth = 0)
+        {
+            var str = gameObject.name;
+            for (int i = 0;
+                i < depth;
+                i++)
+            {
+                str = "|  " + str;
+            }
+
+            str += " (";
+            foreach (var component in gameObject.GetComponents<Component>())
+            {
+                str += " " + component.GetIl2CppType().Name;
+            }
+
+            str += ")";
+            MelonLogger.Msg(str);
+            for (int i = 0;
+                i < gameObject.transform.childCount;
+                i++)
+            {
+                RecursivelyLog(gameObject.transform.GetChild(i).gameObject, depth + 1);
             }
         }
     }
