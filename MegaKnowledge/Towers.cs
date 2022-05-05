@@ -299,11 +299,11 @@ namespace MegaKnowledge
 
             attackModel.RemoveBehavior<TargetPointerModel>();
             attackModel.RemoveBehavior<TargetSelectedPointModel>();
-
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstPrioCamoModel>().Duplicate());
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastPrioCamoModel>().Duplicate());
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetClosePrioCamoModel>().Duplicate());
-            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongPrioCamoModel>().Duplicate());
+            
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetFirstModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetLastModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetCloseModel>().Duplicate());
+            attackModel.AddBehavior(boomer.GetAttackModel().GetBehavior<TargetStrongModel>().Duplicate());
 
             attackModel.AddBehavior(targetPointerModel);
             attackModel.AddBehavior(targetSelectedPointModel);
