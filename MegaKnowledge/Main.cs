@@ -14,8 +14,7 @@ using MelonLoader;
 using UnityEngine;
 using static Assets.Scripts.Models.Towers.TowerType;
 using static MegaKnowledge.MegaKnowledge;
-
-[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.7", "doombubbles")]
+[assembly: MelonInfo(typeof(MegaKnowledge.Main), "Mega Knowledge", "1.0.8", "doombubbles")]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace MegaKnowledge
@@ -27,7 +26,6 @@ namespace MegaKnowledge
 
         public override string LatestURL =>
             "https://github.com/doombubbles/BTD6-Mods/blob/main/MegaKnowledge/MegaKnowledge.dll?raw=true";
-
 
         public static readonly Dictionary<string, MegaKnowledge> MegaKnowledges = new Dictionary<string, MegaKnowledge>
         {
