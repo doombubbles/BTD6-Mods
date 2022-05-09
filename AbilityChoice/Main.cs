@@ -92,7 +92,7 @@ namespace AbilityChoice
             ResetCaches();
         }
 
-        public override void OnRestart(bool removeSave)
+        public override void OnRestart()
         {
             ResetCaches();
         }

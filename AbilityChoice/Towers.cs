@@ -537,9 +537,7 @@ namespace AbilityChoice
 
             var dontSlowBadBehavior = abilityWeapon.projectile.GetBehavior<SlowModifierForTagModel>();
 
-            var slowBehavior = new SlowModel("Sabotage", 0f, 2f, slowMutator.mutationId, "", 999,
-                new Il2CppSystem.Collections.Generic.Dictionary<string, AssetPathModel>(), 0, true, false, null,
-                false, false) {mutator = slowMutator};
+            var slowBehavior = new SlowModel("Sabotage",0f,2f,slowMutator.mutationId,99999,"",true,true,null,false,false,false){mutator=slowMutator};
             
             
             foreach (var weaponModel in model.GetWeapons())
