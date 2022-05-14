@@ -198,21 +198,17 @@ namespace AbilityChoice
             var ability = model.GetAbilites()[0];
             var abilityAttack = ability.GetBehavior<ActivateAttackModel>().attacks[0].Duplicate();
             var abilityWeapon = abilityAttack.weapons[0];
-
-            var behaviors = abilityWeapon.projectile.GetBehaviors<AddBehaviorToBloonModel>();
-            var damageBoost = behaviors[behaviors.Count - 1];
+            var damageBoost = abilityWeapon.projectile.GetBehavior<AddBonusDamagePerHitToBloonModel>();
             var abilitySlow = abilityWeapon.projectile.GetBehavior<SlowModel>();
             var realSlow = realWeapon.projectile.GetBehavior<SlowModel>();
             var realProjectile2 = realWeapon.projectile.GetBehavior<CreateProjectileOnContactModel>().projectile;
             var realSlow2 = realProjectile2.GetBehavior<SlowModel>();
-
             realSlow.lifespan = abilitySlow.lifespan;
             realSlow.layers = abilitySlow.layers;
             realSlow.mutator.multiplier = abilitySlow.Multiplier;
             realSlow2.lifespan = abilitySlow.lifespan;
             realSlow2.layers = abilitySlow.layers;
             realSlow2.mutator.multiplier = abilitySlow.Multiplier;
-
             realWeapon.projectile.AddBehavior(damageBoost);
             realProjectile2.AddBehavior(damageBoost);
         }
