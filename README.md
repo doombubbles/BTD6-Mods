@@ -1,6 +1,6 @@
 <h1 align="center">Doombubbles' BTD6 Mods</h1>
 
-<p align="center"><b>Before downloading a Mod, make sure you have <a href="https://github.com/gurrenm3/BTD-Mod-Helper/releases/latest">BTD Mod Helper</a> installed.</b>
+<p align="center"><b>Before downloading a Mod, make sure you have <a href="https://github.com/gurrenm3/BTD-Mod-Helper/wiki/Install-Guide">BTD Mod Helper</a> installed.</b>
 </p>
 
 <p align="center">If you don't know how to install mods, I'd recommend <a href="https://hemisemidemipresent.github.io/btd6-modding-tutorial/">this tutorial</a>.
