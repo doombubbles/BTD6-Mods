@@ -27,8 +27,23 @@
     </tr>
     <tr>
         <td width="30%" align="center">
+            <img align="left"  alt="Icon" width="30%" src="https://raw.githubusercontent.com/doombubbles/boss-rounds/main/Icon.png">
+            <h2>Boss Rounds</h2>
+        </td>
+        <td>
+            Adds custom roundsets to let you play with Bosses on any map in any mode at any time.
+        </td>
+        <td width="10%">
+            <a href="https://github.com/doombubbles/boss-rounds#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+        </td>
+        <td width="11%">
+            <a href="https://github.com/doombubbles/boss-rounds/releases/latest/download/BossRounds.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td width="30%" align="center">
             <img align="left"  alt="Icon" width="30%" src="https://github.com/doombubbles/IndustrialFarmer/raw/3.0/IndustrialFarmer-Icon.png">
-            <h2>Indusrial Farmer</h2>
+            <h2>Industrial Farmer</h2>
         </td>
         <td>
             An example custom hero, Norman, The Industrial Farmer with full 20 levels.
@@ -37,7 +52,7 @@
             <a href="https://github.com/doombubbles/industrial-farmer#readme"><img alt="Info" src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
         </td>
         <td width="11%">
-            <a href="https://github.com/doombubbles/IndustrialFarmer/raw/main/IndustrialFarmer.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
+            <a href="https://github.com/doombubbles/IndustrialFarmer/releases/latest/download/IndustrialFarmer.dll"><img alt="Download" src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
         </td>
     </tr>
     <tr>
@@ -153,6 +168,21 @@
 <table>
     <tr>
         <td width="30%" align="center">
+            <img align="left"  alt="Icon" width="30%" src="https://github.com/doombubbles/retry-anywhere/raw/main/Icon.png">
+            <h2>Retry Anywhere</h2>
+        </td>
+        <td>
+            Makes the Retry Last Round show up and be usable in all standard modes.
+        </td>
+        <td width="10%">
+            <a href="https://github.com/doombubbles/retry-anywhere#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
+        </td>
+        <td width="11%">
+            <a href="https://github.com/doombubbles/retry-anywhere/releases/latest/download/RetryAnywhere.dll"><img alt="Download" width=80 src="https://github.com/doombubbles/BTD6-Mods/blob/main/download_small.png?raw=true"></a>
+        </td>
+    </tr>
+    <tr>
+        <td width="30%" align="center">
             <img align="left"  alt="Icon" width="30%" src="https://github.com/doombubbles/faster-forward/raw/main/Icon.png">
             <h2>Faster Forward</h2>
         </td>
@@ -172,7 +202,7 @@
             <h2>Auto Escape</h2>
         </td>
         <td>
-            Automatically exits to the Main Menu when you would leak enough damage to lose you the game. (Highly reccomended with Faster Forward!
+            Automatically exits to the Main Menu when you would leak enough damage to lose you the game. (Highly reccomended with Faster Forward!)
         </td>
         <td width="10%">
             <a href="https://github.com/doombubbles/auto-escape#readme"><img alt="Info" width=75 src="https://github.com/doombubbles/BTD6-Mods/blob/main/info.png?raw=true"></a>
