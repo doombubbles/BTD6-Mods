@@ -1,9 +1,13 @@
 <h1 align="center">Doombubbles' BTD6 Mods</h1>
 
-<p align="center"><b>Before downloading a Mod, make sure you have <a href="https://github.com/gurrenm3/BTD-Mod-Helper/wiki/Install-Guide">BTD Mod Helper</a> installed.</b>
+<h1 align="center"><a href="http://gurrenm3.github.io/BTD-Mod-Helper/mod-browser?search=doombubbles&sort=Popularity">NEW: See all my mods in the web-based Mod Browser</a></h1>
+
+<p align="center">
+<b>Before downloading a Mod, make sure you have <a href="https://github.com/gurrenm3/BTD-Mod-Helper/wiki/Install-Guide">BTD Mod Helper</a> installed.</b>
 </p>
 
-<p align="center">If you don't know how to install mods, I'd recommend <a href="https://hemisemidemipresent.github.io/btd6-modding-tutorial/">this tutorial</a>.
+<p align="center">
+    If you don't know how to install mods, see the <a href="https://gurrenm3.github.io/BTD-Mod-Helper/wiki/Install-Guide">official BTD Mod Helper install guide</a>.
 </p>
 
 
